@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300">
+  <rect width="260" height="300" rx="18" fill="#EFECE4"/>
+  <circle cx="130" cy="148" r="94" fill="#F7F6F2" opacity="0.85"/>
+  
+      <ellipse cx="130" cy="212" rx="86" ry="10" fill="#E2DDD2"/>
+      <!-- Responsive Base Foam -->
+      <path d="M42 160 L130 192 L218 160 L218 184 L130 216 L42 184 Z" fill="#2F4838"/>
+      <!-- Transition Foam -->
+      <path d="M42 142 L130 174 L218 142 L218 160 L130 192 L42 160 Z" fill="#F7F6F2"/>
+      <!-- Top Comfort Layer -->
+      <path d="M42 122 L130 88 L218 122 L218 142 L130 174 L42 142 Z" fill="#FFFFFF" stroke="#D8D2C5" stroke-width="1.5"/>
+      <path d="M42 122 L130 154 L218 122" fill="none" stroke="#B08D57" stroke-width="3"/>
+      <path d="M72 110 L130 132 L188 110" fill="none" stroke="#DEC38E" stroke-width="1.5" opacity="0.8"/>
+    
+</svg>

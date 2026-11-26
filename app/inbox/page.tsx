@@ -23,11 +23,11 @@ const channelIcons: Record<string, { icon: CssIconName; color: string }> = {
 };
 
 const QUICK_REPLIES = [
-  { title: "Size Chart", body: "Priya Boutique Size Chart:\nS: Bust 34\", Waist 28\"\nM: Bust 36\", Waist 30\"\nL: Bust 38\", Waist 32\"\nXL: Bust 40\", Waist 34\"" },
-  { title: "Return Policy", body: "Our Return Policy:\nReturns and exchanges are accepted within 7 days with original tags and packaging.\nContact: 9876543210" },
-  { title: "Care Instructions", body: "Care Instructions:\n• Hand wash gently in cold water\n• Dry in shade away from direct sunlight\n• Iron on reverse side" },
-  { title: "Tracking Link", body: "Track your order here:\nhttps://track.shiprocket.in/[TRACKING_ID]\n\nNeed help? Call us at 9876543210" },
-  { title: "Special Offer", body: "Exclusive Offer for You!\n20% OFF on all Kurtis this week!\nCode: PRIYA20\nShop now at priyaboutique.in" },
+  { title: "Size Guide", body: "Flo India Mattress Sizes:\nSingle: 72x36 in\nDiwan: 72x48 in\nQueen: 72x60 in\nKing: 78x72 in\nCustom sizes are also crafted to order." },
+  { title: "100-Night Trial", body: "100-Night Risk-Free Trial:\nSleep on your Flo mattress for 100 nights. If it doesn't suit you, we arrange pickup and a 100% refund." },
+  { title: "10-Year Warranty", body: "10-Year Manufacturer Warranty:\nCovers foam sagging, structural defects, and manufacturing issues across India." },
+  { title: "Tracking Link", body: "Track your Mattress-in-a-Box order here:\nhttps://floindia.com/track/[TRACKING_ID]\n\nNeed help? Call us at 9820112233" },
+  { title: "Sleep Bundle Offer", body: "Exclusive Sleep Bundle!\nSave 36% + get 2 Free Flo Adjustable Pillows on Queen & King Mattresses at floindia.com" },
 ];
 
 export default function InboxPage() {

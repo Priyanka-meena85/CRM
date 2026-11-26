@@ -55,9 +55,9 @@ export default function LoginPage() {
           transition={{ delay: 0.2 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-heading text-primary mb-2">Priya Boutique</h1>
+          <h1 className="text-4xl font-heading text-primary mb-2">Flo India CRM</h1>
           <p className="text-sm font-body text-text/60">
-            Every Customer Remembered, Every Sale Maximized
+            Sleep Solutions, Leads, Orders & Support — Unified
           </p>
         </motion.div>
 
@@ -75,7 +75,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="owner@priya.com"
+              placeholder="owner@floindia.com"
               className="w-full px-4 py-3 rounded-2xl border border-gold/20 bg-background font-body outline-none focus:border-gold/50 focus:ring-2 focus:ring-gold/10 transition-all"
               required
             />
@@ -132,17 +132,17 @@ export default function LoginPage() {
           <div className="flex flex-col gap-1.5 text-xs font-body text-text/70">
             <button
               type="button"
-              onClick={() => { setEmail("owner@priya.com"); setPassword("Priya@2026#CRM"); setError(""); }}
+              onClick={() => { setEmail("owner@floindia.com"); setPassword("Priya@2026#CRM"); setError(""); }}
               className="text-left px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white border border-gold/15 transition-colors"
             >
-              <strong>Owner:</strong> owner@priya.com / Priya@2026#CRM
+              <strong>Owner:</strong> owner@floindia.com / Priya@2026#CRM
             </button>
             <button
               type="button"
-              onClick={() => { setEmail("raju@priya.com"); setPassword("Priya@2026#CRM"); setError(""); }}
+              onClick={() => { setEmail("sales@floindia.com"); setPassword("Priya@2026#CRM"); setError(""); }}
               className="text-left px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white border border-gold/15 transition-colors"
             >
-              <strong>Staff:</strong> raju@priya.com / Priya@2026#CRM
+              <strong>Sales Rep:</strong> sales@floindia.com / Priya@2026#CRM
             </button>
           </div>
         </motion.div>

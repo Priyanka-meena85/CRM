@@ -135,14 +135,33 @@ export default function DashboardPage() {
       <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         {/* Hero Header */}
         <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 150 }} className="text-center mb-10">
-          <h1 className="text-4xl md:text-5xl font-heading text-primary mb-2">Priya Boutique CRM</h1>
-          <p className="text-sm font-body text-text/50 mb-3">"Every Customer Remembered, Every Sale Maximized"</p>
+          <h1 className="text-4xl md:text-5xl font-heading text-primary mb-2">Flo India CRM</h1>
+          <p className="text-sm font-body text-text/50 mb-3">"Sleep Solutions, Leads, Orders & Support — Unified"</p>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}
             className="inline-flex items-center gap-2 bg-success/10 text-success px-4 py-1.5 rounded-full text-sm font-body">
             <span className="w-2 h-2 bg-success rounded-full animate-pulse" />
-            {stats.todayCustomerCount} Customers Visited Today
+            {stats.todayCustomerCount} Customers Active Today
           </motion.div>
         </motion.div>
+
+        {/* Zoho-style Small Business Quick Action Strip */}
+        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8">
+          <Button size="sm" onClick={() => router.push("/leads")}>
+            <CssIcon name="plus" size={12} /> Manage Leads
+          </Button>
+          <Button size="sm" variant="secondary" onClick={() => router.push("/pipeline")}>
+            <CssIcon name="kanban" size={12} /> Sales Pipeline
+          </Button>
+          <Button size="sm" variant="secondary" onClick={() => router.push("/followups")}>
+            <CssIcon name="calendar" size={12} /> Today&apos;s Follow-ups ({leadStats?.todayFollowups || 0})
+          </Button>
+          <Button size="sm" variant="secondary" onClick={() => router.push("/shop")}>
+            <CssIcon name="bag" size={12} /> New Store Order
+          </Button>
+          <Button size="sm" variant="secondary" onClick={() => router.push("/inbox")}>
+            <CssIcon name="chat" size={12} /> Support Inbox
+          </Button>
+        </div>
 
         {/* Bento Grid */}
         <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -434,10 +453,10 @@ export default function DashboardPage() {
                 <h3 className="text-lg font-heading text-primary mb-4">Smart Marketing</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                   {[
-                    { label: "Festive Offer", segment: "All" },
-                    { label: "Birthday Offer", segment: "Birthday" },
-                    { label: "Inactive Re-engage", segment: "Inactive" },
-                    { label: "VIP Special", segment: "VIP" },
+                    { label: "Sleep Day 36% Off", segment: "All" },
+                    { label: "100-Night Trial Check", segment: "Birthday" },
+                    { label: "Cart Recovery", segment: "Inactive" },
+                    { label: "VIP Pillow Bundle", segment: "VIP" },
                   ].map((btn) => (
                     <Button key={btn.label} size="sm" variant={btn.segment === "VIP" ? "secondary" : "primary"}
                       onClick={() => showToast(`${btn.label} campaign sent!`)}>
@@ -449,7 +468,7 @@ export default function DashboardPage() {
                 {/* WhatsApp Preview */}
                 <div className="max-w-xs mx-auto bg-[#E5DDD5] rounded-2xl p-4 border-4 border-gray-800 mb-6">
                   <div className="bg-[#DCF8C6] rounded-xl p-3 ml-auto max-w-[80%] shadow-sm">
-                    <p className="text-xs font-body text-gray-800"><strong>Festive Special!</strong><br />Enjoy 20% OFF on all Kurtis at Priya Boutique!<br />Nathdwara | 98765-43210</p>
+                    <p className="text-xs font-body text-gray-800"><strong>Flo Sleep Sale!</strong><br />Flat 36% OFF + 100-Night Free Trial on Flo Ortho & Ergo!<br />floindia.com | 98201-12233</p>
                     <p className="text-[10px] text-gray-500 text-right mt-1">11:30 AM</p>
                   </div>
                   <p className="text-center text-[10px] text-gray-500 font-body mt-2">WhatsApp Preview</p>

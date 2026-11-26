@@ -3,13 +3,13 @@ import { Metadata } from "next";
 import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Priya Boutique CRM",
-  description: "Customer Kabhi Nahi Bhoolega, Sale Kabhi Nahi Rukegi",
+  title: "Flo India CRM",
+  description: "Omnichannel Sleep & Mattress CRM for Flo India",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hi">
+    <html lang="en">
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=Outfit:wght@300;400;500;600;700&display=swap"

@@ -9,13 +9,27 @@ const DEFAULT_HASH = bcrypt.hashSync(process.env.DEMO_PASSWORD || "Priya@2026#CR
 const USERS = [
   {
     id: "1",
+    name: "Arjun (Owner)",
+    email: process.env.OWNER_EMAIL || "owner@floindia.com",
+    passwordHash: process.env.OWNER_PASSWORD_HASH || DEFAULT_HASH,
+    role: "OWNER",
+  },
+  {
+    id: "1b",
     name: "Priya (Owner)",
-    email: process.env.OWNER_EMAIL || "owner@priya.com",
+    email: "owner@priya.com",
     passwordHash: process.env.OWNER_PASSWORD_HASH || DEFAULT_HASH,
     role: "OWNER",
   },
   {
     id: "2",
+    name: "Raju (Sales)",
+    email: "sales@floindia.com",
+    passwordHash: DEFAULT_HASH,
+    role: "STAFF",
+  },
+  {
+    id: "2b",
     name: "Raju (Staff)",
     email: "raju@priya.com",
     passwordHash: DEFAULT_HASH,
@@ -23,8 +37,8 @@ const USERS = [
   },
   {
     id: "3",
-    name: "Pooja (Staff)",
-    email: "pooja@priya.com",
+    name: "Pooja (Support)",
+    email: "pooja@floindia.com",
     passwordHash: DEFAULT_HASH,
     role: "STAFF",
   },

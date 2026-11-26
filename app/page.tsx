@@ -27,7 +27,7 @@ export default function HomePage() {
         animate={{ opacity: 1, scale: 1 }}
         className="text-center z-10"
       >
-        <h1 className="text-5xl font-heading text-primary mb-3">Priya Boutique</h1>
+        <h1 className="text-5xl font-heading text-primary mb-3">Flo India CRM</h1>
         <p className="font-body text-text/60">Loading...</p>
       </motion.div>
     </div>

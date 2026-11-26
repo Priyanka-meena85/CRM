@@ -353,7 +353,7 @@ export default function ShopPage() {
               <SearchInput
                 value={productSearch}
                 onChange={setProductSearch}
-                placeholder="Red Kurti, Lehenga..."
+                placeholder="Search Flo Ortho, Ergo, Pillow..."
                 className="mb-4"
               />
 

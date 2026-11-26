@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding Priya Boutique CRM v2...");
+  console.log("Seeding Flo India CRM...");
 
   // Clear in FK order
   await prisma.leadCatalog.deleteMany();
@@ -33,392 +33,361 @@ async function main() {
   await prisma.customer.deleteMany();
 
   // ── CUSTOMERS ──────────────────────────────────────────────
-  const anjali = await prisma.customer.create({ data: {
-    name: "Anjali Sharma", phone: "9876543210", email: "anjali@gmail.com",
-    city: "Nathdwara", birthday: "1995-11-27", size: "M", sizeTop: "M",
-    sizeBottom: "30", fitPreference: "Slim", favoriteColors: "Red, Pink",
-    pasand: "Kurti, Lehenga", totalKharida: 55000, totalOrders: 5,
-    lastVisit: new Date().toISOString(), isVip: true, loyaltyPoints: 550,
+  const ananya = await prisma.customer.create({ data: {
+    name: "Ananya Deshmukh", phone: "9820112233", email: "ananya@gmail.com",
+    city: "Mumbai", birthday: "1994-11-27", size: "Queen", sizeTop: "Queen 6in",
+    fitPreference: "Medium-Firm", favoriteColors: "Ivory, Sage",
+    pasand: "Flo Ergo, Adjustable Pillow", totalKharida: 54000, totalOrders: 4,
+    lastVisit: new Date().toISOString(), isVip: true, loyaltyPoints: 540,
   }});
-  const sunita = await prisma.customer.create({ data: {
-    name: "Sunita Devi", phone: "9876543211", city: "Nathdwara",
-    birthday: "1988-03-15", size: "L", sizeTop: "L", sizeBottom: "34",
-    fitPreference: "Regular", pasand: "Saree", totalKharida: 72000, totalOrders: 8,
-    lastVisit: new Date(Date.now() - 10 * 86400000).toISOString(), isVip: true, loyaltyPoints: 720,
+  const vikram = await prisma.customer.create({ data: {
+    name: "Vikram Malhotra", phone: "9811223344", city: "Delhi",
+    birthday: "1986-03-15", size: "King", sizeTop: "King 8in",
+    fitPreference: "Firm Orthopedic", pasand: "Flo Ortho", totalKharida: 76000, totalOrders: 6,
+    lastVisit: new Date(Date.now() - 8 * 86400000).toISOString(), isVip: true, loyaltyPoints: 760,
   }});
-  const ramesh = await prisma.customer.create({ data: {
-    name: "Ramesh Kumar", phone: "9876543212", city: "Udaipur",
-    size: "L", pasand: "Suit", totalKharida: 8000, totalOrders: 4, returnCount: 3,
-    lastVisit: new Date(Date.now() - 120 * 86400000).toISOString(),
-    isInactive: true, isHighRisk: true, rtoRate: 0.75,
+  const rohan = await prisma.customer.create({ data: {
+    name: "Rohan Nair", phone: "9845098765", city: "Bengaluru",
+    size: "Queen", pasand: "Flo Wave", totalKharida: 9500, totalOrders: 3, returnCount: 2,
+    lastVisit: new Date(Date.now() - 115 * 86400000).toISOString(),
+    isInactive: true, isHighRisk: true, rtoRate: 0.67,
+  }});
+  const sneha = await prisma.customer.create({ data: {
+    name: "Sneha Kulkarni", phone: "9822334455", city: "Pune",
+    birthday: "1992-07-20", size: "King", fitPreference: "Bouncy Latex",
+    pasand: "Flo Anti-Gravity", totalKharida: 32000, totalOrders: 2,
+    lastVisit: new Date(Date.now() - 4 * 86400000).toISOString(), loyaltyPoints: 320,
+  }});
+  const karthik = await prisma.customer.create({ data: {
+    name: "Karthik Reddy", phone: "9849012345", city: "Hyderabad",
+    size: "Single", pasand: "Flo Ortho", totalKharida: 14500, totalOrders: 2,
+    lastVisit: new Date(Date.now() - 25 * 86400000).toISOString(), loyaltyPoints: 145,
   }});
   const meera = await prisma.customer.create({ data: {
-    name: "Meera Joshi", phone: "9876543213", city: "Nathdwara",
-    birthday: "1992-07-20", size: "S", sizeTop: "S", fitPreference: "Slim",
-    pasand: "Gown", totalKharida: 32000, totalOrders: 3,
-    lastVisit: new Date(Date.now() - 5 * 86400000).toISOString(), loyaltyPoints: 320,
+    name: "Meera Shah", phone: "9825067890", city: "Ahmedabad",
+    birthday: "1989-01-10", size: "King", fitPreference: "Plush Pocket Spring",
+    pasand: "Flo Float, Protector", totalKharida: 92000, totalOrders: 7,
+    lastVisit: new Date(Date.now() - 2 * 86400000).toISOString(), isVip: true, loyaltyPoints: 920,
   }});
-  const kavita = await prisma.customer.create({ data: {
-    name: "Kavita Agarwal", phone: "9876543214", city: "Rajsamand",
-    size: "XL", pasand: "Kurti", totalKharida: 12000, totalOrders: 2,
-    lastVisit: new Date(Date.now() - 30 * 86400000).toISOString(), loyaltyPoints: 120,
-  }});
-  const priya = await prisma.customer.create({ data: {
-    name: "Priya Patel", phone: "9876543215", city: "Nathdwara",
-    birthday: "1990-01-10", size: "M", fitPreference: "Oversized",
-    pasand: "Lehenga, Gown", totalKharida: 95000, totalOrders: 10,
-    lastVisit: new Date(Date.now() - 2 * 86400000).toISOString(), isVip: true, loyaltyPoints: 950,
-  }});
-  console.log("✅ 6 Customers seeded");
 
   // ── DELIVERY ADDRESSES ─────────────────────────────────────
   await prisma.deliveryAddress.create({ data: {
-    customerId: anjali.id, label: "Home", isDefault: true,
-    address: "123, Shrinathji Nagar", pincode: "313301", city: "Nathdwara", state: "Rajasthan",
+    customerId: ananya.id, label: "Home", isDefault: true,
+    address: "402, Sea Breeze Towers, Bandra West", pincode: "400050", city: "Mumbai", state: "Maharashtra",
   }});
   await prisma.deliveryAddress.create({ data: {
-    customerId: sunita.id, label: "Home", isDefault: true,
-    address: "456, Main Bazaar", pincode: "313301", city: "Nathdwara", state: "Rajasthan",
+    customerId: vikram.id, label: "Home", isDefault: true,
+    address: "B-24, Greater Kailash Part 1", pincode: "110048", city: "Delhi", state: "Delhi",
   }});
-  console.log("✅ Delivery addresses seeded");
 
   // ── STAFF ──────────────────────────────────────────────────
   const raju = await prisma.staff.create({ data: {
     name: "Raju", phone: "9988776655", role: "STAFF",
-    targetMonthly: 100000, commissionPercent: 2,
+    targetMonthly: 150000, commissionPercent: 2,
   }});
   const pooja = await prisma.staff.create({ data: {
     name: "Pooja", phone: "9988776656", role: "STAFF",
-    targetMonthly: 80000, commissionPercent: 2,
+    targetMonthly: 120000, commissionPercent: 2,
   }});
-  console.log("✅ 2 Staff seeded");
 
-  // ── PRODUCTS ───────────────────────────────────────────────
-  const redKurti = await prisma.product.create({ data: {
-    name: "Red Kurti", category: "Kurti", price: 1200, mrp: 1500,
-    photoUrl: "/products/red-kurti.svg",
-    sku: "KUR-RED-001", barcode: "8901234567890", tags: "Slim, Casual, Summer",
+  // ── FLO INDIA PRODUCTS ─────────────────────────────────────
+  const floOrtho = await prisma.product.create({ data: {
+    name: "Flo Ortho Mattress", category: "Orthopedic", price: 8499, mrp: 13299,
+    photoUrl: "/products/flo-ortho.svg",
+    sku: "FLO-ORT-001", barcode: "8904567890001", tags: "Pain Release, Reversible, Firm 8/10",
     stocks: { create: [
-      { size: "S", quantity: 5 }, { size: "M", quantity: 1 },
-      { size: "L", quantity: 3 }, { size: "XL", quantity: 4 },
+      { size: "Single", quantity: 14 }, { size: "Queen", quantity: 9 }, { size: "King", quantity: 2 },
     ]},
   }});
-  const redLehenga = await prisma.product.create({ data: {
-    name: "Red Lehenga", category: "Lehenga", price: 15000, mrp: 18000,
-    photoUrl: "/products/red-lehenga.svg",
-    sku: "LEH-RED-001", barcode: "8901234567891", tags: "Bridal, Festive",
+  const floErgo = await prisma.product.create({ data: {
+    name: "Flo Ergo Mattress", category: "Memory Foam", price: 7999, mrp: 12499,
+    photoUrl: "/products/flo-ergo.svg",
+    sku: "FLO-ERG-001", barcode: "8904567890002", tags: "Aloe Vera Cover, Zero Partner Disturbance",
     stocks: { create: [
-      { size: "S", quantity: 2 }, { size: "M", quantity: 3 }, { size: "L", quantity: 1 },
+      { size: "Single", quantity: 10 }, { size: "Queen", quantity: 12 }, { size: "King", quantity: 6 },
     ]},
   }});
-  const blueSaree = await prisma.product.create({ data: {
-    name: "Blue Saree", category: "Saree", price: 3500, mrp: 4000,
-    photoUrl: "/products/blue-saree.svg",
-    sku: "SAR-BLU-001", barcode: "8901234567892",
-    stocks: { create: [{ size: "Free", quantity: 8 }]},
-  }});
-  const pinkGown = await prisma.product.create({ data: {
-    name: "Pink Gown", category: "Gown", price: 8500, mrp: 10000,
-    photoUrl: "/products/pink-gown.svg",
-    sku: "GOW-PNK-001",
+  const floAntiGravity = await prisma.product.create({ data: {
+    name: "Flo Anti-Gravity Mattress", category: "Natural Latex", price: 11499, mrp: 17999,
+    photoUrl: "/products/flo-antigravity.svg",
+    sku: "FLO-AGV-001", barcode: "8904567890003", tags: "100% Natural Latex, Pin-Core Breathable",
     stocks: { create: [
-      { size: "S", quantity: 2 }, { size: "M", quantity: 0 }, { size: "L", quantity: 4 },
+      { size: "Queen", quantity: 5 }, { size: "King", quantity: 1 },
     ]},
   }});
-  const greenSuit = await prisma.product.create({ data: {
-    name: "Green Suit", category: "Suit", price: 4200, mrp: 5000, sku: "SUI-GRN-001",
-    photoUrl: "/products/green-suit.svg",
+  const floFloat = await prisma.product.create({ data: {
+    name: "Flo Float Mattress", category: "Pocket Spring", price: 13999, mrp: 21899,
+    photoUrl: "/products/flo-float.svg",
+    sku: "FLO-FLT-001", barcode: "8904567890004", tags: "Luxury Hotel Feel, Pocket Spring",
     stocks: { create: [
-      { size: "M", quantity: 6 }, { size: "L", quantity: 3 }, { size: "XL", quantity: 2 },
+      { size: "Queen", quantity: 4 }, { size: "King", quantity: 5 },
     ]},
   }});
-  const goldLehenga = await prisma.product.create({ data: {
-    name: "Gold Bridal Lehenga", category: "Lehenga", price: 45000, mrp: 55000,
-    photoUrl: "/products/gold-lehenga.svg",
-    sku: "LEH-GLD-001", tags: "Bridal, Premium, Heavy Work",
-    stocks: { create: [{ size: "S", quantity: 1 }, { size: "M", quantity: 2 }]},
-  }});
-  const whiteKurti = await prisma.product.create({ data: {
-    name: "White Chikan Kurti", category: "Kurti", price: 2800, sku: "KUR-WHT-001",
-    photoUrl: "/products/white-kurti.svg",
+  const floWave = await prisma.product.create({ data: {
+    name: "Flo Wave Mattress", category: "Everyday Foam", price: 5499, mrp: 8599,
+    photoUrl: "/products/flo-wave.svg",
+    sku: "FLO-WAV-001", barcode: "8904567890005", tags: "Value Comfort, Mattress-in-a-Box",
     stocks: { create: [
-      { size: "S", quantity: 3 }, { size: "M", quantity: 5 }, { size: "L", quantity: 2 },
+      { size: "Single", quantity: 18 }, { size: "Queen", quantity: 8 },
     ]},
   }});
-  console.log("✅ 7 Products + Stock seeded");
+  const floPillow = await prisma.product.create({ data: {
+    name: "Flo Adjustable Pillow", category: "Sleep Accessories", price: 1499, mrp: 2299,
+    photoUrl: "/products/flo-pillow.svg",
+    sku: "FLO-PIL-001", barcode: "8904567890006", tags: "Custom Loft, Memory Foam",
+    stocks: { create: [
+      { size: "Standard", quantity: 25 },
+    ]},
+  }});
+  const floProtector = await prisma.product.create({ data: {
+    name: "Flo Waterproof Protector", category: "Sleep Accessories", price: 1299, mrp: 1999,
+    photoUrl: "/products/flo-protector.svg",
+    sku: "FLO-PRO-001", barcode: "8904567890007", tags: "100% Waterproof, Cotton Terry",
+    stocks: { create: [
+      { size: "Queen", quantity: 15 }, { size: "King", quantity: 10 },
+    ]},
+  }});
 
   // ── BILLS ──────────────────────────────────────────────────
   await prisma.bill.create({ data: {
-    billNo: 1025, customerId: anjali.id, staffId: raju.id,
-    total: 16200, discount: 200, finalTotal: 16000, loyaltyUsed: 0,
-    paymentMethod: "UPI", status: "Completed",
+    billNo: 2041, customerId: ananya.id, staffId: raju.id,
+    total: 19498, discount: 1000, finalTotal: 18498, paymentMethod: "UPI", status: "Paid",
     items: { create: [
-      { productId: redKurti.id, size: "M", qty: 1, price: 1200 },
-      { productId: redLehenga.id, size: "M", qty: 1, price: 15000 },
+      { productId: floErgo.id, size: "Queen", qty: 2, price: 7999 },
+      { productId: floPillow.id, size: "Standard", qty: 2, price: 1499 },
     ]},
   }});
   await prisma.bill.create({ data: {
-    billNo: 1026, customerId: sunita.id, staffId: pooja.id,
-    total: 3500, discount: 0, finalTotal: 3500,
-    paymentMethod: "Cash", status: "Completed",
-    items: { create: [{ productId: blueSaree.id, size: "Free", qty: 1, price: 3500 }]},
+    billNo: 2042, customerId: vikram.id, staffId: pooja.id,
+    total: 27998, discount: 0, finalTotal: 27998, paymentMethod: "Card", status: "Paid",
+    items: { create: [{ productId: floFloat.id, size: "King", qty: 2, price: 13999 }] },
   }});
-  console.log("✅ 2 Bills seeded");
 
-  // ── ONLINE ORDERS ──────────────────────────────────────────
+  // ── OMNICHANNEL ORDERS ─────────────────────────────────────
   const order1 = await prisma.order.create({ data: {
-    orderNo: "PB202411001", customerId: meera.id, channel: "Instagram",
-    paymentMode: "Prepaid", paymentStatus: "Paid", codVerified: true,
-    total: 8500, discount: 500, finalTotal: 8000, shippingCharge: 0,
-    status: "Delivered", trackingId: "SR1234567890", courier: "Shiprocket",
-    trackingStatus: "Delivered",
-    items: { create: [{ productId: pinkGown.id, size: "S", qty: 1, price: 8500 }]},
+    orderNo: "FLO20261101", customerId: sneha.id, channel: "Website",
+    status: "Delivered", paymentMode: "Prepaid", paymentStatus: "Paid",
+    total: 11499, finalTotal: 11499, courier: "Delhivery",
+    trackingId: "DLV-FLO-88912", trackingStatus: "Delivered", codVerified: true,
+    items: { create: [{ productId: floAntiGravity.id, size: "King", qty: 1, price: 11499 }] },
   }});
-  const order2 = await prisma.order.create({ data: {
-    orderNo: "PB202411002", customerId: kavita.id, channel: "Website",
-    paymentMode: "COD", paymentStatus: "Pending", codVerified: false,
-    total: 1200, discount: 0, finalTotal: 1200, shippingCharge: 50,
-    status: "Pending", isHighRisk: false,
-    items: { create: [{ productId: redKurti.id, size: "XL", qty: 1, price: 1200 }]},
+  await prisma.order.create({ data: {
+    orderNo: "FLO20261102", customerId: karthik.id, channel: "Instagram",
+    status: "Shipped", paymentMode: "Prepaid", paymentStatus: "Paid",
+    total: 8499, finalTotal: 8499, courier: "BlueDart",
+    trackingId: "BD-FLO-44109", trackingStatus: "In-Transit", codVerified: true,
+    items: { create: [{ productId: floOrtho.id, size: "Single", qty: 1, price: 8499 }] },
   }});
-  const order3 = await prisma.order.create({ data: {
-    orderNo: "PB202411003", customerId: priya.id, channel: "WhatsApp",
-    paymentMode: "Prepaid", paymentStatus: "Paid", codVerified: true,
-    total: 45000, discount: 2000, finalTotal: 43000, shippingCharge: 0,
-    status: "Shipped", trackingId: "DL9876543210", courier: "Delhivery",
-    trackingStatus: "In-Transit",
-    items: { create: [{ productId: goldLehenga.id, size: "M", qty: 1, price: 45000 }]},
+  await prisma.order.create({ data: {
+    orderNo: "FLO20261103", customerId: meera.id, channel: "Website",
+    status: "Confirmed", paymentMode: "Prepaid", paymentStatus: "Paid",
+    total: 15298, finalTotal: 15298, courier: "Shiprocket",
+    trackingStatus: "Ready to Dispatch", codVerified: true,
+    items: { create: [
+      { productId: floFloat.id, size: "King", qty: 1, price: 13999 },
+      { productId: floProtector.id, size: "King", qty: 1, price: 1299 },
+    ]},
   }});
-  const order4 = await prisma.order.create({ data: {
-    orderNo: "PB202411004", customerId: ramesh.id, channel: "Website",
-    paymentMode: "COD", paymentStatus: "Pending", codVerified: false,
-    total: 4200, discount: 0, finalTotal: 4200, shippingCharge: 100,
-    status: "Pending", isHighRisk: true,
-    items: { create: [{ productId: greenSuit.id, size: "L", qty: 1, price: 4200 }]},
+  await prisma.order.create({ data: {
+    orderNo: "FLO20261104", customerId: rohan.id, channel: "WhatsApp",
+    status: "Pending", paymentMode: "COD", paymentStatus: "Pending",
+    total: 5499, finalTotal: 5499, isHighRisk: true, codVerified: false,
+    items: { create: [{ productId: floWave.id, size: "Queen", qty: 1, price: 5499 }] },
   }});
-  console.log("✅ 4 Online Orders seeded");
 
-  // ── RETURNS ────────────────────────────────────────────────
+  // ── RETURNS & QC ───────────────────────────────────────────
   await prisma.return.create({ data: {
-    orderId: order1.id, reason: "Size thoda chhota tha", type: "Exchange",
-    status: "QC Pending", exchangeSize: "M",
+    orderId: order1.id, type: "Exchange", reason: "100-Night Trial: Switching from King to Queen size",
+    status: "QC Pending", refundAmount: 0,
   }});
-  console.log("✅ 1 Return seeded");
 
-  // ── APPROVALS ─────────────────────────────────────────────
+  // ── APPROVALS ──────────────────────────────────────────────
   await prisma.approval.create({ data: {
-    orderId: order2.id, type: "Discount", amount: 200,
-    requestedBy: raju.id, note: "Regular customer, 200 discount maang raha hai",
+    type: "Discount", amount: 1500, requestedBy: raju.id, note: "Bulk 3-mattress family order extra ₹1,500 discount request",
   }});
   await prisma.approval.create({ data: {
-    type: "Refund", amount: 8000, requestedBy: pooja.id,
-    note: "Order 1001 - Customer ne defective kapda receive kiya",
+    type: "Refund", amount: 11499, requestedBy: pooja.id,
+    note: "Order FLO20261101 - 100-Night Trial full refund request",
   }});
-  console.log("✅ 2 Approvals seeded");
 
-  // ── UDHAAR ─────────────────────────────────────────────────
+  // ── UDHAAR / CREDIT ────────────────────────────────────────
   await prisma.udhaar.create({ data: {
-    customerId: ramesh.id, amount: 2000,
+    customerId: rohan.id, amount: 2500,
     dueDate: new Date(Date.now() + 7 * 86400000).toISOString(), status: "Pending",
   }});
   await prisma.udhaar.create({ data: {
-    customerId: kavita.id, amount: 5000,
-    dueDate: new Date(Date.now() + 15 * 86400000).toISOString(), status: "Pending",
+    customerId: karthik.id, amount: 4000,
+    dueDate: new Date(Date.now() + 14 * 86400000).toISOString(), status: "Pending",
   }});
-  console.log("✅ 2 Udhaar seeded");
 
-  // ── MEASUREMENTS ──────────────────────────────────────────
+  // ── CUSTOM MATTRESS SIZING ─────────────────────────────────
   await prisma.measurement.create({ data: {
-    customerId: anjali.id, blouse: "36", sleeve: "14", length: "40",
-    waist: "30", shoulder: "14", hip: "38",
-    status: "Sil Raha Hai", deliveryDate: new Date(Date.now() + 3 * 86400000).toISOString(),
+    customerId: ananya.id, blouse: "72x60", sleeve: "8 in", length: "72",
+    waist: "60", shoulder: "Aloe Cover", hip: "Firmness 7/10",
+    status: "In Production", deliveryDate: new Date(Date.now() + 4 * 86400000).toISOString(),
   }});
   await prisma.measurement.create({ data: {
-    customerId: sunita.id, blouse: "38", sleeve: "15", length: "42",
-    waist: "32", shoulder: "15", hip: "40",
-    status: "Ready Hai", deliveryDate: new Date().toISOString(),
+    customerId: vikram.id, blouse: "78x72", sleeve: "6 in", length: "78",
+    waist: "72", shoulder: "Ortho Base", hip: "Firmness 9/10",
+    status: "Ready for Dispatch", deliveryDate: new Date().toISOString(),
   }});
-  console.log("✅ 2 Measurements seeded");
 
-  // ── ALTERATIONS ───────────────────────────────────────────
-  await prisma.alteration.create({ data: {
-    customerId: priya.id, description: "Lehenga waist 2 inch chhota karna",
-    status: "In-Progress", dueDate: new Date(Date.now() + 5 * 86400000).toISOString(), charges: 300,
-  }});
-  console.log("✅ 1 Alteration seeded");
-
-  // ── WISHLISTS ─────────────────────────────────────────────
-  await prisma.wishlist.create({ data: { customerId: anjali.id, productId: goldLehenga.id, size: "M" }});
-  await prisma.wishlist.create({ data: { customerId: meera.id, productId: whiteKurti.id, size: "S" }});
-  console.log("✅ 2 Wishlist items seeded");
+  // ── WISHLISTS ──────────────────────────────────────────────
+  await prisma.wishlist.create({ data: { customerId: ananya.id, productId: floAntiGravity.id, size: "King" }});
+  await prisma.wishlist.create({ data: { customerId: sneha.id, productId: floPillow.id, size: "Standard" }});
 
   // ── LOYALTY TRANSACTIONS ───────────────────────────────────
   await prisma.loyaltyTransaction.create({ data: {
-    customerId: anjali.id, points: 160, reason: "Bill #1025 pe earned",
+    customerId: ananya.id, points: 185, reason: "Earned on Invoice #2041",
   }});
   await prisma.loyaltyTransaction.create({ data: {
-    customerId: priya.id, points: 430, reason: "Order PB202411003 pe earned",
+    customerId: meera.id, points: 450, reason: "Earned on Order FLO20261103",
   }});
-  await prisma.loyaltyTransaction.create({ data: {
-    customerId: anjali.id, points: -50, reason: "Discount pe redeem kiya",
-  }});
-  console.log("✅ 3 Loyalty transactions seeded");
 
-  // ── SUPPORT TICKETS ───────────────────────────────────────
-  const ticket1 = await prisma.supportTicket.create({ data: {
-    customerId: meera.id, channel: "WhatsApp", subject: "Size exchange chahiye",
+  // ── SUPPORT TICKETS ────────────────────────────────────────
+  await prisma.supportTicket.create({ data: {
+    customerId: sneha.id, channel: "WhatsApp", subject: "100-Night Trial Size Exchange",
     status: "Open", assignedTo: raju.id,
     messages: { create: [
-      { sender: "customer", body: "Mujhe pink gown ka size S ki jagah M chahiye" },
-      { sender: "staff", body: "Ji bilkul! Hum aapke liye exchange process kar dete hain" },
+      { sender: "customer", body: "Hi, I want to exchange my King Flo Anti-Gravity for a Queen size under the 100-night trial." },
+      { sender: "staff", body: "Sure Sneha! We have initiated your trial exchange pickup and will dispatch the Queen size right away." },
     ]},
   }});
-  const ticket2 = await prisma.supportTicket.create({ data: {
-    customerId: kavita.id, channel: "Instagram", subject: "Delivery kab tak?",
+  await prisma.supportTicket.create({ data: {
+    customerId: karthik.id, channel: "Instagram", subject: "Delivery ETA for FLO20261102",
     status: "In-Progress",
     messages: { create: [
-      { sender: "customer", body: "Mera order PB202411002 kab aayega?" },
+      { sender: "customer", body: "When will my Flo Ortho Single mattress reach Hyderabad?" },
     ]},
   }});
-  console.log("✅ 2 Support Tickets seeded");
 
-  // ── QUICK REPLIES ─────────────────────────────────────────
+  // ── QUICK REPLIES ──────────────────────────────────────────
   await prisma.quickReply.createMany({ data: [
-    { title: "Size Chart", category: "Size", body: "📏 Priya Boutique Size Chart:\nS: Bust 34\", Waist 28\"\nM: Bust 36\", Waist 30\"\nL: Bust 38\", Waist 32\"\nXL: Bust 40\", Waist 34\"" },
-    { title: "Return Policy", category: "Policy", body: "🔄 7 din ke andar return/exchange ho sakta hai. Original tags aur packing zaroori hai." },
-    { title: "Washing Instructions", category: "Care", body: "🧺 Cold water mein hand wash karein. Direct dhoop mein mat sukhaein." },
-    { title: "Track Order", category: "Tracking", body: "🚚 Aapka order track karein: https://track.shiprocket.in\nTracking ID hume batayein." },
-    { title: "Diwali Offer", category: "Offer", body: "🪔 Diwali Special! Priya Boutique pe 20% OFF sab Kurtis pe! Code: PRIYA20" },
+    { title: "Size Guide", category: "Size", body: "Flo India Mattress Sizes:\nSingle: 72x36 in\nDiwan: 72x48 in\nQueen: 72x60 in\nKing: 78x72 in\nCustom sizes also crafted to order!" },
+    { title: "100-Night Trial", category: "Policy", body: "Sleep on your Flo mattress for 100 nights risk-free. Not satisfied? We pick it up and issue a 100% refund." },
+    { title: "10-Year Warranty", category: "Warranty", body: "Every Flo Mattress comes with a comprehensive 10-Year Manufacturer Warranty covering sagging and foam defects." },
+    { title: "Track Order", category: "Tracking", body: "Track your Mattress-in-a-Box shipment at https://floindia.com/track using your Order ID." },
+    { title: "Sleep Bundle Offer", category: "Offer", body: "Save 36% + get 2 Free Flo Pillows on King & Queen Mattress orders at floindia.com!" },
   ]});
-  console.log("✅ 5 Quick Replies seeded");
 
-  // ── MARKETING CAMPAIGNS ───────────────────────────────────
+  // ── MARKETING CAMPAIGNS ────────────────────────────────────
   await prisma.marketingCampaign.createMany({ data: [
-    { title: "Diwali Special - 20% Off All Kurtis", segment: "All", channel: "WhatsApp", sentToCount: 500, status: "Sent" },
-    { title: "Birthday Offer - 15% Off", segment: "Birthday", channel: "WhatsApp", sentToCount: 45, status: "Sent" },
-    { title: "Inactive Re-engagement", segment: "Inactive", channel: "WhatsApp", sentToCount: 120, status: "Sent" },
-    { title: "VIP Special Preview", segment: "VIP", channel: "WhatsApp", sentToCount: 32, status: "Sent" },
+    { title: "World Sleep Day - Flat 36% Off Mattresses", segment: "All", channel: "WhatsApp", sentToCount: 1250, status: "Sent" },
+    { title: "100-Night Trial Check-In & Pillow Upsell", segment: "VIP", channel: "WhatsApp", sentToCount: 180, status: "Sent" },
+    { title: "Birthday Sleep Upgrade Coupon", segment: "Birthday", channel: "WhatsApp", sentToCount: 65, status: "Sent" },
+    { title: "Cart Recovery - Flo Ortho & Ergo", segment: "Inactive", channel: "WhatsApp", sentToCount: 210, status: "Sent" },
   ]});
-  console.log("✅ 4 Marketing Campaigns seeded");
 
-  // ── RETURN ANALYTICS ──────────────────────────────────────
-  await prisma.returnAnalytic.create({ data: { productId: pinkGown.id, size: "S", reason: "Size chhota tha", count: 3 }});
-  await prisma.returnAnalytic.create({ data: { productId: redKurti.id, size: "M", reason: "Color different tha", count: 2 }});
-  console.log("✅ Return Analytics seeded");
+  // ── RETURN ANALYTICS ───────────────────────────────────────
+  await prisma.returnAnalytic.create({ data: { productId: floAntiGravity.id, size: "King", reason: "Bed frame size mismatch", count: 3 }});
+  await prisma.returnAnalytic.create({ data: { productId: floErgo.id, size: "Queen", reason: "Switched to firmer Flo Ortho", count: 2 }});
 
-  // ── LEADS, HISTORIES, FOLLOWUPS, CATALOGS ─────────────────
+  // ── LEADS, HISTORIES, FOLLOWUPS, CATALOGS ──────────────────
   const todayStr = new Date().toISOString().slice(0, 10);
   const yesterdayStr = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
   const twoDaysAgoStr = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
   const tomorrowStr = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
 
-  const lead1 = await prisma.lead.create({ data: {
-    naam: "Priya Sharma", phone: "9829011223", email: "priya.s@gmail.com",
-    source: "Instagram", query: "Bridal Red Lehenga rate aur customization",
-    quote: 18500, stage: "QUOTE", temperature: "Hot", assignedTo: raju.id,
-    nextFollowup: `${todayStr}T11:00`, city: "Udaipur",
-    notes: "Shaadi next month hai, urgent chahiye",
+  await prisma.lead.create({ data: {
+    naam: "Aditi Deshpande", phone: "9820445566", email: "aditi.d@gmail.com",
+    source: "Website", query: "Flo Ortho King 8-inch for parents' back pain",
+    quote: 14999, stage: "QUOTE", temperature: "Hot", assignedTo: raju.id,
+    nextFollowup: `${todayStr}T11:00`, city: "Mumbai",
+    notes: "Needs delivery by weekend; asked about 100-night trial",
     history: { create: [
-      { staffId: raju.id, action: "Lead Created", note: "Instagram DM se inquiry aayi" },
-      { staffId: raju.id, action: "Called", note: "Budget 18-20k bataya, Red & Gold pasand hai" },
-      { staffId: raju.id, action: "Quote Sent", note: "₹18,500 ka quote WhatsApp pe bheja" },
+      { staffId: raju.id, action: "Lead Created", note: "Website inquiry via floindia.com" },
+      { staffId: raju.id, action: "Called", note: "Recommended Flo Ortho 8-inch King for lumbar support" },
+      { staffId: raju.id, action: "Quote Sent", note: "Shared ₹14,999 quote with 2 free pillows on WhatsApp" },
     ]},
     followups: { create: [
-      { staffId: raju.id, dueAt: `${todayStr}T11:00`, note: "Quote confirm karna hai & trial book karna" },
+      { staffId: raju.id, dueAt: `${todayStr}T11:00`, note: "Confirm EMI option & close order" },
     ]},
-    catalogsSent: { create: [
-      { title: "Bridal Lehenga Collection 2026 PDF" },
-    ]},
+    catalogsSent: { create: [{ title: "Flo Ortho Orthopedic Guide PDF" }] },
   }});
 
-  const lead2 = await prisma.lead.create({ data: {
-    naam: "Neha Rathore", phone: "9829044556",
-    source: "WhatsApp", query: "Haldi ke liye Yellow Anarkali set (Size M)",
-    quote: 4500, stage: "BAAT HUI", temperature: "Warm", assignedTo: pooja.id,
-    nextFollowup: `${yesterdayStr}T16:00`, city: "Nathdwara",
-    notes: "2 pieces chahiye family ke liye",
+  await prisma.lead.create({ data: {
+    naam: "Siddharth Joshi", phone: "9811778899",
+    source: "WhatsApp", query: "Flo Ergo vs Anti-Gravity Queen size comparison",
+    quote: 11499, stage: "BAAT HUI", temperature: "Warm", assignedTo: pooja.id,
+    nextFollowup: `${yesterdayStr}T16:00`, city: "Delhi",
+    notes: "Comparing natural latex vs memory foam",
     history: { create: [
-      { staffId: pooja.id, action: "WhatsApp", note: "WhatsApp pe photo bheji" },
-      { staffId: pooja.id, action: "Called", note: "Size M aur L dono ke liye pucha" },
+      { staffId: pooja.id, action: "WhatsApp", note: "Sent firmness & cooling comparison chart" },
+      { staffId: pooja.id, action: "Called", note: "Explained 100% natural pin-core latex benefits" },
     ]},
     followups: { create: [
-      { staffId: pooja.id, dueAt: `${yesterdayStr}T16:00`, note: "Overdue: Yellow Anarkali stock confirm karke batana hai" },
+      { staffId: pooja.id, dueAt: `${yesterdayStr}T16:00`, note: "Follow up on Queen Anti-Gravity decision" },
     ]},
-    catalogsSent: { create: [
-      { title: "Haldi & Mehendi Special Kurtis" },
-    ]},
+    catalogsSent: { create: [{ title: "Flo Mattress Comparison Brochure" }] },
   }});
 
-  const lead3 = await prisma.lead.create({ data: {
-    naam: "Simran Kaur", phone: "9829077889",
-    source: "Facebook", query: "Party wear Gown pink color",
-    quote: 6800, stage: "NEW", temperature: "Hot", assignedTo: raju.id,
-    nextFollowup: `${todayStr}T17:30`, city: "Rajsamand",
+  await prisma.lead.create({ data: {
+    naam: "Nikhil Kapoor", phone: "9845112233",
+    source: "Instagram", query: "Flo Float Pocket Spring Queen + Waterproof Protector",
+    quote: 15298, stage: "NEW", temperature: "Hot", assignedTo: raju.id,
+    nextFollowup: `${todayStr}T17:30`, city: "Bengaluru",
     history: { create: [
-      { staffId: raju.id, action: "Lead Created", note: "Facebook Ad form submit kiya" },
+      { staffId: raju.id, action: "Lead Created", note: "Instagram Ad lead form submitted" },
     ]},
     followups: { create: [
-      { staffId: raju.id, dueAt: `${todayStr}T17:30`, note: "Pehli call karni hai & size poochna hai" },
+      { staffId: raju.id, dueAt: `${todayStr}T17:30`, note: "Introductory call & room dimension check" },
     ]},
   }});
 
-  const lead4 = await prisma.lead.create({ data: {
-    naam: "Aarti Mehta", phone: "9829099001",
-    source: "Walk-in", query: "Designer Saree + Blouse stitching",
-    quote: 12000, stage: "PAKKI", temperature: "Hot", assignedTo: pooja.id,
-    city: "Nathdwara", notes: "Advance ₹5,000 de diya hai",
+  await prisma.lead.create({ data: {
+    naam: "Boutique Stay Udaipur", phone: "9829099001",
+    source: "Call", query: "Bulk B2B Order: 12x Flo Float Queen Mattresses",
+    quote: 155000, stage: "PAKKI", temperature: "Hot", assignedTo: pooja.id,
+    city: "Udaipur", notes: "50% advance received; dispatch scheduled",
     history: { create: [
-      { staffId: pooja.id, action: "Lead Created", note: "Store visit kiya" },
-      { staffId: pooja.id, action: "Stage Changed", note: "PAKKI ho gayi! Advance received" },
+      { staffId: pooja.id, action: "Lead Created", note: "Inbound B2B hospitality call" },
+      { staffId: pooja.id, action: "Stage Changed", note: "Won! Bulk invoice confirmed" },
     ]},
   }});
 
-  const lead5 = await prisma.lead.create({ data: {
-    naam: "Kiran Verma", phone: "9829033445",
-    source: "Call", query: "Cotton Kurti bulk order (5 pcs)",
-    quote: 5500, stage: "QUOTE", temperature: "Warm", assignedTo: raju.id,
-    nextFollowup: `${twoDaysAgoStr}T12:00`, city: "Chittorgarh",
+  await prisma.lead.create({ data: {
+    naam: "Pranav Kulkarni", phone: "9822998877",
+    source: "Facebook", query: "Custom Size 72x66 Flo Ortho Mattress",
+    quote: 12499, stage: "QUOTE", temperature: "Warm", assignedTo: raju.id,
+    nextFollowup: `${twoDaysAgoStr}T12:00`, city: "Pune",
     history: { create: [
-      { staffId: raju.id, action: "Called", note: "5 kurtis ka bulk quote diya ₹5,500" },
+      { staffId: raju.id, action: "Called", note: "Quoted ₹12,499 for custom 72x66 dimension" },
     ]},
     followups: { create: [
-      { staffId: raju.id, dueAt: `${twoDaysAgoStr}T12:00`, note: "Overdue: Bulk discount approval ke baad call karna hai" },
+      { staffId: raju.id, dueAt: `${twoDaysAgoStr}T12:00`, note: "Confirm exact bed frame inner measurement" },
     ]},
   }});
 
-  const lead6 = await prisma.lead.create({ data: {
-    naam: "Ritu Agarwal", phone: "9829055667",
-    source: "Website", query: "Festive Palazzo Suit inquiry",
-    quote: 3200, stage: "LOST", temperature: "Cold", assignedTo: pooja.id,
-    lostReason: "Budget issue - sasta option chahiye tha", city: "Udaipur",
+  await prisma.lead.create({ data: {
+    naam: "Ritu Sharma", phone: "9849055667",
+    source: "Website", query: "Flo Wave Single Mattress for guest room",
+    quote: 5499, stage: "LOST", temperature: "Cold", assignedTo: pooja.id,
+    lostReason: "Purchased locally due to same-day requirement", city: "Hyderabad",
     history: { create: [
-      { staffId: pooja.id, action: "Called", note: "Customer ko ₹2000 ke andar chahiye tha" },
-      { staffId: pooja.id, action: "Stage Changed", note: "LOST marked - budget mismatch" },
+      { staffId: pooja.id, action: "Called", note: "Needed same-day delivery within 3 hours" },
+      { staffId: pooja.id, action: "Stage Changed", note: "Marked Lost — urgent local timeline" },
     ]},
   }});
 
-  const lead7 = await prisma.lead.create({ data: {
-    naam: "Divya Solanki", phone: "9829088776",
-    source: "Instagram", query: "Custom Bridal Trousseau (3 outfits)",
-    quote: 42000, stage: "PAKKI", temperature: "Hot", assignedTo: raju.id,
-    nextFollowup: `${tomorrowStr}T15:00`, city: "Nathdwara",
+  await prisma.lead.create({ data: {
+    naam: "Karanveer Singh", phone: "9825088776",
+    source: "Walk-in", query: "Flo Anti-Gravity King + 4 Adjustable Pillows",
+    quote: 29495, stage: "PAKKI", temperature: "Hot", assignedTo: raju.id,
+    nextFollowup: `${tomorrowStr}T15:00`, city: "Ahmedabad",
     history: { create: [
-      { staffId: raju.id, action: "Lead Created", note: "Instagram reel se DM aaya" },
-      { staffId: raju.id, action: "Quote Sent", note: "3 outfits combo quote ₹42,000" },
-      { staffId: raju.id, action: "Stage Changed", note: "PAKKI! Measurement booked" },
+      { staffId: raju.id, action: "Lead Created", note: "Visited Experience Center" },
+      { staffId: raju.id, action: "Quote Sent", note: "Combo quote ₹29,495" },
+      { staffId: raju.id, action: "Stage Changed", note: "Won! Payment completed" },
     ]},
     followups: { create: [
-      { staffId: raju.id, dueAt: `${tomorrowStr}T15:00`, note: "Measurement session ke liye reminder" },
+      { staffId: raju.id, dueAt: `${tomorrowStr}T15:00`, note: "Share Delhivery tracking link" },
     ]},
-    catalogsSent: { create: [
-      { title: "Royal Bridal Trousseau Lookbook" },
-    ]},
+    catalogsSent: { create: [{ title: "Flo Sleep Studio Lookbook" }] },
   }});
 
-  console.log("✅ 7 Leads, Histories, Follow-ups & Catalogs seeded", [lead1.id, lead2.id, lead3.id, lead4.id, lead5.id, lead6.id, lead7.id].length);
-
-  console.log("\n🎉 Full seed complete! npm run dev karo aur kholo http://localhost:4873");
+  console.log("Flo India CRM seed complete!");
 }
 
-main().then(async () => { await prisma.$disconnect(); })
-  .catch(async (e) => { console.error("❌ Seed failed:", e); await prisma.$disconnect(); process.exit(1); });
+main()
+  .then(async () => { await prisma.$disconnect(); })
+  .catch(async (e) => { console.error("Seed failed:", e); await prisma.$disconnect(); process.exit(1); });

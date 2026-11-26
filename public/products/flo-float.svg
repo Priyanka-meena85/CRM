@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300">
+  <rect width="260" height="300" rx="18" fill="#EFECE4"/>
+  <circle cx="130" cy="148" r="94" fill="#F7F6F2" opacity="0.85"/>
+  
+      <ellipse cx="130" cy="212" rx="86" ry="10" fill="#E2DDD2"/>
+      <!-- Base Layer -->
+      <path d="M42 162 L130 194 L218 162 L218 184 L130 216 L42 184 Z" fill="#1F2421"/>
+      <!-- Pocket Spring Middle -->
+      <path d="M42 138 L130 170 L218 138 L218 162 L130 194 L42 162 Z" fill="#EFECE4"/>
+      <circle cx="80" cy="162" r="5" fill="none" stroke="#B08D57" stroke-width="1.5"/>
+      <circle cx="105" cy="171" r="5" fill="none" stroke="#B08D57" stroke-width="1.5"/>
+      <circle cx="130" cy="180" r="5" fill="none" stroke="#B08D57" stroke-width="1.5"/>
+      <circle cx="155" cy="171" r="5" fill="none" stroke="#B08D57" stroke-width="1.5"/>
+      <circle cx="180" cy="162" r="5" fill="none" stroke="#B08D57" stroke-width="1.5"/>
+      <!-- Quilted Top -->
+      <path d="M42 122 L130 88 L218 122 L218 138 L130 170 L42 138 Z" fill="#FFFFFF" stroke="#D8D2C5" stroke-width="1.5"/>
+      <path d="M42 122 L130 154 L218 122" fill="none" stroke="#B08D57" stroke-width="2.5"/>
+    
+</svg>

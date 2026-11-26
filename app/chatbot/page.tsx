@@ -21,27 +21,27 @@ interface ChatMsg {
 }
 
 const SAMPLE_PROMPTS = [
-  "What is the price of a bridal lehenga?",
-  "Please share the size chart",
-  "What are your store timings and address?",
-  "I want to track my order",
+  "Flo Ortho vs Flo Ergo — which is better?",
+  "How does the 100-night free trial work?",
+  "What mattress sizes and warranty do you offer?",
+  "I want to track my Flo order",
 ];
 
 function generateBotReply(input: string): string {
   const q = input.toLowerCase();
-  if (q.includes("lehenga") || q.includes("rate") || q.includes("price")) {
-    return "Hello! Bridal Lehengas at Priya Boutique range from ₹15,000 to ₹45,000 with complimentary custom fitting and blouse stitching. Could you share your wedding month and preferred color so we can send our lookbook on WhatsApp?";
+  if (q.includes("ortho") || q.includes("ergo") || q.includes("anti") || q.includes("price") || q.includes("better")) {
+    return "Hello! Flo Ortho (from ₹4,764) is firm (8/10) with Pain Release foam for back pain, while Flo Ergo (from ₹5,199) offers medium-firm Aloe Vera gel memory foam, and Flo Anti-Gravity uses 100% natural pin-core latex. All include a 100-Night Free Trial!";
   }
-  if (q.includes("size") || q.includes("chart")) {
-    return "Priya Boutique Size Chart:\n• S: Bust 34\", Waist 28\"\n• M: Bust 36\", Waist 30\"\n• L: Bust 38\", Waist 32\"\n• XL: Bust 40\", Waist 34\"\nCustom alterations are completed within 2 business days.";
+  if (q.includes("trial") || q.includes("return") || q.includes("refund")) {
+    return "Flo India 100-Night Free Trial:\nTry your Flo Mattress at home for 100 nights. If you're not 100% satisfied, we schedule a free pickup and issue a full refund or size exchange.";
   }
-  if (q.includes("timing") || q.includes("address") || q.includes("store")) {
-    return "Priya Boutique, Main Bazaar, Nathdwara (Raj.)\nHours: 10:30 AM – 8:30 PM (Open Daily)\nReply 'BOOK' to schedule a video-call styling session or in-store trial.";
+  if (q.includes("size") || q.includes("warranty") || q.includes("delivery")) {
+    return "Available Sizes: Single (72x36), Diwan (72x48), Queen (72x60), King (78x72), plus Custom Sizes!\nEvery mattress includes a 10-Year Warranty and Free Pan-India Mattress-in-a-Box Delivery.";
   }
   if (q.includes("track") || q.includes("order")) {
-    return "Please share your Order ID (e.g. PB202411002) or registered phone number, and I will fetch your live courier tracking status right away.";
+    return "Please share your Flo Order ID (e.g. FLO20261102) or registered phone number, and I will check your live Delhivery / BlueDart tracking status.";
   }
-  return "Hello! I am Priya AI Assistant (24x7). Feel free to ask about Bridal Lehengas, Kurtis, Size Charts, Store Hours, or Order Tracking.";
+  return "Hello! I am Flo India's 24x7 Sleep Concierge. Ask me about Flo Ortho, Flo Ergo, Anti-Gravity Latex, 100-Night Trial, Sizing, or Order Tracking!";
 }
 
 export default function ChatbotPage() {
@@ -54,7 +54,7 @@ export default function ChatbotPage() {
     {
       id: 1,
       sender: "bot",
-      text: "Hello! I am Priya Boutique's 24x7 AI Assistant. Ask me anything about outfits, sizing, or order status!",
+      text: "Hello! I am Flo India's 24x7 Sleep Concierge. Ask me about mattresses, 100-night trial, sizing, or order tracking!",
       time: "Just now",
     },
   ]);
@@ -113,7 +113,7 @@ export default function ChatbotPage() {
             <div className="flex items-center justify-between pb-3 border-b border-gold/20 mb-3">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-success animate-pulse" />
-                <span className="font-heading text-primary">Priya AI Assistant (Live Demo)</span>
+                <span className="font-heading text-primary">Flo Sleep Concierge (Live Demo)</span>
               </div>
               <div className="flex items-center gap-1.5">
                 {(["Hinglish", "Hindi", "English"] as const).map((lang) => (
@@ -175,7 +175,7 @@ export default function ChatbotPage() {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type a customer message (e.g. Bridal lehenga price?)..."
+                placeholder="Type a customer inquiry (e.g. Flo Ortho vs Ergo?)..."
                 className="flex-1 px-4 py-2.5 rounded-full border border-gold/30 bg-white text-sm font-body focus:outline-none focus:border-maroon"
               />
               <Button type="submit" size="sm">

@@ -78,7 +78,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="px-2.5 py-1.5 font-heading text-primary text-sm font-bold whitespace-nowrap flex-shrink-0 flex items-center gap-1.5">
           <CssIcon name="diamond" size={12} className="text-gold" />
-          <span>Priya</span>
+          <span>Flo India</span>
         </Link>
 
         <div className="w-px h-4 bg-[#E6E2D8] flex-shrink-0 mx-0.5" />
