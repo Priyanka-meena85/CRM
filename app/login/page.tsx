@@ -30,8 +30,7 @@ export default function LoginPage() {
     if (!res || res.error) {
       setError(res?.error && res.error !== "CredentialsSignin" ? res.error : "Galat email ya password! Dobara try karo.");
     } else {
-      router.push("/");
-      router.refresh();
+      window.location.href = "/";
     }
   };
 

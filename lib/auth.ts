@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
 
         const email = sanitizeText(credentials.email).toLowerCase();
-        const rate = checkRateLimit(`login:${email}`, 5, 15 * 60 * 1000);
+        const rate = checkRateLimit(`login:${email}`, 15, 15 * 60 * 1000);
         if (!rate.allowed) {
           throw new Error("Bahut zyada galat attempts! 15 minute baad try karein.");
         }
