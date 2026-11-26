@@ -114,7 +114,7 @@ export default function PipelinePage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 pt-24 pb-6 px-4">
+      <main className="relative z-10 lg:pl-64 pt-20 pb-6 px-4 sm:px-6">
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4 max-w-full">
           <div>

@@ -132,36 +132,43 @@ export default function DashboardPage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
-        {/* Hero Header */}
-        <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 150 }} className="text-center mb-10">
-          <h1 className="text-4xl md:text-5xl font-heading text-primary mb-2">Flo India CRM</h1>
-          <p className="text-sm font-body text-text/50 mb-3">"Sleep Solutions, Leads, Orders & Support — Unified"</p>
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}
-            className="inline-flex items-center gap-2 bg-success/10 text-success px-4 py-1.5 rounded-full text-sm font-body">
-            <span className="w-2 h-2 bg-success rounded-full animate-pulse" />
-            {stats.todayCustomerCount} Customers Active Today
-          </motion.div>
+      <main className="relative z-10 lg:pl-64 pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
+        {/* Zoho-style Executive Home Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 150 }}
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-5 border-b border-[#E6E2D8]"
+        >
+          <div>
+            <div className="flex items-center gap-2.5 mb-1">
+              <h1 className="text-2xl sm:text-3xl font-heading text-primary">
+                Flo India Command Center
+              </h1>
+              <span className="inline-flex items-center gap-1.5 bg-success/10 text-success px-3 py-0.5 rounded-full text-xs font-body font-medium">
+                <span className="w-1.5 h-1.5 bg-success rounded-full animate-pulse" />
+                {stats.todayCustomerCount} Active Today
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm font-body text-text/55">
+              Small Business CRM Workspace • Pipeline, Orders, 100-Night Trials & Support
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" onClick={() => router.push("/leads")}>
+              <CssIcon name="plus" size={12} /> New Lead
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => router.push("/pipeline")}>
+              <CssIcon name="kanban" size={12} /> Pipeline
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => router.push("/followups")}>
+              <CssIcon name="calendar" size={12} /> Follow-ups ({leadStats?.todayFollowups || 0})
+            </Button>
+            <Button size="sm" variant="secondary" onClick={() => router.push("/shop")}>
+              <CssIcon name="bag" size={12} /> Store POS
+            </Button>
+          </div>
         </motion.div>
-
-        {/* Zoho-style Small Business Quick Action Strip */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-8">
-          <Button size="sm" onClick={() => router.push("/leads")}>
-            <CssIcon name="plus" size={12} /> Manage Leads
-          </Button>
-          <Button size="sm" variant="secondary" onClick={() => router.push("/pipeline")}>
-            <CssIcon name="kanban" size={12} /> Sales Pipeline
-          </Button>
-          <Button size="sm" variant="secondary" onClick={() => router.push("/followups")}>
-            <CssIcon name="calendar" size={12} /> Today&apos;s Follow-ups ({leadStats?.todayFollowups || 0})
-          </Button>
-          <Button size="sm" variant="secondary" onClick={() => router.push("/shop")}>
-            <CssIcon name="bag" size={12} /> New Store Order
-          </Button>
-          <Button size="sm" variant="secondary" onClick={() => router.push("/inbox")}>
-            <CssIcon name="chat" size={12} /> Support Inbox
-          </Button>
-        </div>
 
         {/* Bento Grid */}
         <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -205,6 +212,43 @@ export default function DashboardPage() {
             );
           })}
         </motion.div>
+
+        {/* Zoho-style Sales Pipeline Snapshot */}
+        {leadStats?.stageBreakdown && (
+          <Card hover={false} className="mb-8">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <h3 className="text-base font-heading text-primary">Sales Pipeline Overview</h3>
+                <p className="text-xs font-body text-text/50">
+                  Conversion Rate: <strong className="text-primary">{leadStats.conversionRate || 0}%</strong> • Won This Month: <strong className="text-success">{formatCurrency(leadStats.thisMonthRevenue || 0)}</strong>
+                </p>
+              </div>
+              <Button size="sm" variant="secondary" onClick={() => router.push("/pipeline")}>
+                Open Kanban
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {leadStats.stageBreakdown.map((s: any) => {
+                const labelMap: Record<string, string> = {
+                  NEW: "New",
+                  "BAAT HUI": "Contacted",
+                  QUOTE: "Quoted",
+                  PAKKI: "Won",
+                  LOST: "Lost",
+                };
+                return (
+                  <div key={s.stage} className="p-3 rounded-2xl bg-background border border-[#E6E2D8]">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-body font-medium text-text/60">{labelMap[s.stage] || s.stage}</span>
+                      <span className="text-xs font-heading text-primary font-bold">{s.count}</span>
+                    </div>
+                    <p className="text-sm font-heading text-primary">{formatCurrency(s.value || 0)}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </Card>
+        )}
 
         {/* Alerts */}
         {allAlerts.length > 0 && (

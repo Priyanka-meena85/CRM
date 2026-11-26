@@ -76,7 +76,7 @@ export default function ReturnsPage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 pt-20 pb-10 px-4 max-w-7xl mx-auto">
+      <main className="relative z-10 lg:pl-64 pt-20 pb-10 px-4 sm:px-6 max-w-[1600px] mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="refresh" size={24} className="text-gold" /> Returns & Exchanges</h1>
           <p className="text-sm font-body text-text/50">QC management, refunds, and size exchanges</p>
