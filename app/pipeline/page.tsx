@@ -333,7 +333,7 @@ export default function PipelinePage() {
               className="w-full px-3 py-2.5 rounded-xl border border-gold/20 bg-background font-body text-sm outline-none" />
           </div>
 
-          <Button fullWidth onClick={addLead}>✅ Lead Add Karo</Button>
+          <Button fullWidth onClick={addLead}><CssIcon name="check" size={14} /> Lead Add Karo</Button>
         </div>
       </Modal>
     </div>

@@ -89,7 +89,8 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••"
+              placeholder="Priya@2026#CRM"
+              autoComplete="new-password"
               className="w-full px-4 py-3 rounded-2xl border border-gold/20 bg-background font-body outline-none focus:border-gold/50 focus:ring-2 focus:ring-gold/10 transition-all"
               required
             />
@@ -121,16 +122,24 @@ export default function LoginPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="mt-6 p-4 bg-softPink rounded-2xl"
+          className="mt-6 p-4 bg-softPink rounded-2xl space-y-2"
         >
-          <p className="text-xs font-body text-text/50 text-center mb-2">Demo Login:</p>
-          <div className="flex flex-col gap-1 text-xs font-body text-text/70">
-            <p>
+          <p className="text-xs font-body text-text/50 text-center">Demo Login (Click to Fill):</p>
+          <div className="flex flex-col gap-1.5 text-xs font-body text-text/70">
+            <button
+              type="button"
+              onClick={() => { setEmail("owner@priya.com"); setPassword("Priya@2026#CRM"); setError(""); }}
+              className="text-left px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white border border-gold/15 transition-colors"
+            >
               <strong>Owner:</strong> owner@priya.com / Priya@2026#CRM
-            </p>
-            <p>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setEmail("raju@priya.com"); setPassword("Priya@2026#CRM"); setError(""); }}
+              className="text-left px-3 py-1.5 rounded-xl bg-white/80 hover:bg-white border border-gold/15 transition-colors"
+            >
               <strong>Staff:</strong> raju@priya.com / Priya@2026#CRM
-            </p>
+            </button>
           </div>
         </motion.div>
       </motion.div>

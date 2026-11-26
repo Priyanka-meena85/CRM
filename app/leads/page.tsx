@@ -295,13 +295,13 @@ export default function LeadsPage() {
                 </AnimatePresence>
               </tbody>
             </table>
-            {leads.length === 0 && <p className="text-center text-text/30 font-body py-12">Koi lead nahi mili 🔍</p>}
+            {leads.length === 0 && <p className="text-center text-text/30 font-body py-12">Koi lead nahi mili</p>}
           </div>
         </Card>
       </main>
 
       {/* Add Lead Modal */}
-      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="➕ Naya Lead Add Karo">
+      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="Naya Lead Add Karo">
         <div className="space-y-3">
           {[
             { label: "Naam *", key: "naam", placeholder: "Priya Sharma" },
@@ -362,7 +362,7 @@ export default function LeadsPage() {
               className="w-full px-3 py-2.5 rounded-xl border border-gold/20 bg-background font-body text-sm outline-none resize-none" placeholder="Kuch bhi note karo..." />
           </div>
 
-          <Button fullWidth onClick={addLead}>✅ Lead Add Karo</Button>
+          <Button fullWidth onClick={addLead}><CssIcon name="check" size={14} /> Lead Add Karo</Button>
         </div>
       </Modal>
     </div>

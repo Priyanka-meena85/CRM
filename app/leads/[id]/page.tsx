@@ -179,7 +179,7 @@ export default function LeadDetailPage() {
                       isPast ? "bg-success/10 text-success" :
                       "bg-softPink text-text/50 hover:bg-softPink/80"
                     }`}>
-                    {isCurrent ? "● " : isPast ? "✓ " : ""}{s}
+                    {isPast && <CssIcon name="check" size={11} className="inline mr-1" />}{s}
                   </motion.button>
                   {i < STAGES.length - 1 && <CssIcon name="arrow-right" size={12} className="text-text/30 flex-shrink-0" />}
                 </div>
