@@ -209,6 +209,14 @@ export default function Navbar() {
           </button>
 
           <Link
+            href="/shop"
+            className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-softPink text-primary border border-[#E6E2D8] text-xs font-body font-medium hover:border-gold/50 transition-colors"
+          >
+            <CssIcon name="bag" size={11} />
+            <span>Store POS</span>
+          </Link>
+
+          <Link
             href="/leads"
             className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-white text-xs font-body font-medium hover:bg-maroonLight transition-colors"
           >

@@ -63,17 +63,28 @@ export default function AnalyticsPage() {
         {/* Top KPIs */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { label: "Total Revenue", value: totalRevenue, prefix: "₹", icon: "trend" as CssIconName, color: "from-maroon to-maroonLight" },
-            { label: "Total Orders", value: totalOrders, icon: "bag" as CssIconName, color: "from-gold to-goldShine" },
-            { label: "COD Orders", value: data.codVsPrepaid?.cod || 0, icon: "alert" as CssIconName, color: "from-orange-500 to-orange-600" },
-            { label: "Prepaid Orders", value: data.codVsPrepaid?.prepaid || 0, icon: "star" as CssIconName, color: "from-success to-green-600" },
+            { label: "Total Revenue", value: totalRevenue, prefix: "₹", icon: "trend" as CssIconName, tone: "hero" },
+            { label: "Total Orders", value: totalOrders, icon: "bag" as CssIconName, tone: "brass" },
+            { label: "COD Orders", value: data.codVsPrepaid?.cod || 0, icon: "alert" as CssIconName, tone: "surface" },
+            { label: "Prepaid Orders", value: data.codVsPrepaid?.prepaid || 0, icon: "star" as CssIconName, tone: "surface" },
           ].map((card, i) => {
+            const isDark = card.tone === "hero" || card.tone === "brass";
+            const bg =
+              card.tone === "hero"
+                ? "bg-gradient-to-br from-[#2F4838] to-[#3E5C48] text-white border-transparent"
+                : card.tone === "brass"
+                ? "bg-gradient-to-br from-[#B08D57] to-[#C7A773] text-white border-transparent"
+                : "bg-white text-text border-[#E6E2D8]";
             return (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-                className={`bg-gradient-to-br ${card.color} text-white rounded-[28px] p-5 relative overflow-hidden shadow-lg`}>
-                <CssIcon name={card.icon} size={48} className="absolute -right-2 -bottom-2 opacity-15" />
-                <p className="text-xs font-body opacity-80 mb-1">{card.label}</p>
-                <p className="text-2xl font-heading">
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+                className={`${bg} border rounded-[24px] p-5 relative overflow-hidden shadow-sm`}>
+                <div className="flex items-center justify-between mb-2">
+                  <p className={`text-xs font-body ${isDark ? "text-white/80" : "text-text/60"}`}>{card.label}</p>
+                  <span className={`w-7 h-7 rounded-full flex items-center justify-center ${isDark ? "bg-white/15 text-white" : "bg-[#EFECE4] text-primary"}`}>
+                    <CssIcon name={card.icon} size={13} />
+                  </span>
+                </div>
+                <p className={`text-2xl font-heading ${isDark ? "text-white" : "text-primary"}`}>
                   <CountUp target={card.value} prefix={card.prefix || ""} />
                 </p>
               </motion.div>

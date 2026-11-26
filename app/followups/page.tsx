@@ -82,13 +82,13 @@ export default function FollowupsPage() {
         {/* Summary Bento */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           {[
-            { label: "Due Today", value: counts.today, color: "from-primary to-maroonLight", icon: "calendar" as CssIconName },
-            { label: "Overdue", value: counts.overdue, color: "from-danger to-red-700", icon: "alert" as CssIconName },
-            { label: "Upcoming", value: counts.upcoming, color: "from-gold to-goldShine", icon: "clock" as CssIconName },
+            { label: "Due Today", value: counts.today, bg: "bg-gradient-to-br from-[#2F4838] to-[#3E5C48] text-white border-transparent", icon: "calendar" as CssIconName },
+            { label: "Overdue", value: counts.overdue, bg: "bg-white text-danger border-[#E6E2D8]", icon: "alert" as CssIconName },
+            { label: "Upcoming", value: counts.upcoming, bg: "bg-gradient-to-br from-[#B08D57] to-[#C7A773] text-white border-transparent", icon: "clock" as CssIconName },
           ].map((c, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-              className={`bg-gradient-to-br ${c.color} text-white rounded-[24px] p-5 text-center shadow-lg`}>
-              <div className="flex justify-center mb-2"><CssIcon name={c.icon} size={24} /></div>
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+              className={`${c.bg} border rounded-[24px] p-5 text-center shadow-sm`}>
+              <div className="flex justify-center mb-2"><CssIcon name={c.icon} size={22} /></div>
               <p className="text-3xl font-heading"><CountUp target={c.value} /></p>
               <p className="text-xs font-body opacity-80">{c.label}</p>
             </motion.div>
