@@ -370,7 +370,19 @@ export default function DashboardPage() {
                     <tbody>
                       {filteredStocks.map((s: any) => (
                         <tr key={s.id} className={`border-b border-gold/5 ${s.quantity <= 2 ? "bg-danger/5 hover:bg-danger/10" : "hover:bg-softPink/50"}`}>
-                          <td className="py-3 pr-4 font-medium">{s.product?.name}</td>
+                          <td className="py-3 pr-4 font-medium">
+                            <div className="flex items-center gap-3">
+                              {s.product?.photoUrl && (
+                                <motion.img
+                                  whileHover={{ scale: 1.15 }}
+                                  src={s.product.photoUrl}
+                                  alt={s.product?.name || "Product"}
+                                  className="w-10 h-10 rounded-xl object-cover border border-[#E6E2D8] flex-shrink-0"
+                                />
+                              )}
+                              <span>{s.product?.name}</span>
+                            </div>
+                          </td>
                           <td className="py-3 pr-4 text-text/60">{s.product?.category}</td>
                           <td className="py-3 pr-4">{s.size}</td>
                           <td className="py-3 pr-4 text-text/50 text-xs">{s.branch || "Main Store"}</td>

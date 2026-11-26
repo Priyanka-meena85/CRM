@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1E3A6E"/>
+      <stop offset="100%" stop-color="#B08D57"/>
+    </linearGradient>
+  </defs>
+  <rect width="260" height="300" rx="20" fill="#F7F6F2"/>
+  <circle cx="130" cy="145" r="82" fill="#EFECE4"/>
+  <path d="M88 68 Q130 58 172 68 L178 228 Q130 238 82 228 Z" fill="url(#g)"/><path d="M88 78 L172 195" stroke="#B08D57" stroke-width="8" opacity="0.85"/>
+  <text x="130" y="266" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#2F4838">Blue Saree</text>
+  <text x="130" y="283" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#777777">Banarasi Silk</text>
+</svg>

@@ -167,9 +167,18 @@ export default function AnalyticsPage() {
           <h3 className="text-lg font-heading text-primary mb-4">Best Sellers</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {data.bestSellers?.map((p: any, i: number) => (
-              <motion.div key={i} whileHover={{ scale: 1.05 }}
-                className="p-4 rounded-2xl bg-softPink text-center relative overflow-hidden">
-                {i < 3 && <span className="absolute top-2 right-2 text-[10px] font-body font-bold text-gold">#{i + 1}</span>}
+              <motion.div key={i} whileHover={{ scale: 1.04, y: -4 }}
+                className="p-3 rounded-2xl bg-softPink border border-[#E6E2D8] text-center relative overflow-hidden group">
+                {i < 3 && <span className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full bg-white/90 text-[10px] font-body font-bold text-gold shadow-sm">#{i + 1}</span>}
+                {p.photoUrl && (
+                  <div className="w-full h-28 rounded-xl overflow-hidden mb-2.5 bg-white border border-[#E6E2D8]">
+                    <img
+                      src={p.photoUrl}
+                      alt={p.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                )}
                 <p className="font-body font-semibold text-sm text-text truncate">{p.name}</p>
                 <p className="text-xs text-text/40 font-body mt-1">{p.category}</p>
                 <p className="font-heading text-primary text-lg mt-2">{p.totalSold}</p>

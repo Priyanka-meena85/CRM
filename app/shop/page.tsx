@@ -361,17 +361,37 @@ export default function ShopPage() {
                 {filteredProducts.map((p) => (
                   <motion.div
                     key={p.id}
-                    whileHover={{ scale: 1.01 }}
-                    className="p-3 rounded-2xl border border-gold/10 hover:border-gold/30 hover:shadow-sm transition-all"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.015, y: -2 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    className="p-3 rounded-2xl border border-[#E6E2D8] hover:border-gold/50 hover:shadow-md transition-all bg-white group"
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <span className="font-body font-semibold text-text">{p.name}</span>
-                        <span className="ml-2 text-xs text-text/40 font-body">{p.category}</span>
+                    <div className="flex items-start gap-3 mb-2">
+                      {p.photoUrl ? (
+                        <div className="w-14 h-16 rounded-xl overflow-hidden bg-softPink border border-[#E6E2D8] flex-shrink-0">
+                          <img
+                            src={p.photoUrl}
+                            alt={p.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-14 h-16 rounded-xl bg-softPink border border-[#E6E2D8] flex items-center justify-center flex-shrink-0">
+                          <CssIcon name="package" size={18} className="text-gold" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <span className="font-body font-semibold text-text block truncate">{p.name}</span>
+                            <span className="text-xs text-text/45 font-body">{p.category}</span>
+                          </div>
+                          <span className="font-heading text-primary font-bold whitespace-nowrap">
+                            {formatCurrency(Number(p.price))}
+                          </span>
+                        </div>
                       </div>
-                      <span className="font-heading text-primary font-bold">
-                        {formatCurrency(Number(p.price))}
-                      </span>
                     </div>
 
                     {/* Size + Stock buttons */}

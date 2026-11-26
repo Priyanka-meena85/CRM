@@ -24,12 +24,12 @@ async function main() {
   await prisma.udhaar.deleteMany();
   await prisma.measurement.deleteMany();
   await prisma.stock.deleteMany();
+  await prisma.returnAnalytic.deleteMany();
   await prisma.product.deleteMany();
   await prisma.marketingCampaign.deleteMany();
   await prisma.quickReply.deleteMany();
   await prisma.staff.deleteMany();
   await prisma.deliveryAddress.deleteMany();
-  await prisma.returnAnalytic.deleteMany();
   await prisma.customer.deleteMany();
 
   // ── CUSTOMERS ──────────────────────────────────────────────
@@ -96,6 +96,7 @@ async function main() {
   // ── PRODUCTS ───────────────────────────────────────────────
   const redKurti = await prisma.product.create({ data: {
     name: "Red Kurti", category: "Kurti", price: 1200, mrp: 1500,
+    photoUrl: "/products/red-kurti.svg",
     sku: "KUR-RED-001", barcode: "8901234567890", tags: "Slim, Casual, Summer",
     stocks: { create: [
       { size: "S", quantity: 5 }, { size: "M", quantity: 1 },
@@ -104,6 +105,7 @@ async function main() {
   }});
   const redLehenga = await prisma.product.create({ data: {
     name: "Red Lehenga", category: "Lehenga", price: 15000, mrp: 18000,
+    photoUrl: "/products/red-lehenga.svg",
     sku: "LEH-RED-001", barcode: "8901234567891", tags: "Bridal, Festive",
     stocks: { create: [
       { size: "S", quantity: 2 }, { size: "M", quantity: 3 }, { size: "L", quantity: 1 },
@@ -111,11 +113,13 @@ async function main() {
   }});
   const blueSaree = await prisma.product.create({ data: {
     name: "Blue Saree", category: "Saree", price: 3500, mrp: 4000,
+    photoUrl: "/products/blue-saree.svg",
     sku: "SAR-BLU-001", barcode: "8901234567892",
     stocks: { create: [{ size: "Free", quantity: 8 }]},
   }});
   const pinkGown = await prisma.product.create({ data: {
     name: "Pink Gown", category: "Gown", price: 8500, mrp: 10000,
+    photoUrl: "/products/pink-gown.svg",
     sku: "GOW-PNK-001",
     stocks: { create: [
       { size: "S", quantity: 2 }, { size: "M", quantity: 0 }, { size: "L", quantity: 4 },
@@ -123,17 +127,20 @@ async function main() {
   }});
   const greenSuit = await prisma.product.create({ data: {
     name: "Green Suit", category: "Suit", price: 4200, mrp: 5000, sku: "SUI-GRN-001",
+    photoUrl: "/products/green-suit.svg",
     stocks: { create: [
       { size: "M", quantity: 6 }, { size: "L", quantity: 3 }, { size: "XL", quantity: 2 },
     ]},
   }});
   const goldLehenga = await prisma.product.create({ data: {
     name: "Gold Bridal Lehenga", category: "Lehenga", price: 45000, mrp: 55000,
+    photoUrl: "/products/gold-lehenga.svg",
     sku: "LEH-GLD-001", tags: "Bridal, Premium, Heavy Work",
     stocks: { create: [{ size: "S", quantity: 1 }, { size: "M", quantity: 2 }]},
   }});
   const whiteKurti = await prisma.product.create({ data: {
     name: "White Chikan Kurti", category: "Kurti", price: 2800, sku: "KUR-WHT-001",
+    photoUrl: "/products/white-kurti.svg",
     stocks: { create: [
       { size: "S", quantity: 3 }, { size: "M", quantity: 5 }, { size: "L", quantity: 2 },
     ]},

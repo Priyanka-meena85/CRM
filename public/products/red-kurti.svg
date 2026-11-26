@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9F2B3B"/>
+      <stop offset="100%" stop-color="#C85A68"/>
+    </linearGradient>
+  </defs>
+  <rect width="260" height="300" rx="20" fill="#F7F6F2"/>
+  <circle cx="130" cy="145" r="82" fill="#EFECE4"/>
+  <path d="M105 65 L155 65 L176 112 L160 120 L152 95 L156 225 Q130 232 104 225 L108 95 L100 120 L84 112 Z" fill="url(#g)"/><path d="M122 65 L130 98 L138 65" stroke="#C85A68" stroke-width="2.5" fill="none"/>
+  <text x="130" y="266" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#2F4838">Red Kurti</text>
+  <text x="130" y="283" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#777777">Chikankari Cotton</text>
+</svg>
