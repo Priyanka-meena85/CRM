@@ -224,7 +224,14 @@ export default function LeadsPage() {
                     return (
                       <motion.tr key={lead.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                         className="border-b border-gold/5 hover:bg-softPink/30 transition-colors">
-                        <td className="py-3 pr-4 font-semibold">{lead.naam}</td>
+                        <td className="py-3 pr-4">
+                          <div className="flex items-center gap-2.5">
+                            <span className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2F4838] to-[#3E5C48] text-white text-xs font-heading flex items-center justify-center flex-shrink-0">
+                              {(lead.naam || "?").trim().split(" ").map((p: string) => p[0]).slice(0, 2).join("").toUpperCase()}
+                            </span>
+                            <span className="font-semibold text-primary">{lead.naam}</span>
+                          </div>
+                        </td>
                         <td className="py-3 pr-4 text-text/60">{lead.phone}</td>
                         <td className="py-3 pr-4">
                           <span className="flex items-center gap-1.5 text-xs">

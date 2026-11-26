@@ -369,7 +369,7 @@ export default function ShopPage() {
                   >
                     <div className="flex items-start gap-3 mb-2">
                       {p.photoUrl ? (
-                        <div className="w-14 h-16 rounded-xl overflow-hidden bg-softPink border border-[#E6E2D8] flex-shrink-0">
+                        <div className="w-20 h-24 rounded-xl overflow-hidden bg-softPink border border-[#E6E2D8] flex-shrink-0">
                           <img
                             src={p.photoUrl}
                             alt={p.name}
@@ -377,8 +377,8 @@ export default function ShopPage() {
                           />
                         </div>
                       ) : (
-                        <div className="w-14 h-16 rounded-xl bg-softPink border border-[#E6E2D8] flex items-center justify-center flex-shrink-0">
-                          <CssIcon name="package" size={18} className="text-gold" />
+                        <div className="w-20 h-24 rounded-xl bg-softPink border border-[#E6E2D8] flex items-center justify-center flex-shrink-0">
+                          <CssIcon name="package" size={20} className="text-gold" />
                         </div>
                       )}
                       <div className="flex-1 min-w-0">

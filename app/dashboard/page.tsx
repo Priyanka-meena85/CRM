@@ -32,12 +32,33 @@ const tabs: { id: string; label: string; icon: CssIconName }[] = [
 
 const container = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.07 } },
 };
 const cardAnim = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 200 } },
+  hidden: { opacity: 0, y: 24, scale: 0.96 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 220, damping: 22 } },
 };
+
+function getInitials(name?: string): string {
+  if (!name) return "?";
+  const parts = name.trim().split(" ");
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+const AVATAR_COLORS = [
+  "from-[#2F4838] to-[#3E5C48]",
+  "from-[#B08D57] to-[#C7A773]",
+  "from-[#5B7A8C] to-[#7498AD]",
+  "from-[#8C5B6E] to-[#AD7490]",
+  "from-[#5B6E8C] to-[#7490AD]",
+];
+
+function avatarColor(name?: string): string {
+  if (!name) return AVATAR_COLORS[0];
+  const code = name.charCodeAt(0) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[code];
+}
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -93,21 +114,27 @@ export default function DashboardPage() {
 
   if (status === "loading" || !stats) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <p className="font-heading text-primary text-2xl animate-pulse">Loading...</p>
+      <div className="text-center">
+        <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <CssIcon name="diamond" size={24} className="text-goldShine" />
+        </div>
+        <p className="font-heading text-primary text-xl animate-pulse">Loading Flo India CRM...</p>
+        <p className="text-xs font-body text-text/40 mt-1">Sleep Solutions Platform</p>
+      </div>
     </div>
   );
 
-  const bentoCards: { label: string; value: number; prefix?: string; icon: CssIconName; tone: "hero" | "brass" | "surface" | "danger"; span: string }[] = [
-    { label: "Today's Sales", value: stats.todaySale, prefix: "₹", icon: "rupee", tone: "hero", span: "col-span-2" },
-    { label: "This Month", value: stats.monthSale, prefix: "₹", icon: "trend", tone: "brass", span: "col-span-1" },
-    { label: "Total Customers", value: stats.totalCustomers, icon: "users", tone: "surface", span: "col-span-1" },
-    { label: "Pending Credit", value: stats.totalUdhaar, prefix: "₹", icon: "alert", tone: "danger", span: "col-span-1" },
-    { label: "Low Stock", value: stats.lowStockCount, icon: "package", tone: "surface", span: "col-span-1" },
-    { label: "Pending Approvals", value: pendingApprovals.length, icon: "check", tone: "surface", span: "col-span-1" },
-    { label: "Today's Leads", value: leadStats?.todayLeads || 0, icon: "user", tone: "surface", span: "col-span-1" },
-    { label: "Pending Follow-ups", value: leadStats?.todayFollowups || 0, icon: "calendar", tone: "surface", span: "col-span-1" },
-    { label: "Won This Month", value: leadStats?.thisMonthPakki || 0, icon: "flame", tone: "surface", span: "col-span-1" },
-    { label: "Overdue Follow-ups", value: leadStats?.overdueFollowups || 0, icon: "alert", tone: "danger", span: "col-span-1" },
+  const bentoCards: { label: string; value: number; prefix?: string; icon: CssIconName; tone: "hero" | "brass" | "surface" | "danger"; span: string; sub?: string }[] = [
+    { label: "Today's Revenue", value: stats.todaySale, prefix: "₹", icon: "rupee", tone: "hero", span: "col-span-2", sub: "Live sales today" },
+    { label: "This Month", value: stats.monthSale, prefix: "₹", icon: "trend", tone: "brass", span: "col-span-1", sub: "Monthly target" },
+    { label: "Total Customers", value: stats.totalCustomers, icon: "users", tone: "surface", span: "col-span-1", sub: "All time" },
+    { label: "Pending Credit", value: stats.totalUdhaar, prefix: "₹", icon: "alert", tone: "danger", span: "col-span-1", sub: "Udhaar balance" },
+    { label: "Low Stock", value: stats.lowStockCount, icon: "package", tone: "surface", span: "col-span-1", sub: "Items to restock" },
+    { label: "Pending Approvals", value: pendingApprovals.length, icon: "check", tone: "surface", span: "col-span-1", sub: "Needs attention" },
+    { label: "Today's Leads", value: leadStats?.todayLeads || 0, icon: "user", tone: "surface", span: "col-span-1", sub: "New enquiries" },
+    { label: "Pending Follow-ups", value: leadStats?.todayFollowups || 0, icon: "calendar", tone: "surface", span: "col-span-1", sub: "Due today" },
+    { label: "Won This Month", value: leadStats?.thisMonthPakki || 0, icon: "flame", tone: "surface", span: "col-span-1", sub: "Closed deals" },
+    { label: "Overdue Follow-ups", value: leadStats?.overdueFollowups || 0, icon: "alert", tone: "danger", span: "col-span-1", sub: "Needs action" },
   ];
 
   const allAlerts = [
@@ -125,6 +152,10 @@ export default function DashboardPage() {
     ...(stats.alerts?.lowStock || []),
   ];
 
+  const tabCounts: Record<string, number> = {
+    approvals: pendingApprovals.length,
+  };
+
   return (
     <div className="min-h-screen bg-background relative">
       <FloatingDots />
@@ -132,27 +163,41 @@ export default function DashboardPage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 lg:pl-64 pt-20 pb-10 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
-        {/* Zoho-style Executive Home Header */}
+      <main className="relative z-10 lg:pl-64 pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
+
+        {/* Executive Header */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 150 }}
-          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-5 border-b border-[#E6E2D8]"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8"
         >
           <div>
-            <div className="flex items-center gap-2.5 mb-1">
-              <h1 className="text-2xl sm:text-3xl font-heading text-primary">
-                Flo India Command Center
-              </h1>
-              <span className="inline-flex items-center gap-1.5 bg-success/10 text-success px-3 py-0.5 rounded-full text-xs font-body font-medium">
+            <div className="flex items-center gap-3 mb-1.5">
+              <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-md">
+                <CssIcon name="dashboard" size={16} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-heading text-primary leading-tight">
+                  Flo India Command Center
+                </h1>
+                <p className="text-xs font-body text-text/50">
+                  Sleep Solutions CRM • Pipeline, Orders, 100-Night Trials &amp; Support
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 mt-2 ml-12">
+              <span className="inline-flex items-center gap-1.5 bg-success/10 text-success px-2.5 py-0.5 rounded-full text-xs font-body font-medium">
                 <span className="w-1.5 h-1.5 bg-success rounded-full animate-pulse" />
                 {stats.todayCustomerCount} Active Today
               </span>
+              {leadStats?.overdueFollowups > 0 && (
+                <span className="inline-flex items-center gap-1.5 bg-danger/10 text-danger px-2.5 py-0.5 rounded-full text-xs font-body font-medium">
+                  <CssIcon name="alert" size={11} />
+                  {leadStats.overdueFollowups} Overdue
+                </span>
+              )}
             </div>
-            <p className="text-xs sm:text-sm font-body text-text/55">
-              Small Business CRM Workspace • Pipeline, Orders, 100-Night Trials & Support
-            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button size="sm" onClick={() => router.push("/leads")}>
@@ -162,7 +207,7 @@ export default function DashboardPage() {
               <CssIcon name="kanban" size={12} /> Pipeline
             </Button>
             <Button size="sm" variant="secondary" onClick={() => router.push("/followups")}>
-              <CssIcon name="calendar" size={12} /> Follow-ups ({leadStats?.todayFollowups || 0})
+              <CssIcon name="calendar" size={12} /> Follow-ups {leadStats?.todayFollowups > 0 && `(${leadStats.todayFollowups})`}
             </Button>
             <Button size="sm" variant="secondary" onClick={() => router.push("/shop")}>
               <CssIcon name="bag" size={12} /> Store POS
@@ -170,20 +215,20 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        {/* Bento Grid */}
-        <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {/* Bento KPI Grid */}
+        <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           {bentoCards.map((card, idx) => {
             const toneClass =
               card.tone === "hero"
-                ? "bg-gradient-to-br from-[#2F4838] to-[#3E5C48] text-white border-transparent shadow-md"
+                ? "bg-gradient-to-br from-[#2F4838] via-[#355541] to-[#3E5C48] text-white border-transparent shadow-lg"
                 : card.tone === "brass"
-                ? "bg-gradient-to-br from-[#B08D57] to-[#C7A773] text-white border-transparent shadow-md"
+                ? "bg-gradient-to-br from-[#B08D57] via-[#BB9A67] to-[#C7A773] text-white border-transparent shadow-lg"
                 : card.tone === "danger"
-                ? "bg-white text-text border-[#E6E2D8] hover:border-danger/40 shadow-sm"
-                : "bg-white text-text border-[#E6E2D8] hover:border-gold/50 shadow-sm";
+                ? "bg-white text-text border-[#E6E2D8] hover:border-danger/30 shadow-sm"
+                : "bg-white text-text border-[#E6E2D8] hover:border-gold/40 shadow-sm";
             const iconBadgeClass =
               card.tone === "hero" || card.tone === "brass"
-                ? "bg-white/15 text-white"
+                ? "bg-white/20 text-white"
                 : card.tone === "danger"
                 ? "bg-danger/10 text-danger"
                 : "bg-[#EFECE4] text-[#2F4838]";
@@ -193,91 +238,126 @@ export default function DashboardPage() {
                 : card.tone === "danger"
                 ? "text-danger"
                 : "text-primary";
+            const subColor =
+              card.tone === "hero" || card.tone === "brass"
+                ? "text-white/60"
+                : "text-text/40";
 
             return (
-              <motion.div key={idx} variants={cardAnim} whileHover={{ y: -3 }}
-                className={`${card.span} ${toneClass} border rounded-[24px] p-5 relative overflow-hidden transition-all`}>
+              <motion.div key={idx} variants={cardAnim} whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(47,72,56,0.12)" }}
+                className={`${card.span} ${toneClass} border rounded-[20px] p-5 relative overflow-hidden transition-all duration-200 cursor-default`}>
+                {/* Decorative circle */}
+                <span className="absolute -right-4 -bottom-4 w-20 h-20 rounded-full opacity-10 bg-white" />
                 <div className="flex items-center justify-between mb-3">
-                  <p className={`text-xs font-body font-medium ${card.tone === "hero" || card.tone === "brass" ? "text-white/85" : "text-text/60"}`}>
+                  <p className={`text-xs font-body font-medium ${card.tone === "hero" || card.tone === "brass" ? "text-white/80" : "text-text/55"}`}>
                     {card.label}
                   </p>
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center ${iconBadgeClass}`}>
+                  <span className={`w-8 h-8 rounded-xl flex items-center justify-center ${iconBadgeClass}`}>
                     <CssIcon name={card.icon} size={14} />
                   </span>
                 </div>
-                <p className={`text-2xl md:text-3xl font-heading ${valueColor}`}>
+                <p className={`text-2xl md:text-3xl font-heading ${valueColor} leading-none`}>
                   <CountUp target={card.value} prefix={card.prefix || ""} duration={1.5} />
                 </p>
+                {card.sub && (
+                  <p className={`text-[11px] font-body mt-1.5 ${subColor}`}>{card.sub}</p>
+                )}
               </motion.div>
             );
           })}
         </motion.div>
 
-        {/* Zoho-style Sales Pipeline Snapshot */}
+        {/* Sales Pipeline Overview */}
         {leadStats?.stageBreakdown && (
-          <Card hover={false} className="mb-8">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <div>
-                <h3 className="text-base font-heading text-primary">Sales Pipeline Overview</h3>
-                <p className="text-xs font-body text-text/50">
-                  Conversion Rate: <strong className="text-primary">{leadStats.conversionRate || 0}%</strong> • Won This Month: <strong className="text-success">{formatCurrency(leadStats.thisMonthRevenue || 0)}</strong>
-                </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+            <Card hover={false} className="mb-8">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
+                <div>
+                  <h3 className="text-base font-heading text-primary flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <CssIcon name="kanban" size={12} className="text-primary" />
+                    </span>
+                    Sales Pipeline Overview
+                  </h3>
+                  <p className="text-xs font-body text-text/50 mt-0.5">
+                    Conversion: <strong className="text-primary">{leadStats.conversionRate || 0}%</strong>
+                    &nbsp;• Won This Month: <strong className="text-success">{formatCurrency(leadStats.thisMonthRevenue || 0)}</strong>
+                  </p>
+                </div>
+                <Button size="sm" variant="secondary" onClick={() => router.push("/pipeline")}>
+                  <CssIcon name="kanban" size={12} /> Open Kanban
+                </Button>
               </div>
-              <Button size="sm" variant="secondary" onClick={() => router.push("/pipeline")}>
-                Open Kanban
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {leadStats.stageBreakdown.map((s: any) => {
-                const labelMap: Record<string, string> = {
-                  NEW: "New",
-                  "BAAT HUI": "Contacted",
-                  QUOTE: "Quoted",
-                  PAKKI: "Won",
-                  LOST: "Lost",
-                };
-                return (
-                  <div key={s.stage} className="p-3 rounded-2xl bg-background border border-[#E6E2D8]">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-body font-medium text-text/60">{labelMap[s.stage] || s.stage}</span>
-                      <span className="text-xs font-heading text-primary font-bold">{s.count}</span>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {leadStats.stageBreakdown.map((s: any) => {
+                  const labelMap: Record<string, string> = {
+                    NEW: "New Leads", "BAAT HUI": "Contacted", QUOTE: "Quoted", PAKKI: "Won", LOST: "Lost",
+                  };
+                  const colorMap: Record<string, string> = {
+                    NEW: "border-blue-200 bg-blue-50/50", "BAAT HUI": "border-yellow-200 bg-yellow-50/50",
+                    QUOTE: "border-purple-200 bg-purple-50/50", PAKKI: "border-success/30 bg-success/5", LOST: "border-danger/30 bg-danger/5",
+                  };
+                  const dotMap: Record<string, string> = {
+                    NEW: "bg-blue-400", "BAAT HUI": "bg-yellow-500", QUOTE: "bg-purple-500", PAKKI: "bg-success", LOST: "bg-danger",
+                  };
+                  return (
+                    <div key={s.stage} className={`p-4 rounded-2xl border ${colorMap[s.stage] || "bg-background border-[#E6E2D8]"}`}>
+                      <div className="flex items-center gap-1.5 mb-2">
+                        <span className={`w-2 h-2 rounded-full ${dotMap[s.stage] || "bg-primary"}`} />
+                        <span className="text-xs font-body font-medium text-text/60">{labelMap[s.stage] || s.stage}</span>
+                      </div>
+                      <p className="text-xl font-heading text-primary">{s.count}</p>
+                      <p className="text-xs font-body text-text/50 mt-0.5">{formatCurrency(s.value || 0)}</p>
                     </div>
-                    <p className="text-sm font-heading text-primary">{formatCurrency(s.value || 0)}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </Card>
+                  );
+                })}
+              </div>
+            </Card>
+          </motion.div>
         )}
 
-        {/* Alerts */}
+        {/* Smart Alerts */}
         {allAlerts.length > 0 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mb-8">
-            <h3 className="text-lg font-heading text-primary mb-3 flex items-center gap-2"><CssIcon name="bell" size={18} className="text-gold" /> Smart Alerts</h3>
+            <h3 className="text-sm font-heading text-primary mb-3 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-lg bg-gold/15 flex items-center justify-center">
+                <CssIcon name="bell" size={12} className="text-gold" />
+              </span>
+              Smart Alerts
+              <span className="ml-1 px-2 py-0.5 rounded-full bg-danger/10 text-danger text-[11px] font-body font-medium">
+                {allAlerts.length}
+              </span>
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {allAlerts.slice(0, 6).map((alert: any) => (
                 <motion.div key={alert.id} whileHover={{ scale: 1.02 }}
-                  className={`flex items-center gap-3 p-4 rounded-2xl border ${
-                    alert.type === "birthday" ? "bg-goldShine/5 border-gold/20" :
+                  className={`flex items-start gap-3 p-4 rounded-2xl border ${
+                    alert.type === "birthday" ? "bg-gold/5 border-gold/20" :
                     alert.type === "inactive" ? "bg-danger/5 border-danger/20" : "bg-orange-50 border-orange-200"}`}>
-                  <CssIcon name={alert.type === "birthday" ? "star" : alert.type === "inactive" ? "alert" : "package"} size={18} className="text-primary" />
+                  <span className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    alert.type === "birthday" ? "bg-gold/15 text-gold" :
+                    alert.type === "inactive" ? "bg-danger/15 text-danger" : "bg-orange-100 text-orange-600"}`}>
+                    <CssIcon name={alert.type === "birthday" ? "star" : alert.type === "inactive" ? "alert" : "package"} size={15} />
+                  </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-body text-text truncate">{alert.message}</p>
+                    <p className="text-sm font-body text-text leading-snug">{alert.message}</p>
+                    <button
+                      onClick={() => alert.href ? router.push(alert.href) : showToast(`${alert.action} done!`)}
+                      className="mt-2 text-xs font-body font-semibold text-primary hover:underline"
+                    >
+                      {alert.action} →
+                    </button>
                   </div>
-                  <Button size="sm" variant={alert.type === "birthday" ? "primary" : "secondary"}
-                    onClick={() => alert.href ? router.push(alert.href) : showToast(`${alert.action} done!`)}>
-                    {alert.action}
-                  </Button>
                 </motion.div>
               ))}
             </div>
           </motion.div>
         )}
 
-        {/* Pending High-Risk COD Orders */}
+        {/* High-Risk COD Orders */}
         {orders.filter((o: any) => o.isHighRisk).length > 0 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6 p-4 bg-danger/5 border border-danger/20 rounded-2xl">
-            <h4 className="font-heading text-danger flex items-center gap-2 mb-2">
+            <h4 className="font-heading text-danger flex items-center gap-2 mb-3">
               <CssIcon name="alert" size={16} /> High-Risk COD Orders ({orders.filter((o: any) => o.isHighRisk).length})
             </h4>
             {orders.filter((o: any) => o.isHighRisk).slice(0, 3).map((o: any) => (
@@ -291,21 +371,24 @@ export default function DashboardPage() {
 
         <SectionDivider />
 
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6 justify-center">
+        {/* Module Tabs — Zoho-style pill strip */}
+        <div className="flex flex-wrap gap-1.5 mb-6 p-1.5 bg-white rounded-2xl border border-[#E6E2D8] shadow-sm w-fit max-w-full">
           {tabs.map((tab) => {
+            const count = tabCounts[tab.id];
+            const isActive = activeTab === tab.id;
             return (
-              <motion.button key={tab.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+              <motion.button key={tab.id} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-body font-medium transition-all relative ${
-                  activeTab === tab.id
-                    ? "bg-gradient-to-r from-maroon to-maroonLight text-white shadow-md"
-                    : "bg-white text-text/60 hover:bg-softPink border border-gold/10"}`}>
-                <CssIcon name={tab.icon} size={14} />
-                {tab.label}
-                {tab.id === "approvals" && pendingApprovals.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-danger text-white rounded-full text-[10px] flex items-center justify-center">
-                    {pendingApprovals.length}
+                className={`relative flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-body font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-primary text-white shadow-sm"
+                    : "text-text/60 hover:bg-softPink hover:text-primary"}`}>
+                <CssIcon name={tab.icon} size={13} />
+                <span>{tab.label}</span>
+                {count && count > 0 && (
+                  <span className={`ml-0.5 min-w-[16px] h-4 rounded-full text-[10px] flex items-center justify-center px-1 font-semibold ${
+                    isActive ? "bg-white/30 text-white" : "bg-danger text-white"}`}>
+                    {count}
                   </span>
                 )}
               </motion.button>
@@ -315,34 +398,44 @@ export default function DashboardPage() {
 
         {/* Tab Content */}
         <AnimatePresence mode="wait">
-          <motion.div key={activeTab} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }} transition={{ type: "spring", stiffness: 200, damping: 25 }}>
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }} transition={{ type: "spring", stiffness: 250, damping: 28 }}>
 
             {/* CUSTOMERS TAB */}
             {activeTab === "customers" && (
               <Card hover={false}>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-heading text-primary">All Customers</h3>
-                  <SearchInput value={customerSearch} onChange={setCustomerSearch} placeholder="Search..." className="w-64" />
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                  <div>
+                    <h3 className="text-base font-heading text-primary">All Customers</h3>
+                    <p className="text-xs font-body text-text/45">{filteredCustomers.length} total customers</p>
+                  </div>
+                  <SearchInput value={customerSearch} onChange={setCustomerSearch} placeholder="Search by name or phone..." className="w-64" />
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
                     <thead>
-                      <tr className="text-left text-text/40 border-b border-gold/10">
-                        <th className="pb-3 pr-4">Name</th>
-                        <th className="pb-3 pr-4">Phone</th>
-                        <th className="pb-3 pr-4">Total Spend</th>
-                        <th className="pb-3 pr-4">Orders</th>
-                        <th className="pb-3 pr-4">Loyalty Pts</th>
-                        <th className="pb-3 pr-4">RTO Rate</th>
-                        <th className="pb-3">Status</th>
+                      <tr className="text-left border-b border-[#E6E2D8]">
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Customer</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Phone</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Total Spend</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Orders</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Loyalty</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">RTO</th>
+                        <th className="pb-3 text-xs text-text/40 font-semibold uppercase tracking-wide">Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredCustomers.map((c: any) => (
-                        <motion.tr key={c.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                          className="border-b border-gold/5 hover:bg-softPink/50 transition-colors">
-                          <td className="py-3 pr-4 font-medium">{c.name}</td>
+                      {filteredCustomers.map((c: any, i: number) => (
+                        <motion.tr key={c.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
+                          className="border-b border-[#E6E2D8]/60 hover:bg-softPink/40 transition-colors">
+                          <td className="py-3 pr-4">
+                            <div className="flex items-center gap-2.5">
+                              <span className={`w-8 h-8 rounded-full bg-gradient-to-br ${avatarColor(c.name)} text-white text-xs font-heading flex items-center justify-center flex-shrink-0`}>
+                                {getInitials(c.name)}
+                              </span>
+                              <span className="font-medium text-primary">{c.name}</span>
+                            </div>
+                          </td>
                           <td className="py-3 pr-4 text-text/60">{c.phone}</td>
                           <td className="py-3 pr-4 font-semibold text-primary">{formatCurrency(Number(c.totalKharida))}</td>
                           <td className="py-3 pr-4 text-center">{c.totalOrders || 0}</td>
@@ -366,6 +459,14 @@ export default function DashboardPage() {
                       ))}
                     </tbody>
                   </table>
+                  {filteredCustomers.length === 0 && (
+                    <div className="text-center py-14">
+                      <div className="w-12 h-12 rounded-full bg-softPink flex items-center justify-center mx-auto mb-3">
+                        <CssIcon name="users" size={20} className="text-primary/40" />
+                      </div>
+                      <p className="text-sm font-body text-text/40">No customers found</p>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
@@ -373,31 +474,36 @@ export default function DashboardPage() {
             {/* ORDERS TAB */}
             {activeTab === "orders" && (
               <Card hover={false}>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-heading text-primary">Recent Orders</h3>
-                  <Button size="sm" onClick={() => router.push("/orders")}>View All Orders</Button>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                  <div>
+                    <h3 className="text-base font-heading text-primary">Recent Orders</h3>
+                    <p className="text-xs font-body text-text/45">Pending orders requiring action</p>
+                  </div>
+                  <Button size="sm" onClick={() => router.push("/orders")}>
+                    <CssIcon name="arrow-right" size={12} /> View All Orders
+                  </Button>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
                     <thead>
-                      <tr className="text-left text-text/40 border-b border-gold/10">
-                        <th className="pb-3 pr-4">Order No</th>
-                        <th className="pb-3 pr-4">Customer</th>
-                        <th className="pb-3 pr-4">Channel</th>
-                        <th className="pb-3 pr-4">Amount</th>
-                        <th className="pb-3 pr-4">Payment</th>
-                        <th className="pb-3">Status</th>
+                      <tr className="text-left border-b border-[#E6E2D8]">
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Order No</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Customer</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Channel</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Amount</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Payment</th>
+                        <th className="pb-3 text-xs text-text/40 font-semibold uppercase tracking-wide">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {orders.slice(0, 10).map((o: any) => (
-                        <tr key={o.id} className={`border-b border-gold/5 hover:bg-softPink/50 ${o.isHighRisk ? "bg-danger/5" : ""}`}>
-                          <td className="py-3 pr-4 font-mono text-primary">{o.orderNo}</td>
-                          <td className="py-3 pr-4">{o.customer?.name}</td>
+                        <tr key={o.id} className={`border-b border-[#E6E2D8]/60 hover:bg-softPink/40 transition-colors ${o.isHighRisk ? "bg-danger/3" : ""}`}>
+                          <td className="py-3 pr-4 font-mono text-primary text-xs">{o.orderNo}</td>
+                          <td className="py-3 pr-4 font-medium">{o.customer?.name}</td>
                           <td className="py-3 pr-4"><span className="px-2 py-0.5 rounded-full text-xs bg-softPink text-primary">{o.channel}</span></td>
                           <td className="py-3 pr-4 font-semibold text-primary">{formatCurrency(o.finalTotal)}</td>
                           <td className="py-3 pr-4">
-                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${o.paymentMode === "COD" ? "bg-orange-50 text-orange-700" : "bg-blue-50 text-blue-700"}`}>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${o.paymentMode === "COD" ? "bg-orange-50 text-orange-700 border border-orange-200" : "bg-blue-50 text-blue-700 border border-blue-200"}`}>
                               {o.paymentMode}{o.paymentMode === "COD" && !o.codVerified ? " (!)" : ""}
                             </span>
                           </td>
@@ -406,7 +512,14 @@ export default function DashboardPage() {
                       ))}
                     </tbody>
                   </table>
-                  {orders.length === 0 && <p className="text-center text-text/30 font-body py-8">No pending orders</p>}
+                  {orders.length === 0 && (
+                    <div className="text-center py-14">
+                      <div className="w-12 h-12 rounded-full bg-softPink flex items-center justify-center mx-auto mb-3">
+                        <CssIcon name="package" size={20} className="text-primary/40" />
+                      </div>
+                      <p className="text-sm font-body text-text/40">No pending orders</p>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
@@ -414,25 +527,28 @@ export default function DashboardPage() {
             {/* STOCK TAB */}
             {activeTab === "stock" && (
               <Card hover={false}>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-heading text-primary">Stock Inventory</h3>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                  <div>
+                    <h3 className="text-base font-heading text-primary">Stock Inventory</h3>
+                    <p className="text-xs font-body text-text/45">{filteredStocks.length} items in inventory</p>
+                  </div>
                   <SearchInput value={stockSearch} onChange={setStockSearch} placeholder="Search product..." className="w-64" />
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
                     <thead>
-                      <tr className="text-left text-text/40 border-b border-gold/10">
-                        <th className="pb-3 pr-4">Product</th>
-                        <th className="pb-3 pr-4">Category</th>
-                        <th className="pb-3 pr-4">Size</th>
-                        <th className="pb-3 pr-4">Branch</th>
-                        <th className="pb-3 pr-4">Price</th>
-                        <th className="pb-3">Stock</th>
+                      <tr className="text-left border-b border-[#E6E2D8]">
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Product</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Category</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Size</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Branch</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Price</th>
+                        <th className="pb-3 text-xs text-text/40 font-semibold uppercase tracking-wide">Stock</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredStocks.map((s: any) => (
-                        <tr key={s.id} className={`border-b border-gold/5 ${s.quantity <= 2 ? "bg-danger/5 hover:bg-danger/10" : "hover:bg-softPink/50"}`}>
+                        <tr key={s.id} className={`border-b border-[#E6E2D8]/60 ${s.quantity <= 2 ? "bg-danger/4 hover:bg-danger/8" : "hover:bg-softPink/40"} transition-colors`}>
                           <td className="py-3 pr-4 font-medium">
                             <div className="flex items-center gap-3">
                               {s.product?.photoUrl && (
@@ -468,25 +584,36 @@ export default function DashboardPage() {
             {/* STAFF TAB */}
             {activeTab === "staff" && (
               <Card hover={false}>
-                <h3 className="text-lg font-heading text-primary mb-4">Staff Performance</h3>
-                <div className="space-y-6">
-                  {staffList.map((s: any) => (
-                    <motion.div key={s.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                      className="p-4 rounded-2xl bg-softPink/50 border border-gold/10">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>
-                          <span className="font-heading text-primary text-lg">{s.name}</span>
-                          <Badge variant="info" className="ml-2">{s.role}</Badge>
+                <h3 className="text-base font-heading text-primary mb-5">Staff Performance</h3>
+                <div className="space-y-4">
+                  {staffList.map((s: any, i: number) => (
+                    <motion.div key={s.id} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+                      className="p-4 rounded-2xl bg-background border border-[#E6E2D8] hover:border-gold/30 transition-colors">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatarColor(s.name)} text-white font-heading flex items-center justify-center flex-shrink-0`}>
+                          {getInitials(s.name)}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-heading text-primary">{s.name}</span>
+                            <Badge variant="info">{s.role}</Badge>
+                          </div>
+                          <p className="text-xs font-body text-text/45">{s.email || "No email"}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-body text-text/50">Monthly Sale</p>
-                          <p className="text-xl font-heading text-primary">{formatCurrency(s.monthlySale || 0)}</p>
+                          <p className="text-xs font-body text-text/50">Monthly Sale</p>
+                          <p className="text-lg font-heading text-primary">{formatCurrency(s.monthlySale || 0)}</p>
                         </div>
                       </div>
                       <ProgressBar value={s.targetPercent || 0} label={`Target: ${formatCurrency(Number(s.targetMonthly))}`} />
                       <p className="text-xs font-body text-text/40 mt-2">Commission: {Number(s.commissionPercent)}%</p>
                     </motion.div>
                   ))}
+                  {staffList.length === 0 && (
+                    <div className="text-center py-10">
+                      <p className="text-sm font-body text-text/40">No staff records found</p>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
@@ -494,7 +621,7 @@ export default function DashboardPage() {
             {/* MARKETING TAB */}
             {activeTab === "marketing" && (
               <Card hover={false}>
-                <h3 className="text-lg font-heading text-primary mb-4">Smart Marketing</h3>
+                <h3 className="text-base font-heading text-primary mb-5">Smart Marketing Campaigns</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                   {[
                     { label: "Sleep Day 36% Off", segment: "All" },
@@ -504,7 +631,7 @@ export default function DashboardPage() {
                   ].map((btn) => (
                     <Button key={btn.label} size="sm" variant={btn.segment === "VIP" ? "secondary" : "primary"}
                       onClick={() => showToast(`${btn.label} campaign sent!`)}>
-                      {btn.label}
+                      <CssIcon name="send" size={11} /> {btn.label}
                     </Button>
                   ))}
                 </div>
@@ -512,16 +639,16 @@ export default function DashboardPage() {
                 {/* WhatsApp Preview */}
                 <div className="max-w-xs mx-auto bg-[#E5DDD5] rounded-2xl p-4 border-4 border-gray-800 mb-6">
                   <div className="bg-[#DCF8C6] rounded-xl p-3 ml-auto max-w-[80%] shadow-sm">
-                    <p className="text-xs font-body text-gray-800"><strong>Flo Sleep Sale!</strong><br />Flat 36% OFF + 100-Night Free Trial on Flo Ortho & Ergo!<br />floindia.com | 98201-12233</p>
+                    <p className="text-xs font-body text-gray-800"><strong>Flo Sleep Sale!</strong><br />Flat 36% OFF + 100-Night Free Trial on Flo Ortho &amp; Ergo!<br />floindia.com | 98201-12233</p>
                     <p className="text-[10px] text-gray-500 text-right mt-1">11:30 AM</p>
                   </div>
                   <p className="text-center text-[10px] text-gray-500 font-body mt-2">WhatsApp Preview</p>
                 </div>
 
                 <SectionDivider />
-                <h4 className="font-heading text-primary mb-3">Past Campaigns</h4>
+                <h4 className="font-heading text-primary mb-3 text-sm">Past Campaigns</h4>
                 {Array.isArray(campaigns) && campaigns.map((c: any) => (
-                  <div key={c.id} className="flex items-center justify-between p-3 border-b border-gold/5 text-sm font-body">
+                  <div key={c.id} className="flex items-center justify-between p-3 border-b border-[#E6E2D8]/60 text-sm font-body">
                     <div>
                       <span className="font-medium">{c.title}</span>
                       {c.segment && <span className="ml-2 text-xs text-text/40">({c.segment})</span>}
@@ -529,27 +656,35 @@ export default function DashboardPage() {
                     <span className="text-text/50">{c.sentToCount} customers</span>
                   </div>
                 ))}
+                {campaigns.length === 0 && (
+                  <p className="text-center text-sm font-body text-text/40 py-6">No campaigns yet</p>
+                )}
               </Card>
             )}
 
             {/* UDHAAR TAB */}
             {activeTab === "udhaar" && (
               <Card hover={false}>
-                <h3 className="text-lg font-heading text-primary mb-4">Credit Tracker</h3>
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <h3 className="text-base font-heading text-primary">Credit Tracker</h3>
+                    <p className="text-xs font-body text-text/45">Track customer outstanding balances</p>
+                  </div>
+                </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
                     <thead>
-                      <tr className="text-left text-text/40 border-b border-gold/10">
-                        <th className="pb-3 pr-4">Customer</th>
-                        <th className="pb-3 pr-4">Amount</th>
-                        <th className="pb-3 pr-4">Due Date</th>
-                        <th className="pb-3 pr-4">Status</th>
-                        <th className="pb-3">Action</th>
+                      <tr className="text-left border-b border-[#E6E2D8]">
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Customer</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Amount</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Due Date</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Status</th>
+                        <th className="pb-3 text-xs text-text/40 font-semibold uppercase tracking-wide">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {udhaars.map((u: any) => (
-                        <tr key={u.id} className="border-b border-gold/5 hover:bg-softPink/50">
+                        <tr key={u.id} className="border-b border-[#E6E2D8]/60 hover:bg-softPink/40 transition-colors">
                           <td className="py-3 pr-4 font-medium">{u.customer?.name}</td>
                           <td className="py-3 pr-4 text-danger font-bold">{formatCurrency(Number(u.amount))}</td>
                           <td className="py-3 pr-4 text-text/60">{u.dueDate ? u.dueDate.slice(0, 10) : "—"}</td>
@@ -574,6 +709,11 @@ export default function DashboardPage() {
                       ))}
                     </tbody>
                   </table>
+                  {udhaars.length === 0 && (
+                    <div className="text-center py-10">
+                      <p className="text-sm font-body text-text/40">No credit records</p>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
@@ -581,23 +721,23 @@ export default function DashboardPage() {
             {/* MEASUREMENT TAB */}
             {activeTab === "measurement" && (
               <Card hover={false}>
-                <h3 className="text-lg font-heading text-primary mb-4">Measurements</h3>
+                <h3 className="text-base font-heading text-primary mb-5">Measurements</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
                     <thead>
-                      <tr className="text-left text-text/40 border-b border-gold/10">
-                        <th className="pb-3 pr-4">Customer</th>
-                        <th className="pb-3 pr-4">Blouse</th>
-                        <th className="pb-3 pr-4">Sleeve</th>
-                        <th className="pb-3 pr-4">Length</th>
-                        <th className="pb-3 pr-4">Waist</th>
-                        <th className="pb-3 pr-4">Status</th>
-                        <th className="pb-3">Delivery</th>
+                      <tr className="text-left border-b border-[#E6E2D8]">
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Customer</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Blouse</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Sleeve</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Length</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Waist</th>
+                        <th className="pb-3 pr-4 text-xs text-text/40 font-semibold uppercase tracking-wide">Status</th>
+                        <th className="pb-3 text-xs text-text/40 font-semibold uppercase tracking-wide">Delivery</th>
                       </tr>
                     </thead>
                     <tbody>
                       {measurements.map((m: any) => (
-                        <tr key={m.id} className="border-b border-gold/5 hover:bg-softPink/50">
+                        <tr key={m.id} className="border-b border-[#E6E2D8]/60 hover:bg-softPink/40 transition-colors">
                           <td className="py-3 pr-4 font-medium">{m.customer?.name}</td>
                           <td className="py-3 pr-4">{m.blouse || "—"}</td>
                           <td className="py-3 pr-4">{m.sleeve || "—"}</td>
@@ -611,6 +751,11 @@ export default function DashboardPage() {
                       ))}
                     </tbody>
                   </table>
+                  {measurements.length === 0 && (
+                    <div className="text-center py-10">
+                      <p className="text-sm font-body text-text/40">No measurements recorded</p>
+                    </div>
+                  )}
                 </div>
               </Card>
             )}
@@ -618,17 +763,30 @@ export default function DashboardPage() {
             {/* APPROVALS TAB */}
             {activeTab === "approvals" && (
               <Card hover={false}>
-                <h3 className="text-lg font-heading text-primary mb-4">Manager Approvals</h3>
+                <div className="flex items-center justify-between mb-5">
+                  <div>
+                    <h3 className="text-base font-heading text-primary">Manager Approvals</h3>
+                    <p className="text-xs font-body text-text/45">{pendingApprovals.length} pending approval{pendingApprovals.length !== 1 ? "s" : ""}</p>
+                  </div>
+                </div>
                 {pendingApprovals.length === 0 ? (
-                  <p className="text-center text-text/30 font-body py-8">No pending approvals</p>
+                  <div className="text-center py-14">
+                    <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-3">
+                      <CssIcon name="check" size={20} className="text-success" />
+                    </div>
+                    <p className="text-sm font-body text-text/40">All caught up! No pending approvals.</p>
+                  </div>
                 ) : (
                   <div className="space-y-4">
-                    {pendingApprovals.map((a: any) => (
-                      <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center gap-4 p-4 rounded-2xl border border-gold/20 bg-softPink/30">
+                    {pendingApprovals.map((a: any, i: number) => (
+                      <motion.div key={a.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+                        className="flex items-center gap-4 p-4 rounded-2xl border border-[#E6E2D8] bg-background hover:border-gold/30 transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
+                          <CssIcon name="check" size={16} className="text-gold" />
+                        </div>
                         <div className="flex-1">
-                          <p className="font-heading text-primary">{a.type} Request</p>
-                          <p className="text-sm font-body text-text/60">
+                          <p className="font-heading text-primary text-sm">{a.type} Request</p>
+                          <p className="text-xs font-body text-text/60">
                             By: {a.staff?.name} {a.amount ? `• Amount: ${formatCurrency(a.amount)}` : ""} {a.note ? `• "${a.note}"` : ""}
                           </p>
                         </div>

@@ -25,9 +25,9 @@ const icons: Record<ToastData["type"], CssIconName> = {
 };
 
 const colors = {
-  success: "bg-success text-white",
-  error: "bg-danger text-white",
-  info: "bg-primary text-white",
+  success: "bg-[#2F4838] text-white border border-white/15",
+  error: "bg-danger text-white border border-white/15",
+  info: "bg-white text-primary border border-[#E6E2D8]",
 };
 
 export default function ToastContainer() {
