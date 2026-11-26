@@ -3,8 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { checkRateLimit, sanitizeText } from "@/lib/security";
 
-// Pre-hashed demo credentials (bcrypt) — override via env/DB in production
-const DEFAULT_HASH = bcrypt.hashSync(process.env.DEMO_PASSWORD || "123456", 10);
+// Pre-hashed credentials (bcrypt) — override via env/DB in production
+const DEFAULT_HASH = bcrypt.hashSync(process.env.DEMO_PASSWORD || "Priya@2026#CRM", 10);
 
 const USERS = [
   {

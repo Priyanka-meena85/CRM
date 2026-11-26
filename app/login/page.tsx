@@ -111,7 +111,7 @@ export default function LoginPage() {
             transition={{ delay: 0.5 }}
           >
             <Button type="submit" fullWidth disabled={loading}>
-              {loading ? "Login ho raha hai..." : "Login Karo ✨"}
+              {loading ? "Login ho raha hai..." : "Login Karo"}
             </Button>
           </motion.div>
         </form>
@@ -126,10 +126,10 @@ export default function LoginPage() {
           <p className="text-xs font-body text-text/50 text-center mb-2">Demo Login:</p>
           <div className="flex flex-col gap-1 text-xs font-body text-text/70">
             <p>
-              👑 <strong>Owner:</strong> owner@priya.com / 123456
+              <strong>Owner:</strong> owner@priya.com / Priya@2026#CRM
             </p>
             <p>
-              🧑‍💼 <strong>Staff:</strong> raju@priya.com / 123456
+              <strong>Staff:</strong> raju@priya.com / Priya@2026#CRM
             </p>
           </div>
         </motion.div>
