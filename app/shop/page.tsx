@@ -253,7 +253,7 @@ export default function ShopPage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 pt-20 pb-10 px-4 max-w-7xl mx-auto">
+      <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

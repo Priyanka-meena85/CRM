@@ -114,7 +114,7 @@ export default function SettingsTeamPage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 pt-20 pb-12 px-4 max-w-7xl mx-auto">
+      <main className="relative z-10 pt-24 pb-12 px-4 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-2">
             <CssIcon name="users" size={26} className="text-gold" /> Team & Settings

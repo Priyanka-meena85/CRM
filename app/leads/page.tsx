@@ -130,7 +130,7 @@ export default function LeadsPage() {
     <div className="min-h-screen bg-background relative">
       <FloatingDots /><MarqueeStrip /><Navbar /><ToastContainer />
 
-      <main className="relative z-10 pt-20 pb-10 px-4 max-w-7xl mx-auto">
+      <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="users" size={24} className="text-gold" /> All Leads</h1>

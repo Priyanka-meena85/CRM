@@ -51,7 +51,7 @@ export default function LeadReportsPage() {
     <div className="min-h-screen bg-background relative">
       <FloatingDots /><MarqueeStrip /><Navbar /><ToastContainer />
 
-      <main className="relative z-10 pt-20 pb-10 px-4 max-w-7xl mx-auto">
+      <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="chart" size={24} className="text-gold" /> Lead Reports</h1>
           <p className="text-sm font-body text-text/50">Is mahine ki performance, source analysis, aur team stats</p>

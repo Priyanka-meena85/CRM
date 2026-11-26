@@ -97,17 +97,17 @@ export default function DashboardPage() {
     </div>
   );
 
-  const bentoCards: { label: string; value: number; prefix?: string; icon: CssIconName; color: string; span: string }[] = [
-    { label: "Aaj Ki Sale", value: stats.todaySale, prefix: "₹", icon: "rupee", color: "from-maroon to-maroonLight", span: "col-span-2" },
-    { label: "Is Mahine", value: stats.monthSale, prefix: "₹", icon: "trend", color: "from-gold to-goldShine", span: "col-span-1" },
-    { label: "Total Customers", value: stats.totalCustomers, icon: "users", color: "from-primary to-maroonLight", span: "col-span-1" },
-    { label: "Udhaar Pending", value: stats.totalUdhaar, prefix: "₹", icon: "alert", color: "from-danger to-red-700", span: "col-span-1" },
-    { label: "Low Stock", value: stats.lowStockCount, icon: "package", color: "from-orange-500 to-orange-600", span: "col-span-1" },
-    { label: "Pending Approvals", value: pendingApprovals.length, icon: "check", color: "from-purple-500 to-purple-700", span: "col-span-1" },
-    { label: "Aaj Ki Leads", value: leadStats?.todayLeads || 0, icon: "user", color: "from-pink-600 to-rose-700", span: "col-span-1" },
-    { label: "Pending Follow-ups", value: leadStats?.todayFollowups || 0, icon: "calendar", color: "from-blue-600 to-indigo-700", span: "col-span-1" },
-    { label: "Is Mahine PAKKI", value: leadStats?.thisMonthPakki || 0, icon: "flame", color: "from-emerald-600 to-teal-700", span: "col-span-1" },
-    { label: "Overdue Follow-ups", value: leadStats?.overdueFollowups || 0, icon: "alert", color: "from-amber-600 to-red-600", span: "col-span-1" },
+  const bentoCards: { label: string; value: number; prefix?: string; icon: CssIconName; tone: "hero" | "brass" | "surface" | "danger"; span: string }[] = [
+    { label: "Aaj Ki Sale", value: stats.todaySale, prefix: "₹", icon: "rupee", tone: "hero", span: "col-span-2" },
+    { label: "Is Mahine", value: stats.monthSale, prefix: "₹", icon: "trend", tone: "brass", span: "col-span-1" },
+    { label: "Total Customers", value: stats.totalCustomers, icon: "users", tone: "surface", span: "col-span-1" },
+    { label: "Udhaar Pending", value: stats.totalUdhaar, prefix: "₹", icon: "alert", tone: "danger", span: "col-span-1" },
+    { label: "Low Stock", value: stats.lowStockCount, icon: "package", tone: "surface", span: "col-span-1" },
+    { label: "Pending Approvals", value: pendingApprovals.length, icon: "check", tone: "surface", span: "col-span-1" },
+    { label: "Aaj Ki Leads", value: leadStats?.todayLeads || 0, icon: "user", tone: "surface", span: "col-span-1" },
+    { label: "Pending Followups", value: leadStats?.todayFollowups || 0, icon: "calendar", tone: "surface", span: "col-span-1" },
+    { label: "Is Mahine PAKKI", value: leadStats?.thisMonthPakki || 0, icon: "flame", tone: "surface", span: "col-span-1" },
+    { label: "Overdue Followups", value: leadStats?.overdueFollowups || 0, icon: "alert", tone: "danger", span: "col-span-1" },
   ];
 
   const allAlerts = [
@@ -132,7 +132,7 @@ export default function DashboardPage() {
       <Navbar />
       <ToastContainer />
 
-      <main className="relative z-10 pt-20 pb-10 px-4 max-w-7xl mx-auto">
+      <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         {/* Hero Header */}
         <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 150 }} className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-heading text-primary mb-2">Priya Boutique CRM</h1>
@@ -147,12 +147,39 @@ export default function DashboardPage() {
         {/* Bento Grid */}
         <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {bentoCards.map((card, idx) => {
+            const toneClass =
+              card.tone === "hero"
+                ? "bg-gradient-to-br from-[#2F4838] to-[#3E5C48] text-white border-transparent shadow-md"
+                : card.tone === "brass"
+                ? "bg-gradient-to-br from-[#B08D57] to-[#C7A773] text-white border-transparent shadow-md"
+                : card.tone === "danger"
+                ? "bg-white text-text border-[#E6E2D8] hover:border-danger/40 shadow-sm"
+                : "bg-white text-text border-[#E6E2D8] hover:border-gold/50 shadow-sm";
+            const iconBadgeClass =
+              card.tone === "hero" || card.tone === "brass"
+                ? "bg-white/15 text-white"
+                : card.tone === "danger"
+                ? "bg-danger/10 text-danger"
+                : "bg-[#EFECE4] text-[#2F4838]";
+            const valueColor =
+              card.tone === "hero" || card.tone === "brass"
+                ? "text-white"
+                : card.tone === "danger"
+                ? "text-danger"
+                : "text-primary";
+
             return (
-              <motion.div key={idx} variants={cardAnim}
-                className={`${card.span} bg-gradient-to-br ${card.color} text-white rounded-[28px] p-5 shadow-lg relative overflow-hidden`}>
-                <CssIcon name={card.icon} size={48} className="absolute right-2 bottom-2 opacity-15" />
-                <p className="text-xs font-body opacity-80 mb-1">{card.label}</p>
-                <p className="text-2xl md:text-3xl font-heading">
+              <motion.div key={idx} variants={cardAnim} whileHover={{ y: -3 }}
+                className={`${card.span} ${toneClass} border rounded-[24px] p-5 relative overflow-hidden transition-all`}>
+                <div className="flex items-center justify-between mb-3">
+                  <p className={`text-xs font-body font-medium ${card.tone === "hero" || card.tone === "brass" ? "text-white/85" : "text-text/60"}`}>
+                    {card.label}
+                  </p>
+                  <span className={`w-8 h-8 rounded-full flex items-center justify-center ${iconBadgeClass}`}>
+                    <CssIcon name={card.icon} size={14} />
+                  </span>
+                </div>
+                <p className={`text-2xl md:text-3xl font-heading ${valueColor}`}>
                   <CountUp target={card.value} prefix={card.prefix || ""} duration={1.5} />
                 </p>
               </motion.div>
