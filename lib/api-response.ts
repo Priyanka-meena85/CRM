@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { safeErrorLog } from "@/lib/security";
 
 /**
  * Standardized JSON success response for API route handlers.
@@ -33,7 +34,7 @@ export async function withApiHandler(
   try {
     return await fn();
   } catch (error) {
-    console.error(`[API Error] ${label}:`, error);
+    safeErrorLog(label, error);
     return apiError("Internal server error", 500);
   }
 }

@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // future: { webpack5: true }, // Next.js 14 uses webpack 5 by default
+  poweredByHeader: false,
+  productionBrowserSourceMaps: false,
 };
 
 module.exports = nextConfig;

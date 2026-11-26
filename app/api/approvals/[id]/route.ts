@@ -1,14 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
+import { apiError, apiOk, parseIntParam, withApiHandler } from "@/lib/api-response";
+import { requireRole, sanitizeText } from "@/lib/security";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const id = parseInt(params.id);
+  return withApiHandler("PATCH /api/approvals/[id]", async () => {
+    const owner = await requireRole(["OWNER"]);
+    if (!owner) return apiError("Forbidden: Sirf Owner approve/reject kar sakta hai", 403);
+
+    const id = parseIntParam(params.id);
+    if (!id) return apiError("Invalid approval ID", 400);
+
     const body = await request.json();
-    const { status } = body;
+    const status = sanitizeText(body?.status);
+    if (!["Approved", "Rejected", "Pending"].includes(status)) {
+      return apiError("Invalid approval status", 400);
+    }
 
     const approval = await prisma.approval.update({
       where: { id },
@@ -16,8 +26,6 @@ export async function PATCH(
       include: { order: { include: { customer: true } } },
     });
 
-    return NextResponse.json(approval);
-  } catch (error) {
-    return NextResponse.json({ error: "Approval update nahi hua" }, { status: 500 });
-  }
+    return apiOk(approval);
+  });
 }
