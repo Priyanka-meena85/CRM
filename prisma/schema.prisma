@@ -1,0 +1,383 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ─── CUSTOMER ───────────────────────────────────────────────────────────────
+model Customer {
+  id              Int      @id @default(autoincrement())
+  name            String
+  phone           String   @unique
+  email           String?
+  city            String?
+  birthday        String?
+  anniversary     String?
+  // Style & Size DNA
+  sizeTop         String?
+  sizeBottom      String?
+  sizeFootwear    String?
+  fitPreference   String?  // Slim / Oversized / Regular
+  favoriteColors  String?
+  // Shopping Score
+  totalKharida    Float    @default(0)
+  totalOrders     Int      @default(0)
+  returnCount     Int      @default(0)
+  rtoRate         Float    @default(0)
+  loyaltyPoints   Int      @default(0)
+  // Flags
+  isVip           Boolean  @default(false)
+  isInactive      Boolean  @default(false)
+  isHighRisk      Boolean  @default(false)  // frequent returner
+  // Legacy
+  size            String?
+  pasand          String?
+  lastVisit       String?
+  createdAt       DateTime @default(now())
+
+  bills           Bill[]
+  measurements    Measurement[]
+  udhaars         Udhaar[]
+  orders          Order[]
+  loyaltyTx       LoyaltyTransaction[]
+  supportTickets  SupportTicket[]
+  wishlists       Wishlist[]
+  alterations     Alteration[]
+  deliveryAddresses DeliveryAddress[]
+}
+
+// ─── DELIVERY ADDRESS ────────────────────────────────────────────────────────
+model DeliveryAddress {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  label      String?  // Home / Office / Other
+  address    String
+  pincode    String
+  city       String
+  state      String
+  isDefault  Boolean  @default(false)
+  customer   Customer @relation(fields: [customerId], references: [id])
+}
+
+// ─── PRODUCT ─────────────────────────────────────────────────────────────────
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  category   String
+  sku        String?  @unique
+  price      Float
+  mrp        Float?
+  photoUrl   String?
+  barcode    String?  @unique
+  tags       String?  // Slim, Oversized, Summer, etc.
+  stocks     Stock[]
+  billItems  BillItem[]
+  orderItems OrderItem[]
+  wishlists  Wishlist[]
+  returnAnalytics ReturnAnalytic[]
+}
+
+// ─── STOCK ───────────────────────────────────────────────────────────────────
+model Stock {
+  id                Int     @id @default(autoincrement())
+  productId         Int
+  size              String
+  quantity          Int
+  lowStockThreshold Int     @default(2)
+  branch            String  @default("Main Store")
+  product           Product @relation(fields: [productId], references: [id])
+}
+
+// ─── BILL (In-Store POS) ─────────────────────────────────────────────────────
+model Bill {
+  id            Int        @id @default(autoincrement())
+  billNo        Int        @unique
+  customerId    Int
+  staffId       Int
+  total         Float      @default(0)
+  discount      Float      @default(0)
+  finalTotal    Float      @default(0)
+  loyaltyUsed   Int        @default(0)
+  paymentMethod String
+  status        String
+  createdAt     DateTime   @default(now())
+  customer      Customer   @relation(fields: [customerId], references: [id])
+  staff         Staff      @relation(fields: [staffId], references: [id])
+  items         BillItem[]
+}
+
+model BillItem {
+  id        Int     @id @default(autoincrement())
+  billId    Int
+  productId Int
+  size      String
+  qty       Int
+  price     Float
+  bill      Bill    @relation(fields: [billId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// ─── ONLINE / OMNI ORDER ─────────────────────────────────────────────────────
+model Order {
+  id              Int         @id @default(autoincrement())
+  orderNo         String      @unique
+  customerId      Int
+  channel         String      // Website / Instagram / Offline / WhatsApp
+  status          String      @default("Pending")
+  // Pending / Confirmed / Packed / Shipped / Delivered / Cancelled / Returned / Exchanged
+  paymentMode     String      // Prepaid / COD / UPI
+  paymentStatus   String      @default("Pending")
+  codVerified     Boolean     @default(false)
+  isHighRisk      Boolean     @default(false)
+  total           Float
+  discount        Float       @default(0)
+  finalTotal      Float
+  shippingCharge  Float       @default(0)
+  trackingId      String?
+  courier         String?     // Shiprocket / Delhivery / Bluedart
+  trackingStatus  String?     // In-Transit / Out-for-Delivery / Delivered / Undelivered
+  addressId       Int?
+  notes           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  customer        Customer    @relation(fields: [customerId], references: [id])
+  items           OrderItem[]
+  returns         Return[]
+  approvals       Approval[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  size      String
+  qty       Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// ─── RETURNS & EXCHANGES ─────────────────────────────────────────────────────
+model Return {
+  id              Int      @id @default(autoincrement())
+  orderId         Int
+  reason          String
+  type            String   // Return / Exchange / RTO
+  status          String   @default("Requested")
+  // Requested / QC Pending / QC Done / Refund Initiated / Exchanged / Closed
+  qcStatus        String?  // OK / Damaged / Used
+  qcPhotoUrl      String?
+  refundAmount    Float?
+  refundMethod    String?  // Original / Wallet / Bank
+  exchangeSize    String?
+  newOrderId      Int?
+  createdAt       DateTime @default(now())
+  order           Order    @relation(fields: [orderId], references: [id])
+}
+
+// ─── SUPPORT INBOX ───────────────────────────────────────────────────────────
+model SupportTicket {
+  id          Int       @id @default(autoincrement())
+  customerId  Int?
+  channel     String    // WhatsApp / Instagram / Facebook / Email
+  subject     String?
+  status      String    @default("Open") // Open / In-Progress / Resolved / Closed
+  assignedTo  Int?
+  messages    SupportMessage[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  customer    Customer? @relation(fields: [customerId], references: [id])
+  staff       Staff?    @relation(fields: [assignedTo], references: [id])
+}
+
+model SupportMessage {
+  id        Int          @id @default(autoincrement())
+  ticketId  Int
+  sender    String       // customer / staff
+  body      String
+  sentAt    DateTime     @default(now())
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id])
+}
+
+// ─── QUICK REPLY TEMPLATES ───────────────────────────────────────────────────
+model QuickReply {
+  id       Int    @id @default(autoincrement())
+  title    String
+  body     String
+  category String? // Size Chart / Return Policy / Washing / Offer
+}
+
+// ─── LOYALTY ─────────────────────────────────────────────────────────────────
+model LoyaltyTransaction {
+  id          Int      @id @default(autoincrement())
+  customerId  Int
+  points      Int      // positive = earned, negative = redeemed
+  reason      String
+  createdAt   DateTime @default(now())
+  customer    Customer @relation(fields: [customerId], references: [id])
+}
+
+// ─── MARKETING CAMPAIGN ──────────────────────────────────────────────────────
+model MarketingCampaign {
+  id          Int    @id @default(autoincrement())
+  title       String
+  template    String?
+  segment     String? // VIP / Inactive / All / SizeM / HighReturner
+  channel     String  @default("WhatsApp") // WhatsApp / SMS / Email
+  sentToCount Int     @default(0)
+  status      String  @default("Draft") // Draft / Sent / Scheduled
+  scheduledAt String?
+  createdAt   DateTime @default(now())
+}
+
+// ─── STAFF ───────────────────────────────────────────────────────────────────
+model Staff {
+  id                Int      @id @default(autoincrement())
+  name              String
+  phone             String
+  role              String   @default("STAFF")
+  // Owner / Support / Warehouse / Store Staff
+  targetMonthly     Float    @default(0)
+  commissionPercent Float    @default(0)
+  ordersClosedCount Int      @default(0)
+  bills             Bill[]
+  supportTickets    SupportTicket[]
+  approvals         Approval[]
+  leads             Lead[]
+  leadHistories     LeadHistory[]
+  leadFollowups     LeadFollowup[]
+}
+
+// ─── APPROVALS (Manager Quick Approve) ──────────────────────────────────────
+model Approval {
+  id        Int      @id @default(autoincrement())
+  orderId   Int?
+  type      String   // Discount / Refund / Exchange
+  amount    Float?
+  requestedBy Int
+  status    String   @default("Pending") // Pending / Approved / Rejected
+  note      String?
+  createdAt DateTime @default(now())
+  order     Order?   @relation(fields: [orderId], references: [id])
+  staff     Staff    @relation(fields: [requestedBy], references: [id])
+}
+
+// ─── MEASUREMENT ─────────────────────────────────────────────────────────────
+model Measurement {
+  id           Int      @id @default(autoincrement())
+  customerId   Int
+  blouse       String?
+  sleeve       String?
+  length       String?
+  waist        String?
+  shoulder     String?
+  hip          String?
+  status       String   @default("Measurement Liya")
+  deliveryDate String?
+  customer     Customer @relation(fields: [customerId], references: [id])
+}
+
+// ─── ALTERATION ──────────────────────────────────────────────────────────────
+model Alteration {
+  id          Int      @id @default(autoincrement())
+  customerId  Int
+  description String
+  status      String   @default("Pending") // Pending / In-Progress / Ready / Delivered
+  dueDate     String?
+  charges     Float    @default(0)
+  createdAt   DateTime @default(now())
+  customer    Customer @relation(fields: [customerId], references: [id])
+}
+
+// ─── UDHAAR ──────────────────────────────────────────────────────────────────
+model Udhaar {
+  id          Int      @id @default(autoincrement())
+  customerId  Int
+  amount      Float
+  dueDate     String
+  status      String   @default("Pending")
+  customer    Customer @relation(fields: [customerId], references: [id])
+}
+
+// ─── WISHLIST ─────────────────────────────────────────────────────────────────
+model Wishlist {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  productId  Int
+  size       String?
+  notified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  customer   Customer @relation(fields: [customerId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+}
+
+// ─── RETURN ANALYTICS ────────────────────────────────────────────────────────
+model ReturnAnalytic {
+  id        Int    @id @default(autoincrement())
+  productId Int
+  size      String
+  reason    String
+  count     Int    @default(1)
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// ─── LEAD MANAGEMENT ─────────────────────────────────────────────────────────
+model Lead {
+  id           Int      @id @default(autoincrement())
+  naam         String
+  phone        String
+  email        String?
+  source       String   // Instagram / Facebook / WhatsApp / Walk-in / Call / Website / Reference
+  query        String?
+  quote        Float?
+  stage        String   @default("NEW")
+  // NEW / BAAT HUI / QUOTE / PAKKI / LOST
+  temperature  String   @default("Warm")
+  // Hot / Warm / Cold
+  assignedTo   Int?
+  nextFollowup String?
+  notes        String?
+  lostReason   String?
+  city         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  staff        Staff?   @relation(fields: [assignedTo], references: [id])
+  history      LeadHistory[]
+  followups    LeadFollowup[]
+  catalogsSent LeadCatalog[]
+}
+
+model LeadHistory {
+  id        Int      @id @default(autoincrement())
+  leadId    Int
+  staffId   Int?
+  action    String   // Called / WhatsApp / Stage Changed / Note Added / Quote Sent
+  note      String
+  createdAt DateTime @default(now())
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  staff     Staff?   @relation(fields: [staffId], references: [id])
+}
+
+model LeadFollowup {
+  id        Int      @id @default(autoincrement())
+  leadId    Int
+  staffId   Int?
+  dueAt     String
+  note      String?
+  isDone    Boolean  @default(false)
+  doneAt    String?
+  createdAt DateTime @default(now())
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  staff     Staff?   @relation(fields: [staffId], references: [id])
+}
+
+model LeadCatalog {
+  id      Int      @id @default(autoincrement())
+  leadId  Int
+  title   String
+  sentAt  DateTime @default(now())
+  lead    Lead     @relation(fields: [leadId], references: [id])
+}
