@@ -54,7 +54,7 @@ export async function middleware(req: NextRequest) {
 
   const token = await getToken({
     req,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || "priya-boutique-crm-fallback-secret-change-in-env",
   });
 
   if (!token) {

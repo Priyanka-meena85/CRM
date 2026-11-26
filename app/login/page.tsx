@@ -27,10 +27,11 @@ export default function LoginPage() {
 
     setLoading(false);
 
-    if (res?.error) {
-      setError("Galat email ya password! Dobara try karo.");
+    if (!res || res.error) {
+      setError(res?.error && res.error !== "CredentialsSignin" ? res.error : "Galat email ya password! Dobara try karo.");
     } else {
-      router.push("/shop");
+      router.push("/");
+      router.refresh();
     }
   };
 
