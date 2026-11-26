@@ -27,12 +27,12 @@ export default function LoginPage() {
       });
 
       if (!res || res.error) {
-        setError(res?.error && res.error !== "CredentialsSignin" ? res.error : "Galat email ya password! Dobara try karo.");
+        setError(res?.error && res.error !== "CredentialsSignin" ? res.error : "Invalid email or password. Please try again.");
       } else {
         window.location.href = "/";
       }
     } catch {
-      setError("Server se connection error aaya. Dobara try karein.");
+      setError("Unable to connect to the server. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ export default function LoginPage() {
         >
           <h1 className="text-4xl font-heading text-primary mb-2">Priya Boutique</h1>
           <p className="text-sm font-body text-text/60">
-            Customer Kabhi Nahi Bhoolega, Sale Kabhi Nahi Rukegi
+            Every Customer Remembered, Every Sale Maximized
           </p>
         </motion.div>
 
@@ -116,7 +116,7 @@ export default function LoginPage() {
             transition={{ delay: 0.5 }}
           >
             <Button type="submit" fullWidth disabled={loading}>
-              {loading ? "Login ho raha hai..." : "Login Karo"}
+              {loading ? "Signing in..." : "Sign In"}
             </Button>
           </motion.div>
         </form>

@@ -17,10 +17,10 @@ import { formatCurrency } from "@/lib/utils";
 import CssIcon, { CssIconName } from "@/components/ui/CssIcon";
 
 const FILTER_TABS: { id: string; label: string; icon: CssIconName; color: string }[] = [
-  { id: "today",    label: "Aaj",      icon: "calendar", color: "from-primary to-maroonLight" },
+  { id: "today",    label: "Today",    icon: "calendar", color: "from-primary to-maroonLight" },
   { id: "overdue",  label: "Overdue",  icon: "alert",    color: "from-danger to-red-700" },
-  { id: "upcoming", label: "Kal",      icon: "clock",    color: "from-gold to-goldShine" },
-  { id: "all",      label: "Sab",      icon: "kanban",   color: "from-blue-500 to-blue-600" },
+  { id: "upcoming", label: "Upcoming", icon: "clock",    color: "from-gold to-goldShine" },
+  { id: "all",      label: "All",      icon: "kanban",   color: "from-blue-500 to-blue-600" },
 ];
 
 export default function FollowupsPage() {
@@ -62,7 +62,7 @@ export default function FollowupsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: fuId }),
     });
-    showToast(`${leadNaam} ka follow-up done!`);
+    showToast(`${leadNaam} follow-up completed!`);
     fetchFollowups();
     fetchCounts();
   };
@@ -76,15 +76,15 @@ export default function FollowupsPage() {
       <main className="relative z-10 pt-24 pb-10 px-4 max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="calendar" size={24} className="text-gold" /> Follow-up Manager</h1>
-          <p className="text-sm font-body text-text/50">Aaj kisko call karna hai? Miss kya? Sab yahan hai.</p>
+          <p className="text-sm font-body text-text/50">Track who to call today, overdue reminders, and upcoming follow-ups</p>
         </motion.div>
 
         {/* Summary Bento */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           {[
-            { label: "Aaj Pending", value: counts.today, color: "from-primary to-maroonLight", icon: "calendar" as CssIconName },
+            { label: "Due Today", value: counts.today, color: "from-primary to-maroonLight", icon: "calendar" as CssIconName },
             { label: "Overdue", value: counts.overdue, color: "from-danger to-red-700", icon: "alert" as CssIconName },
-            { label: "Kal Ke", value: counts.upcoming, color: "from-gold to-goldShine", icon: "clock" as CssIconName },
+            { label: "Upcoming", value: counts.upcoming, color: "from-gold to-goldShine", icon: "clock" as CssIconName },
           ].map((c, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
               className={`bg-gradient-to-br ${c.color} text-white rounded-[24px] p-5 text-center shadow-lg`}>
@@ -185,8 +185,8 @@ export default function FollowupsPage() {
           {followups.length === 0 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
               <div className="flex justify-center mb-4"><CssIcon name="check" size={36} className="text-success" /></div>
-              <p className="font-heading text-primary text-xl">Sab kuch Clear Hai!</p>
-              <p className="font-body text-text/40 text-sm mt-1">Is filter mein koi pending follow-up nahi</p>
+              <p className="font-heading text-primary text-xl">All Caught Up!</p>
+              <p className="font-body text-text/40 text-sm mt-1">No pending follow-ups in this filter</p>
             </motion.div>
           )}
         </div>

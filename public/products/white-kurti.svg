@@ -1,13 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#D8D2C5"/>
-      <stop offset="100%" stop-color="#2F4838"/>
+    <linearGradient id="grad" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#EAE6DC"/>
+      <stop offset="100%" stop-color="#D8D2C5"/>
     </linearGradient>
   </defs>
-  <rect width="260" height="300" rx="20" fill="#F7F6F2"/>
-  <circle cx="130" cy="145" r="82" fill="#EFECE4"/>
-  <path d="M105 65 L155 65 L176 112 L160 120 L152 95 L156 225 Q130 232 104 225 L108 95 L100 120 L84 112 Z" fill="url(#g)"/><path d="M122 65 L130 98 L138 65" stroke="#2F4838" stroke-width="2.5" fill="none"/>
-  <text x="130" y="266" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#2F4838">White Kurti</text>
-  <text x="130" y="283" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#777777">Lucknowi Chikan</text>
+  <rect width="260" height="300" rx="18" fill="#EFECE4"/>
+  <circle cx="130" cy="150" r="95" fill="#F7F6F2" opacity="0.8"/>
+  <!-- Minimalist Wooden Hanger -->
+  <path d="M130 24 C130 19 135 17 136 22 C136 26 130 28 130 32 L102 48 L158 48 L130 32" fill="none" stroke="#B08D57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+      <!-- Tailored Straight Kurti -->
+      <path d="M104 48 L156 48 L184 106 L166 114 L152 84 L156 242 Q130 248 104 242 L108 84 L94 114 L76 106 Z" fill="url(#grad)" stroke="#2F4838" stroke-width="1.2"/>
+      <path d="M121 48 L130 88 L139 48" fill="none" stroke="#2F4838" stroke-width="2.2"/>
+      <line x1="130" y1="88" x2="130" y2="128" stroke="#2F4838" stroke-width="2"/>
+      <circle cx="130" cy="98" r="2" fill="#2F4838"/>
+      <circle cx="130" cy="110" r="2" fill="#2F4838"/>
+      <circle cx="130" cy="122" r="2" fill="#2F4838"/>
+      <path d="M105 232 Q130 238 155 232" fill="none" stroke="#2F4838" stroke-width="3"/>
+    
 </svg>

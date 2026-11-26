@@ -41,7 +41,7 @@ export default function LeadReportsPage() {
 
   if (!data) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <p className="font-heading text-primary text-2xl animate-pulse">Reports Load Ho Raha Hai...</p>
+      <p className="font-heading text-primary text-2xl animate-pulse">Loading Lead Reports...</p>
     </div>
   );
 
@@ -54,16 +54,16 @@ export default function LeadReportsPage() {
       <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="chart" size={24} className="text-gold" /> Lead Reports</h1>
-          <p className="text-sm font-body text-text/50">Is mahine ki performance, source analysis, aur team stats</p>
+          <p className="text-sm font-body text-text/50">Monthly conversion performance, source attribution, and team stats</p>
         </motion.div>
 
         {/* Top KPI Bento */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
             { label: "Total Leads", value: data.totalLeads, prefix: "", icon: "users" as CssIconName, color: "from-maroon to-maroonLight" },
-            { label: "Aaj Ki Leads", value: data.todayLeads, prefix: "", icon: "trend" as CssIconName, color: "from-gold to-goldShine" },
-            { label: "Is Mahine PAKKI", value: data.thisMonthPakki, prefix: "", icon: "star" as CssIconName, color: "from-success to-green-600" },
-            { label: "Is Mahine Revenue", value: data.thisMonthRevenue, prefix: "₹", icon: "rupee" as CssIconName, color: "from-blue-500 to-blue-700" },
+            { label: "Today's Leads", value: data.todayLeads, prefix: "", icon: "trend" as CssIconName, color: "from-gold to-goldShine" },
+            { label: "Won This Month", value: data.thisMonthPakki, prefix: "", icon: "star" as CssIconName, color: "from-success to-green-600" },
+            { label: "Monthly Revenue", value: data.thisMonthRevenue, prefix: "₹", icon: "rupee" as CssIconName, color: "from-blue-500 to-blue-700" },
           ].map((card, i) => {
             return (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
@@ -81,13 +81,13 @@ export default function LeadReportsPage() {
         {/* Conversion Rate */}
         <Card hover={false} className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading text-primary flex items-center gap-2"><CssIcon name="trend" size={16} className="text-gold" /> Is Mahine Conversion Rate</h3>
+            <h3 className="font-heading text-primary flex items-center gap-2"><CssIcon name="trend" size={16} className="text-gold" /> Monthly Conversion Rate</h3>
             <span className="text-3xl font-heading text-primary">{data.conversionRate}%</span>
           </div>
           <ProgressBar value={data.conversionRate} />
           <div className="flex justify-between mt-2 text-xs font-body text-text/50">
-            <span>{data.thisMonthLeads} leads aayi</span>
-            <span>{data.thisMonthPakki} PAKKI hui</span>
+            <span>{data.thisMonthLeads} leads received</span>
+            <span>{data.thisMonthPakki} deals won</span>
           </div>
         </Card>
 
@@ -155,7 +155,7 @@ export default function LeadReportsPage() {
                 </div>
                 <div className="p-2 bg-primary/5 rounded-xl">
                   <p className="font-heading text-primary text-xl">{data.todayFollowups}</p>
-                  <p className="text-[10px] font-body text-primary">Aaj</p>
+                  <p className="text-[10px] font-body text-primary">Today</p>
                 </div>
               </div>
             </div>
@@ -219,7 +219,7 @@ export default function LeadReportsPage() {
                   </div>
                 </motion.div>
               ))}
-              {data.staffPerf?.length === 0 && <p className="text-center text-text/30 font-body py-4">Staff data nahi hai</p>}
+              {data.staffPerf?.length === 0 && <p className="text-center text-text/30 font-body py-4">No staff data available</p>}
             </div>
           </Card>
         </div>

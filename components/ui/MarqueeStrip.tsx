@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function MarqueeStrip() {
   const text =
-    " • Diwali Offer Live • New Stock Aaya Hai • VIP Customers Welcome • Priya Boutique Nathdwara • Premium Collection • ";
+    " • Festive Collection Live • New Arrivals In Stock • VIP Client Concierge • Priya Boutique Studio • Luxury Ethnicwear • ";
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-maroon to-maroonLight text-white py-1.5 overflow-hidden">

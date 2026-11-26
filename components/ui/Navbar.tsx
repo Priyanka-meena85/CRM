@@ -160,7 +160,7 @@ export default function Navbar() {
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search Leads ya Customers (Naam / Phone)..."
+                placeholder="Search leads or customers (Name / Phone)..."
                 className="flex-1 text-sm font-body outline-none bg-transparent"
               />
               <button onClick={() => setSearchOpen(false)} className="p-1 rounded-full hover:bg-softPink">
@@ -170,7 +170,7 @@ export default function Navbar() {
             <div className="max-h-80 overflow-y-auto p-3 space-y-3">
               {query.trim().length < 2 && (
                 <p className="text-xs font-body text-text/50 text-center py-6">
-                  Kam se kam 2 letters type karein — Leads aur Customers turant milenge
+                  Type at least 2 characters to search leads and customers
                 </p>
               )}
               {leadResults.length > 0 && (
@@ -210,7 +210,7 @@ export default function Navbar() {
                 </div>
               )}
               {query.trim().length >= 2 && leadResults.length === 0 && custResults.length === 0 && (
-                <p className="text-xs font-body text-text/50 text-center py-6">Koi match nahi mila</p>
+                <p className="text-xs font-body text-text/50 text-center py-6">No matching records found</p>
               )}
             </div>
           </motion.div>

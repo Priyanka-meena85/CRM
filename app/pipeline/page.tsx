@@ -16,9 +16,9 @@ import CssIcon, { CssIconName } from "@/components/ui/CssIcon";
 
 const STAGES = [
   { id: "NEW",      label: "New",       color: "border-blue-400 bg-blue-50",   header: "bg-blue-500" },
-  { id: "BAAT HUI", label: "Baat Hui",  color: "border-purple-400 bg-purple-50", header: "bg-purple-500" },
-  { id: "QUOTE",    label: "Quote",     color: "border-gold bg-yellow-50",      header: "bg-yellow-500" },
-  { id: "PAKKI",    label: "Pakki",     color: "border-success bg-green-50",    header: "bg-green-500" },
+  { id: "BAAT HUI", label: "Contacted", color: "border-purple-400 bg-purple-50", header: "bg-purple-500" },
+  { id: "QUOTE",    label: "Quoted",    color: "border-gold bg-yellow-50",      header: "bg-yellow-500" },
+  { id: "PAKKI",    label: "Won",       color: "border-success bg-green-50",    header: "bg-green-500" },
   { id: "LOST",     label: "Lost",      color: "border-danger bg-red-50",       header: "bg-red-500" },
 ];
 
@@ -88,14 +88,14 @@ export default function PipelinePage() {
   };
 
   const addLead = async () => {
-    if (!form.naam || !form.phone) { showToast("Naam aur phone zaroori hai!", "error"); return; }
+    if (!form.naam || !form.phone) { showToast("Name and phone are required!", "error"); return; }
     const res = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, quote: form.quote ? parseFloat(form.quote) : null, assignedTo: form.assignedTo ? parseInt(form.assignedTo) : null }),
     });
     if (res.ok) {
-      showToast(`${form.naam} ki lead add ho gayi!`);
+      showToast(`Lead added for ${form.naam}!`);
       setShowAddModal(false);
       setForm({ naam: "", phone: "", source: "Instagram", query: "", quote: "", temperature: "Warm", assignedTo: "", nextFollowup: "", city: "" });
       fetchLeads();
@@ -263,12 +263,12 @@ export default function PipelinePage() {
                   {isOver && dragging && dragging.stage !== stage.id && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                       className="border-2 border-dashed border-gold/40 rounded-xl h-16 flex items-center justify-center">
-                      <span className="text-xs font-body text-gold">Yahan drop karo</span>
+                      <span className="text-xs font-body text-gold">Drop here</span>
                     </motion.div>
                   )}
 
                   {stageLeads.length === 0 && !isOver && (
-                    <p className="text-center text-xs text-text/20 font-body py-8">Koi lead nahi</p>
+                    <p className="text-center text-xs text-text/20 font-body py-8">No leads</p>
                   )}
                 </div>
               </div>
@@ -278,7 +278,7 @@ export default function PipelinePage() {
       </main>
 
       {/* Add Lead Modal */}
-      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="Naya Lead">
+      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="New Lead">
         <div className="space-y-3">
           {[
             { label: "Naam *", key: "naam", placeholder: "Priya Sharma" },
@@ -333,7 +333,7 @@ export default function PipelinePage() {
               className="w-full px-3 py-2.5 rounded-xl border border-gold/20 bg-background font-body text-sm outline-none" />
           </div>
 
-          <Button fullWidth onClick={addLead}><CssIcon name="check" size={14} /> Lead Add Karo</Button>
+          <Button fullWidth onClick={addLead}><CssIcon name="check" size={14} /> Add Lead</Button>
         </div>
       </Modal>
     </div>

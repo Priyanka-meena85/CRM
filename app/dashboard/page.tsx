@@ -25,8 +25,8 @@ const tabs: { id: string; label: string; icon: CssIconName }[] = [
   { id: "stock", label: "Stock", icon: "package" },
   { id: "staff", label: "Staff", icon: "trend" },
   { id: "marketing", label: "Marketing", icon: "bell" },
-  { id: "udhaar", label: "Udhaar", icon: "rupee" },
-  { id: "measurement", label: "Measurement", icon: "scissors" },
+  { id: "udhaar", label: "Credit", icon: "rupee" },
+  { id: "measurement", label: "Measurements", icon: "scissors" },
   { id: "approvals", label: "Approvals", icon: "check" },
 ];
 
@@ -98,16 +98,16 @@ export default function DashboardPage() {
   );
 
   const bentoCards: { label: string; value: number; prefix?: string; icon: CssIconName; tone: "hero" | "brass" | "surface" | "danger"; span: string }[] = [
-    { label: "Aaj Ki Sale", value: stats.todaySale, prefix: "₹", icon: "rupee", tone: "hero", span: "col-span-2" },
-    { label: "Is Mahine", value: stats.monthSale, prefix: "₹", icon: "trend", tone: "brass", span: "col-span-1" },
+    { label: "Today's Sales", value: stats.todaySale, prefix: "₹", icon: "rupee", tone: "hero", span: "col-span-2" },
+    { label: "This Month", value: stats.monthSale, prefix: "₹", icon: "trend", tone: "brass", span: "col-span-1" },
     { label: "Total Customers", value: stats.totalCustomers, icon: "users", tone: "surface", span: "col-span-1" },
-    { label: "Udhaar Pending", value: stats.totalUdhaar, prefix: "₹", icon: "alert", tone: "danger", span: "col-span-1" },
+    { label: "Pending Credit", value: stats.totalUdhaar, prefix: "₹", icon: "alert", tone: "danger", span: "col-span-1" },
     { label: "Low Stock", value: stats.lowStockCount, icon: "package", tone: "surface", span: "col-span-1" },
     { label: "Pending Approvals", value: pendingApprovals.length, icon: "check", tone: "surface", span: "col-span-1" },
-    { label: "Aaj Ki Leads", value: leadStats?.todayLeads || 0, icon: "user", tone: "surface", span: "col-span-1" },
-    { label: "Pending Followups", value: leadStats?.todayFollowups || 0, icon: "calendar", tone: "surface", span: "col-span-1" },
-    { label: "Is Mahine PAKKI", value: leadStats?.thisMonthPakki || 0, icon: "flame", tone: "surface", span: "col-span-1" },
-    { label: "Overdue Followups", value: leadStats?.overdueFollowups || 0, icon: "alert", tone: "danger", span: "col-span-1" },
+    { label: "Today's Leads", value: leadStats?.todayLeads || 0, icon: "user", tone: "surface", span: "col-span-1" },
+    { label: "Pending Follow-ups", value: leadStats?.todayFollowups || 0, icon: "calendar", tone: "surface", span: "col-span-1" },
+    { label: "Won This Month", value: leadStats?.thisMonthPakki || 0, icon: "flame", tone: "surface", span: "col-span-1" },
+    { label: "Overdue Follow-ups", value: leadStats?.overdueFollowups || 0, icon: "alert", tone: "danger", span: "col-span-1" },
   ];
 
   const allAlerts = [
@@ -115,8 +115,8 @@ export default function DashboardPage() {
       ? [{
           id: "overdue-followups",
           type: "inactive",
-          message: `${leadStats.overdueFollowups} Lead Follow-ups overdue hain! Turant call karein.`,
-          action: "Follow-ups Dekho",
+          message: `${leadStats.overdueFollowups} lead follow-ups are overdue. Please call now.`,
+          action: "View Follow-ups",
           href: "/followups",
         }]
       : []),
@@ -136,11 +136,11 @@ export default function DashboardPage() {
         {/* Hero Header */}
         <motion.div initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 150 }} className="text-center mb-10">
           <h1 className="text-4xl md:text-5xl font-heading text-primary mb-2">Priya Boutique CRM</h1>
-          <p className="text-sm font-body text-text/50 mb-3">"Customer Kabhi Nahi Bhoolega, Sale Kabhi Nahi Rukegi"</p>
+          <p className="text-sm font-body text-text/50 mb-3">"Every Customer Remembered, Every Sale Maximized"</p>
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }}
             className="inline-flex items-center gap-2 bg-success/10 text-success px-4 py-1.5 rounded-full text-sm font-body">
             <span className="w-2 h-2 bg-success rounded-full animate-pulse" />
-            Aaj {stats.todayCustomerCount} Customer Aaye
+            {stats.todayCustomerCount} Customers Visited Today
           </motion.div>
         </motion.div>
 
@@ -266,9 +266,9 @@ export default function DashboardPage() {
                   <table className="w-full text-sm font-body">
                     <thead>
                       <tr className="text-left text-text/40 border-b border-gold/10">
-                        <th className="pb-3 pr-4">Naam</th>
+                        <th className="pb-3 pr-4">Name</th>
                         <th className="pb-3 pr-4">Phone</th>
-                        <th className="pb-3 pr-4">Total Kharida</th>
+                        <th className="pb-3 pr-4">Total Spend</th>
                         <th className="pb-3 pr-4">Orders</th>
                         <th className="pb-3 pr-4">Loyalty Pts</th>
                         <th className="pb-3 pr-4">RTO Rate</th>
@@ -312,7 +312,7 @@ export default function DashboardPage() {
               <Card hover={false}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-heading text-primary">Recent Orders</h3>
-                  <Button size="sm" onClick={() => router.push("/orders")}>All Orders देखें →</Button>
+                  <Button size="sm" onClick={() => router.push("/orders")}>View All Orders</Button>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
@@ -343,7 +343,7 @@ export default function DashboardPage() {
                       ))}
                     </tbody>
                   </table>
-                  {orders.length === 0 && <p className="text-center text-text/30 font-body py-8">Koi pending order nahi</p>}
+                  {orders.length === 0 && <p className="text-center text-text/30 font-body py-8">No pending orders</p>}
                 </div>
               </Card>
             )}
@@ -353,7 +353,7 @@ export default function DashboardPage() {
               <Card hover={false}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-heading text-primary">Stock Inventory</h3>
-                  <SearchInput value={stockSearch} onChange={setStockSearch} placeholder="Product dhoondo..." className="w-64" />
+                  <SearchInput value={stockSearch} onChange={setStockSearch} placeholder="Search product..." className="w-64" />
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
@@ -434,13 +434,13 @@ export default function DashboardPage() {
                 <h3 className="text-lg font-heading text-primary mb-4">Smart Marketing</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                   {[
-                    { label: "Diwali Offer", segment: "All" },
+                    { label: "Festive Offer", segment: "All" },
                     { label: "Birthday Offer", segment: "Birthday" },
                     { label: "Inactive Re-engage", segment: "Inactive" },
                     { label: "VIP Special", segment: "VIP" },
                   ].map((btn) => (
                     <Button key={btn.label} size="sm" variant={btn.segment === "VIP" ? "secondary" : "primary"}
-                      onClick={() => showToast(`${btn.label} campaign bhej diya!`)}>
+                      onClick={() => showToast(`${btn.label} campaign sent!`)}>
                       {btn.label}
                     </Button>
                   ))}
@@ -449,7 +449,7 @@ export default function DashboardPage() {
                 {/* WhatsApp Preview */}
                 <div className="max-w-xs mx-auto bg-[#E5DDD5] rounded-2xl p-4 border-4 border-gray-800 mb-6">
                   <div className="bg-[#DCF8C6] rounded-xl p-3 ml-auto max-w-[80%] shadow-sm">
-                    <p className="text-xs font-body text-gray-800"><strong>Diwali Special!</strong><br />Priya Boutique pe 20% OFF sab Kurtis pe!<br />Nathdwara | 98765-43210</p>
+                    <p className="text-xs font-body text-gray-800"><strong>Festive Special!</strong><br />Enjoy 20% OFF on all Kurtis at Priya Boutique!<br />Nathdwara | 98765-43210</p>
                     <p className="text-[10px] text-gray-500 text-right mt-1">11:30 AM</p>
                   </div>
                   <p className="text-center text-[10px] text-gray-500 font-body mt-2">WhatsApp Preview</p>
@@ -472,7 +472,7 @@ export default function DashboardPage() {
             {/* UDHAAR TAB */}
             {activeTab === "udhaar" && (
               <Card hover={false}>
-                <h3 className="text-lg font-heading text-primary mb-4">Udhaar Tracker</h3>
+                <h3 className="text-lg font-heading text-primary mb-4">Credit Tracker</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm font-body">
                     <thead>
@@ -497,11 +497,11 @@ export default function DashboardPage() {
                             {u.status !== "Paid" && (
                               <div className="flex gap-2">
                                 <Button size="sm" variant="whatsapp"
-                                  onClick={async () => { await fetch(`/api/udhaar/${u.id}/reminder`, { method: "POST" }); showToast("Reminder bhej diya!"); }}>
+                                  onClick={async () => { await fetch(`/api/udhaar/${u.id}/reminder`, { method: "POST" }); showToast("Reminder sent!"); }}>
                                   <CssIcon name="send" size={12} /> Remind
                                 </Button>
                                 <Button size="sm" variant="success"
-                                  onClick={async () => { await fetch(`/api/udhaar/${u.id}/mark-paid`, { method: "POST" }); showToast("Paid!"); setUdhaars(udhaars.map((item: any) => item.id === u.id ? { ...item, status: "Paid" } : item)); }}>
+                                  onClick={async () => { await fetch(`/api/udhaar/${u.id}/mark-paid`, { method: "POST" }); showToast("Marked as paid!"); setUdhaars(udhaars.map((item: any) => item.id === u.id ? { ...item, status: "Paid" } : item)); }}>
                                   <CssIcon name="check" size={12} /> Paid
                                 </Button>
                               </div>
@@ -557,7 +557,7 @@ export default function DashboardPage() {
               <Card hover={false}>
                 <h3 className="text-lg font-heading text-primary mb-4">Manager Approvals</h3>
                 {pendingApprovals.length === 0 ? (
-                  <p className="text-center text-text/30 font-body py-8">Koi pending approval nahi</p>
+                  <p className="text-center text-text/30 font-body py-8">No pending approvals</p>
                 ) : (
                   <div className="space-y-4">
                     {pendingApprovals.map((a: any) => (

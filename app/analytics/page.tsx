@@ -39,7 +39,7 @@ export default function AnalyticsPage() {
 
   if (!data || status === "loading") return (
     <div className="min-h-screen bg-background flex items-center justify-center">
-      <p className="font-heading text-primary text-2xl animate-pulse">Analytics Load Ho Raha Hai...</p>
+      <p className="font-heading text-primary text-2xl animate-pulse">Loading Analytics...</p>
     </div>
   );
 
@@ -57,7 +57,7 @@ export default function AnalyticsPage() {
       <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="chart" size={24} className="text-gold" /> Analytics & Reports</h1>
-          <p className="text-sm font-body text-text/50">Returns, channels, staff performance — poora data ek jagah</p>
+          <p className="text-sm font-body text-text/50">Returns, channels, and staff performance in one place</p>
         </motion.div>
 
         {/* Top KPIs */}
@@ -125,7 +125,7 @@ export default function AnalyticsPage() {
             </div>
             {codPercent > 50 && (
               <div className="p-3 bg-orange-50 rounded-xl border border-orange-200 text-sm font-body text-orange-700 flex items-center gap-2">
-                <CssIcon name="alert" size={14} /> COD orders zyada hain! COD verification activate karein.
+                <CssIcon name="alert" size={14} /> High COD ratio detected! Enable COD verification.
               </div>
             )}
           </Card>
@@ -141,7 +141,7 @@ export default function AnalyticsPage() {
                   <span className="text-sm font-body">{r.reason}</span>
                   <span className="font-heading text-primary">{r.count}x</span>
                 </div>
-              )) : <p className="text-text/30 text-sm font-body text-center py-4">Koi returns nahi</p>}
+              )) : <p className="text-text/30 text-sm font-body text-center py-4">No returns recorded</p>}
             </div>
           </Card>
 
@@ -157,7 +157,7 @@ export default function AnalyticsPage() {
                   </div>
                   <Badge variant="danger">{ra.count} returns</Badge>
                 </div>
-              )) : <p className="text-text/30 text-sm font-body text-center py-4">Koi product return nahi</p>}
+              )) : <p className="text-text/30 text-sm font-body text-center py-4">No product returns recorded</p>}
             </div>
           </Card>
         </div>
@@ -186,7 +186,7 @@ export default function AnalyticsPage() {
               </motion.div>
             ))}
             {(!data.bestSellers || data.bestSellers.length === 0) && (
-              <p className="col-span-5 text-center text-text/30 text-sm font-body py-4">Data nahi hai abhi</p>
+              <p className="col-span-5 text-center text-text/30 text-sm font-body py-4">No sales data yet</p>
             )}
           </div>
         </Card>

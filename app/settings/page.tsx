@@ -44,7 +44,7 @@ export default function SettingsTeamPage() {
       if (Array.isArray(sData)) setStaffList(sData);
       if (Array.isArray(lData)) setLeads(lData);
     } catch {
-      showToast("Data load nahi ho paya", "error");
+      showToast("Failed to load data", "error");
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ export default function SettingsTeamPage() {
   const handleAddStaff = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) {
-      showToast("Naam aur Phone zaroori hai", "error");
+      showToast("Name and phone are required", "error");
       return;
     }
     setSubmitting(true);
@@ -74,12 +74,12 @@ export default function SettingsTeamPage() {
         }),
       });
       if (!res.ok) throw new Error();
-      showToast(`${name} team mein add ho gaye!`);
+      showToast(`${name} added to team!`);
       setName("");
       setPhone("");
       loadData();
     } catch {
-      showToast("Staff add nahi ho paya", "error");
+      showToast("Failed to add team member", "error");
     } finally {
       setSubmitting(false);
     }
@@ -100,10 +100,10 @@ export default function SettingsTeamPage() {
         }),
       });
       if (!res.ok) throw new Error();
-      showToast("Lead assign ho gayi!");
+      showToast("Lead assigned!");
       loadData();
     } catch {
-      showToast("Assign nahi ho paya", "error");
+      showToast("Failed to assign lead", "error");
     }
   };
 
@@ -119,18 +119,18 @@ export default function SettingsTeamPage() {
           <h1 className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-2">
             <CssIcon name="users" size={26} className="text-gold" /> Team & Settings
           </h1>
-          <p className="text-sm font-body text-text/60">Team members add karein (Ravi, Neha, etc.) aur leads assign karein</p>
+          <p className="text-sm font-body text-text/60">Add team members and assign leads</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Add Team Member Form */}
           <Card>
             <h2 className="font-heading text-xl text-primary flex items-center gap-2 mb-4">
-              <CssIcon name="user" size={18} className="text-gold" /> Naya Team Member Add Karein
+              <CssIcon name="user" size={18} className="text-gold" /> Add Team Member
             </h2>
             <form onSubmit={handleAddStaff} className="space-y-3">
               <div>
-                <label className="text-xs font-body text-text/60 block mb-1">Naam *</label>
+                <label className="text-xs font-body text-text/60 block mb-1">Full Name *</label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -181,7 +181,7 @@ export default function SettingsTeamPage() {
                 />
               </div>
               <Button type="submit" disabled={submitting} className="w-full">
-                {submitting ? "Adding..." : "+ Team Member Add Karein"}
+                {submitting ? "Adding..." : "+ Add Team Member"}
               </Button>
             </form>
           </Card>

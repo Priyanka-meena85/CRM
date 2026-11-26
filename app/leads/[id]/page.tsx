@@ -60,27 +60,27 @@ export default function LeadDetailPage() {
   }, [id]);
 
   const addNote = async () => {
-    if (!noteText.trim()) { showToast("Note likhna zaroori hai!", "error"); return; }
+    if (!noteText.trim()) { showToast("Please enter a note!", "error"); return; }
     setLoading(true);
     await fetch(`/api/leads/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ historyNote: noteText, historyAction: noteAction }),
     });
-    showToast("Note add ho gaya!");
+    showToast("Note added!");
     setNoteText("");
     fetchLead();
     setLoading(false);
   };
 
   const addFollowup = async () => {
-    if (!fuDate) { showToast("Follow-up date zaroori hai!", "error"); return; }
+    if (!fuDate) { showToast("Follow-up date is required!", "error"); return; }
     await fetch(`/api/leads/${id}/followup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ dueAt: fuDate, note: fuNote }),
     });
-    showToast("Follow-up set ho gaya!");
+    showToast("Follow-up scheduled!");
     setFuDate(""); setFuNote("");
     fetchLead();
   };
@@ -91,7 +91,7 @@ export default function LeadDetailPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: fuId }),
     });
-    showToast("Follow-up done!");
+    showToast("Follow-up completed!");
     fetchLead();
   };
 
@@ -109,7 +109,7 @@ export default function LeadDetailPage() {
         historyAction: "Note Added",
       }),
     });
-    showToast("Lead update ho gayi!");
+    showToast("Lead updated!");
     setEditing(false);
     fetchLead();
     setLoading(false);
@@ -271,7 +271,7 @@ export default function LeadDetailPage() {
                     {fu.isDone && <span className="text-xs text-success font-body">Done</span>}
                   </div>
                 ))}
-                {lead.followups?.length === 0 && <p className="text-text/30 text-xs font-body text-center py-3">Koi follow-up nahi</p>}
+                {lead.followups?.length === 0 && <p className="text-text/30 text-xs font-body text-center py-3">No follow-ups scheduled</p>}
               </div>
 
               <div className="border-t border-gold/10 pt-3 space-y-2">
@@ -300,10 +300,10 @@ export default function LeadDetailPage() {
                   ))}
                 </div>
                 <textarea value={noteText} onChange={e => setNoteText(e.target.value)} rows={2}
-                  placeholder="Kya baat hui, kya bheja, kya update hai..."
+                  placeholder="Call summary, quote sent, or next update..."
                   className="w-full px-4 py-2.5 rounded-xl border border-gold/20 bg-white font-body text-sm outline-none resize-none" />
                 <Button size="sm" onClick={addNote} disabled={loading}>
-                  <CssIcon name="plus" size={12} /> Note Add Karo
+                  <CssIcon name="plus" size={12} /> Add Note
                 </Button>
               </div>
 
@@ -330,7 +330,7 @@ export default function LeadDetailPage() {
                     </div>
                   </motion.div>
                 ))}
-                {lead.history?.length === 0 && <p className="text-center text-text/30 font-body py-8">Koi history nahi abhi</p>}
+                {lead.history?.length === 0 && <p className="text-center text-text/30 font-body py-8">No activity recorded yet</p>}
               </div>
             </Card>
           </div>

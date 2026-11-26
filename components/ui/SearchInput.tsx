@@ -14,7 +14,7 @@ interface SearchInputProps {
 export default function SearchInput({
   value,
   onChange,
-  placeholder = "Phone se Customer Dhoondo...",
+  placeholder = "Search customer by phone or name...",
   className,
 }: SearchInputProps) {
   return (

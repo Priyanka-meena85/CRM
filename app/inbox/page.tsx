@@ -24,10 +24,10 @@ const channelIcons: Record<string, { icon: CssIconName; color: string }> = {
 
 const QUICK_REPLIES = [
   { title: "Size Chart", body: "Priya Boutique Size Chart:\nS: Bust 34\", Waist 28\"\nM: Bust 36\", Waist 30\"\nL: Bust 38\", Waist 32\"\nXL: Bust 40\", Waist 34\"" },
-  { title: "Return Policy", body: "Hamari Return Policy:\n7 din ke andar return/exchange ho sakta hai. Original tags aur packing zaroori hai.\nContact: 9876543210" },
-  { title: "Washing Instructions", body: "Washing Instructions:\n• Cold water mein hand wash karein\n• Direct dhoop mein mat sukhaein\n• Iron ulti taraf se karein" },
-  { title: "Tracking Link", body: "Aapka order track karne ke liye:\nhttps://track.shiprocket.in/[TRACKING_ID]\n\nKoi issue ho toh call karein: 9876543210" },
-  { title: "Offer Bhejo", body: "Special Offer sirf aapke liye!\n20% OFF on all Kurtis this week!\nCode: PRIYA20\nShop now at priyaboutique.in" },
+  { title: "Return Policy", body: "Our Return Policy:\nReturns and exchanges are accepted within 7 days with original tags and packaging.\nContact: 9876543210" },
+  { title: "Care Instructions", body: "Care Instructions:\n• Hand wash gently in cold water\n• Dry in shade away from direct sunlight\n• Iron on reverse side" },
+  { title: "Tracking Link", body: "Track your order here:\nhttps://track.shiprocket.in/[TRACKING_ID]\n\nNeed help? Call us at 9876543210" },
+  { title: "Special Offer", body: "Exclusive Offer for You!\n20% OFF on all Kurtis this week!\nCode: PRIYA20\nShop now at priyaboutique.in" },
 ];
 
 export default function InboxPage() {
@@ -68,7 +68,7 @@ export default function InboxPage() {
     });
 
     if (res.ok) {
-      showToast("Reply bhej diya!");
+      showToast("Reply sent!");
       setReplyText("");
       // Refresh ticket
       const ticketRes = await fetch(`/api/support?status=${filterStatus}`);
@@ -86,7 +86,7 @@ export default function InboxPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sender: "staff", body: "Ticket resolved.", status: "Resolved" }),
     });
-    showToast("Ticket resolve ho gaya!");
+    showToast("Ticket resolved!");
     fetchTickets();
     setSelectedTicket(null);
   };
@@ -107,7 +107,7 @@ export default function InboxPage() {
       <main className="relative z-10 pt-20 pb-4 px-4 max-w-7xl mx-auto h-screen">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="chat" size={24} className="text-gold" /> Support Inbox</h1>
-          <p className="text-sm font-body text-text/50">WhatsApp, Instagram, Facebook, Email — sab ek jagah</p>
+          <p className="text-sm font-body text-text/50">WhatsApp, Instagram, Facebook, Email — all in one inbox</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-180px)]">
@@ -161,7 +161,7 @@ export default function InboxPage() {
                 );
               })}
               {filteredTickets.length === 0 && (
-                <p className="text-center text-text/30 text-sm font-body py-8">Koi ticket nahi</p>
+                <p className="text-center text-text/30 text-sm font-body py-8">No tickets found</p>
               )}
             </div>
           </div>
@@ -236,7 +236,7 @@ export default function InboxPage() {
                   </button>
                   <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendReply(); } }}
-                    placeholder="Reply likhein... (Enter = send)"
+                    placeholder="Write a reply... (Enter to send)"
                     className="flex-1 resize-none rounded-2xl border border-gold/20 bg-background px-4 py-2.5 font-body text-sm outline-none focus:border-gold/40 max-h-24"
                     rows={1} />
                   <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
@@ -250,8 +250,8 @@ export default function InboxPage() {
               <div className="flex-1 flex items-center justify-center text-center p-8">
                 <div>
                   <div className="flex justify-center mb-3"><CssIcon name="chat" size={32} className="text-gold" /></div>
-                  <p className="font-heading text-primary text-xl mb-2">Koi Ticket Select Karein</p>
-                  <p className="font-body text-text/40 text-sm">Left side se koi bhi conversation click karein</p>
+                  <p className="font-heading text-primary text-xl mb-2">Select a Ticket</p>
+                  <p className="font-body text-text/40 text-sm">Click any conversation on the left to view messages</p>
                 </div>
               </div>
             )}

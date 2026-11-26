@@ -49,7 +49,7 @@ const paymentMethods: { label: string; icon: CssIconName; value: string }[] = [
   { label: "Cash", icon: "rupee", value: "Cash" },
   { label: "UPI", icon: "phone", value: "UPI" },
   { label: "Card", icon: "bag", value: "Card" },
-  { label: "Udhaar", icon: "clock", value: "Udhaar" },
+  { label: "Credit", icon: "clock", value: "Udhaar" },
 ];
 
 const container = {
@@ -148,7 +148,7 @@ export default function ShopPage() {
         },
       ]);
     }
-    showToast(`${product.name} (${size}) add kiya!`);
+    showToast(`Added ${product.name} (${size}) to cart`);
   };
 
   // Update qty
@@ -165,11 +165,11 @@ export default function ShopPage() {
   // Generate bill
   const generateBill = async () => {
     if (!selectedCustomer) {
-      showToast("Pehle customer select karo!", "error");
+      showToast("Please select a customer first!", "error");
       return;
     }
     if (cart.length === 0) {
-      showToast("Cart me kuch to daalo!", "error");
+      showToast("Your cart is empty!", "error");
       return;
     }
 
@@ -261,8 +261,8 @@ export default function ShopPage() {
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8"
         >
           <div>
-            <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="bag" size={24} className="text-gold" /> Shop View</h1>
-            <p className="text-sm font-body text-text/50">Bill banao, customer dhoondo, stock check karo</p>
+            <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="bag" size={24} className="text-gold" /> Point of Sale</h1>
+            <p className="text-sm font-body text-text/50">Create invoices, search customers, and check live stock</p>
           </div>
           <div className="flex gap-3">
             <Button size="sm" onClick={() => setShowNewCustomer(true)}>
@@ -281,11 +281,11 @@ export default function ShopPage() {
           {/* Column 1 - Customer Select */}
           <motion.div variants={item}>
             <Card hover={false} className="h-full">
-              <h3 className="text-lg font-heading text-primary mb-4 flex items-center gap-2"><CssIcon name="user" size={16} className="text-gold" /> Customer Select</h3>
+              <h3 className="text-lg font-heading text-primary mb-4 flex items-center gap-2"><CssIcon name="user" size={16} className="text-gold" /> Select Customer</h3>
               <SearchInput
                 value={customerSearch}
                 onChange={setCustomerSearch}
-                placeholder="Phone ya naam se dhoondo..."
+                placeholder="Search by phone or name..."
                 className="mb-4"
               />
 
@@ -338,7 +338,7 @@ export default function ShopPage() {
                   ))}
                   {filteredCustomers.length === 0 && (
                     <p className="text-sm text-text/40 text-center py-4 font-body">
-                      Koi customer nahi mila
+                      No customers found
                     </p>
                   )}
                 </div>
@@ -481,7 +481,7 @@ export default function ShopPage() {
                 </AnimatePresence>
                 {cart.length === 0 && (
                   <p className="text-center text-sm text-text/30 font-body py-8">
-                    Cart khaali hai
+                    Cart is empty
                   </p>
                 )}
               </div>
@@ -547,15 +547,15 @@ export default function ShopPage() {
 
               {/* Generate Bill */}
               <Button fullWidth onClick={generateBill} disabled={loading}>
-                {loading ? "Bill Ban Raha Hai..." : "Generate Bill"}
+                {loading ? "Generating Invoice..." : "Generate Invoice"}
               </Button>
 
               {/* WhatsApp */}
               {cart.length > 0 && (
                 <div className="mt-3 flex justify-center">
                   <WhatsAppButton
-                    label="Bill WhatsApp pe Bhejo"
-                    onClick={() => showToast("WhatsApp pe bill bhej diya!", "success")}
+                    label="Send Invoice via WhatsApp"
+                    onClick={() => showToast("Invoice sent via WhatsApp!", "success")}
                   />
                 </div>
               )}
@@ -568,11 +568,11 @@ export default function ShopPage() {
       <Modal
         isOpen={showNewCustomer}
         onClose={() => setShowNewCustomer(false)}
-        title="Naya Customer"
+        title="New Customer"
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-body text-text/60 mb-1">Naam *</label>
+            <label className="block text-sm font-body text-text/60 mb-1">Full Name *</label>
             <input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -610,7 +610,7 @@ export default function ShopPage() {
             </div>
           </div>
           <Button fullWidth onClick={createCustomer}>
-            Customer Add Karo
+            Add Customer
           </Button>
         </div>
       </Modal>
@@ -619,7 +619,7 @@ export default function ShopPage() {
       <Modal
         isOpen={showBillSuccess}
         onClose={() => setShowBillSuccess(false)}
-        title="Bill Ban Gaya!"
+        title="Invoice Generated!"
       >
         <div className="text-center py-6">
           <motion.div
@@ -633,21 +633,21 @@ export default function ShopPage() {
             </div>
           </motion.div>
           <h3 className="text-2xl font-heading text-primary mb-2">
-            Bill #{lastBillNo}
+            Invoice #{lastBillNo}
           </h3>
           <p className="text-sm font-body text-text/60 mb-6">
-            Bill successfully generate ho gaya hai!
+            Invoice has been generated successfully!
           </p>
           <div className="flex gap-3 justify-center">
             <WhatsAppButton
-              label="WhatsApp pe Bhejo"
+              label="Send via WhatsApp"
               onClick={() => {
-                showToast("Bill WhatsApp pe bhej diya!");
+                showToast("Invoice sent via WhatsApp!");
                 setShowBillSuccess(false);
               }}
             />
             <Button variant="secondary" onClick={() => setShowBillSuccess(false)}>
-              Band Karo
+              Close
             </Button>
           </div>
         </div>

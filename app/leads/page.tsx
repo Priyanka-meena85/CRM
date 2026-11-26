@@ -65,14 +65,14 @@ export default function LeadsPage() {
   }, []);
 
   const addLead = async () => {
-    if (!form.naam || !form.phone) { showToast("Naam aur phone zaroori hai!", "error"); return; }
+    if (!form.naam || !form.phone) { showToast("Name and phone are required!", "error"); return; }
     const res = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, quote: form.quote ? parseFloat(form.quote) : null, assignedTo: form.assignedTo ? parseInt(form.assignedTo) : null }),
     });
     if (res.ok) {
-      showToast("Lead add ho gayi!");
+      showToast("Lead added!");
       setShowAddModal(false);
       setForm({ naam: "", phone: "", source: "Instagram", query: "", quote: "", temperature: "Warm", assignedTo: "", nextFollowup: "", city: "", notes: "" });
       fetchLeads();
@@ -80,9 +80,9 @@ export default function LeadsPage() {
   };
 
   const deleteLead = async (id: number, naam: string) => {
-    if (!confirm(`${naam} ki lead delete karein?`)) return;
+    if (!confirm(`Delete lead for ${naam}?`)) return;
     await fetch(`/api/leads/${id}`, { method: "DELETE" });
-    showToast("Lead delete ho gayi", "info");
+    showToast("Lead deleted", "info");
     fetchLeads();
   };
 
@@ -116,7 +116,7 @@ export default function LeadsPage() {
     a.download = `priya-leads-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast("CSV export ho gaya!");
+    showToast("CSV exported!");
   };
 
   const totalQuoteValue = leads.filter((l) => l.stage !== "LOST").reduce((s, l) => s + (l.quote || 0), 0);
@@ -166,7 +166,7 @@ export default function LeadsPage() {
         {/* Filters */}
         <Card hover={false} className="mb-6">
           <div className="flex flex-wrap gap-3 items-center">
-            <SearchInput value={search} onChange={setSearch} placeholder="Naam ya phone..." className="flex-1 min-w-48" />
+            <SearchInput value={search} onChange={setSearch} placeholder="Search by name or phone..." className="flex-1 min-w-48" />
 
             {/* Stage filter */}
             <div className="flex gap-1 flex-wrap">
@@ -204,10 +204,10 @@ export default function LeadsPage() {
             <table className="w-full text-sm font-body">
               <thead>
                 <tr className="text-left text-text/40 border-b border-gold/10">
-                  <th className="pb-3 pr-4">Naam</th>
+                  <th className="pb-3 pr-4">Name</th>
                   <th className="pb-3 pr-4">Phone</th>
                   <th className="pb-3 pr-4">Source</th>
-                  <th className="pb-3 pr-4">Query</th>
+                  <th className="pb-3 pr-4">Inquiry</th>
                   <th className="pb-3 pr-4">Quote</th>
                   <th className="pb-3 pr-4">Stage</th>
                   <th className="pb-3 pr-4">Temp</th>
@@ -295,13 +295,13 @@ export default function LeadsPage() {
                 </AnimatePresence>
               </tbody>
             </table>
-            {leads.length === 0 && <p className="text-center text-text/30 font-body py-12">Koi lead nahi mili</p>}
+            {leads.length === 0 && <p className="text-center text-text/30 font-body py-12">No leads found</p>}
           </div>
         </Card>
       </main>
 
       {/* Add Lead Modal */}
-      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="Naya Lead Add Karo">
+      <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)} title="Add New Lead">
         <div className="space-y-3">
           {[
             { label: "Naam *", key: "naam", placeholder: "Priya Sharma" },
@@ -362,7 +362,7 @@ export default function LeadsPage() {
               className="w-full px-3 py-2.5 rounded-xl border border-gold/20 bg-background font-body text-sm outline-none resize-none" placeholder="Kuch bhi note karo..." />
           </div>
 
-          <Button fullWidth onClick={addLead}><CssIcon name="check" size={14} /> Lead Add Karo</Button>
+          <Button fullWidth onClick={addLead}><CssIcon name="check" size={14} /> Add Lead</Button>
         </div>
       </Modal>
     </div>

@@ -1,13 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 300">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1E3A6E"/>
-      <stop offset="100%" stop-color="#B08D57"/>
+    <linearGradient id="grad" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#1D3557"/>
+      <stop offset="100%" stop-color="#2C4C7E"/>
     </linearGradient>
   </defs>
-  <rect width="260" height="300" rx="20" fill="#F7F6F2"/>
-  <circle cx="130" cy="145" r="82" fill="#EFECE4"/>
-  <path d="M88 68 Q130 58 172 68 L178 228 Q130 238 82 228 Z" fill="url(#g)"/><path d="M88 78 L172 195" stroke="#B08D57" stroke-width="8" opacity="0.85"/>
-  <text x="130" y="266" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="bold" fill="#2F4838">Blue Saree</text>
-  <text x="130" y="283" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#777777">Banarasi Silk</text>
+  <rect width="260" height="300" rx="18" fill="#EFECE4"/>
+  <circle cx="130" cy="150" r="95" fill="#F7F6F2" opacity="0.8"/>
+  <!-- Minimalist Wooden Hanger -->
+  <path d="M130 24 C130 19 135 17 136 22 C136 26 130 28 130 32 L102 48 L158 48 L130 32" fill="none" stroke="#B08D57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+      <!-- Saree Silhouette & Pallu Drape -->
+      <path d="M90 52 L170 52 L178 252 Q130 262 82 252 Z" fill="url(#grad)"/>
+      <path d="M90 62 L172 178 L175 210 L86 92 Z" fill="#C7A773" opacity="0.88"/>
+      <path d="M84 240 Q130 250 176 240" fill="none" stroke="#C7A773" stroke-width="5"/>
+      <path d="M118 130 L114 254 M130 135 L130 256 M142 140 L146 254" stroke="#ffffff" stroke-width="1" opacity="0.22"/>
+    
 </svg>

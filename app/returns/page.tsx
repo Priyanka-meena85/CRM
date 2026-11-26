@@ -51,7 +51,7 @@ export default function ReturnsPage() {
       body: JSON.stringify({ qcStatus, status: "QC Done" }),
     });
     if (res.ok) {
-      showToast(`QC ${qcStatus} mark ho gaya!`);
+      showToast(`QC marked as ${qcStatus}!`);
       setSelectedReturn(null);
       fetchReturns();
     }
@@ -63,7 +63,7 @@ export default function ReturnsPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "Refund Initiated" }),
     });
-    showToast("Refund initiate ho gaya!");
+    showToast("Refund initiated!");
     fetchReturns();
   };
 
@@ -79,7 +79,7 @@ export default function ReturnsPage() {
       <main className="relative z-10 pt-20 pb-10 px-4 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="refresh" size={24} className="text-gold" /> Returns & Exchanges</h1>
-          <p className="text-sm font-body text-text/50">QC management, refunds, aur size exchanges</p>
+          <p className="text-sm font-body text-text/50">QC management, refunds, and size exchanges</p>
         </motion.div>
 
         {/* Summary Cards */}
@@ -146,7 +146,7 @@ export default function ReturnsPage() {
                       <div className="flex gap-2">
                         {ret.status === "QC Pending" && (
                           <Button size="sm" variant="secondary" onClick={() => setSelectedReturn(ret)}>
-                            <CssIcon name="eye" size={12} /> QC Karo
+                            <CssIcon name="eye" size={12} /> Run QC
                           </Button>
                         )}
                         {ret.status === "QC Done" && ret.qcStatus === "OK" && (
@@ -160,7 +160,7 @@ export default function ReturnsPage() {
                 ))}
               </tbody>
             </table>
-            {returns.length === 0 && <p className="text-center text-text/30 font-body py-12">Koi returns nahi</p>}
+            {returns.length === 0 && <p className="text-center text-text/30 font-body py-12">No returns found</p>}
           </div>
         </Card>
       </main>
@@ -186,9 +186,9 @@ export default function ReturnsPage() {
             </div>
           </div>
           <div className="p-3 bg-softPink rounded-xl text-sm font-body text-text/60">
-            Photo upload: Production me Cloudinary se connect hoga
+            Photo upload: Connected to Cloudinary in production
           </div>
-          <Button fullWidth onClick={updateQC}>QC Submit Karo</Button>
+          <Button fullWidth onClick={updateQC}>Submit QC</Button>
         </div>
       </Modal>
     </div>

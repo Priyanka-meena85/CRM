@@ -21,41 +21,41 @@ interface ChatMsg {
 }
 
 const SAMPLE_PROMPTS = [
-  "Bridal lehenga ka rate kya hai?",
-  "Size chart bhejo please",
-  "Store timing aur address kya hai?",
-  "Mera order track karna hai",
+  "What is the price of a bridal lehenga?",
+  "Please share the size chart",
+  "What are your store timings and address?",
+  "I want to track my order",
 ];
 
 function generateBotReply(input: string): string {
   const q = input.toLowerCase();
   if (q.includes("lehenga") || q.includes("rate") || q.includes("price")) {
-    return "Namaste! Priya Boutique mein Bridal Lehenga ₹15,000 se ₹45,000 tak available hain. Custom fitting aur blouse stitching included hai! Kya aap apna wedding month aur pasandida color batayengi? Hum WhatsApp pe catalog bhej sakte hain.";
+    return "Hello! Bridal Lehengas at Priya Boutique range from ₹15,000 to ₹45,000 with complimentary custom fitting and blouse stitching. Could you share your wedding month and preferred color so we can send our lookbook on WhatsApp?";
   }
   if (q.includes("size") || q.includes("chart")) {
-    return "Priya Boutique Size Chart:\n• S: Bust 34\", Waist 28\"\n• M: Bust 36\", Waist 30\"\n• L: Bust 38\", Waist 32\"\n• XL: Bust 40\", Waist 34\"\nCustom alteration bhi 2 din mein ho jaati hai!";
+    return "Priya Boutique Size Chart:\n• S: Bust 34\", Waist 28\"\n• M: Bust 36\", Waist 30\"\n• L: Bust 38\", Waist 32\"\n• XL: Bust 40\", Waist 34\"\nCustom alterations are completed within 2 business days.";
   }
-  if (q.includes("timing") || q.includes("address") || q.includes("kahan") || q.includes("store")) {
-    return "Priya Boutique, Main Bazaar, Nathdwara (Raj.)\nTiming: Subah 10:30 AM se Raat 8:30 PM (Rozana khula hai)\nGoogle Maps pin aur video call trial ke liye 'BOOK' reply karein!";
+  if (q.includes("timing") || q.includes("address") || q.includes("store")) {
+    return "Priya Boutique, Main Bazaar, Nathdwara (Raj.)\nHours: 10:30 AM – 8:30 PM (Open Daily)\nReply 'BOOK' to schedule a video-call styling session or in-store trial.";
   }
   if (q.includes("track") || q.includes("order")) {
-    return "Apna Order ID (jaise PB202411002) ya registered mobile number batayein — main abhi live courier status check karke batati hoon!";
+    return "Please share your Order ID (e.g. PB202411002) or registered phone number, and I will fetch your live courier tracking status right away.";
   }
-  return "Namaste ji! Main Priya AI Assistant hoon (24x7 Hindi / English / Hinglish). Aap Bridal Lehenga, Kurti, Size Chart, ya Order Tracking ke baare mein pooch sakti hain. Hamari team bhi jaldi aapse connect karegi!";
+  return "Hello! I am Priya AI Assistant (24x7). Feel free to ask about Bridal Lehengas, Kurtis, Size Charts, Store Hours, or Order Tracking.";
 }
 
 export default function ChatbotPage() {
   const { status } = useSession();
   const router = useRouter();
   const [input, setInput] = useState("");
-  const [language, setLanguage] = useState<"Hinglish" | "Hindi" | "English">("Hinglish");
+  const [language, setLanguage] = useState<"English" | "Hinglish" | "Hindi">("English");
   const [botActive, setBotActive] = useState(true);
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       id: 1,
       sender: "bot",
-      text: "Namaste! Main Priya Boutique ki 24x7 AI Assistant hoon. Hindi, English ya Hinglish mein kuch bhi poochein!",
-      time: "Abhi",
+      text: "Hello! I am Priya Boutique's 24x7 AI Assistant. Ask me anything about outfits, sizing, or order status!",
+      time: "Just now",
     },
   ]);
 
@@ -91,15 +91,15 @@ export default function ChatbotPage() {
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-2">
-              <CssIcon name="bot" size={26} className="text-gold" /> 24x7 AI Chatbot (Hindi / Hinglish)
+              <CssIcon name="bot" size={26} className="text-gold" /> 24x7 AI Chatbot Assistant
             </h1>
-            <p className="text-sm font-body text-text/60">Raat ko bhi customer query miss na ho — auto-reply + lead capture</p>
+            <p className="text-sm font-body text-text/60">Never miss an after-hours inquiry — instant auto-replies and lead capture</p>
           </div>
           <Button
             variant={botActive ? "primary" : "secondary"}
             onClick={() => {
               setBotActive(!botActive);
-              showToast(!botActive ? "AI Bot ON ho gaya!" : "AI Bot pause kiya gaya");
+              showToast(!botActive ? "AI Bot enabled!" : "AI Bot paused");
             }}
           >
             <CssIcon name="sparkles" size={14} className="mr-1.5" />
@@ -175,7 +175,7 @@ export default function ChatbotPage() {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Customer ki tarah message likho (e.g. Bridal lehenga rate?)..."
+                placeholder="Type a customer message (e.g. Bridal lehenga price?)..."
                 className="flex-1 px-4 py-2.5 rounded-full border border-gold/30 bg-white text-sm font-body focus:outline-none focus:border-maroon"
               />
               <Button type="submit" size="sm">
@@ -205,7 +205,7 @@ export default function ChatbotPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CssIcon name="check" size={14} className="text-success shrink-0 mt-1" />
-                  <span>Complex queries ko seedha Staff Inbox mein handoff karta hai</span>
+                  <span>Hands off complex inquiries directly to the Staff Inbox</span>
                 </li>
               </ul>
             </Card>

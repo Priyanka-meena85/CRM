@@ -68,18 +68,18 @@ export default function OrdersPage() {
       body: JSON.stringify({ status: newStatus }),
     });
     if (res.ok) {
-      showToast(`Order status update ho gaya: ${newStatus}`);
+      showToast(`Order status updated: ${newStatus}`);
       fetchOrders();
       setSelectedOrder(null);
     } else {
-      showToast("Status update nahi hua", "error");
+      showToast("Status update failed", "error");
     }
     setLoading(false);
   };
 
   const createReturn = async () => {
     if (!selectedOrder || !returnReason) {
-      showToast("Reason zaroori hai!", "error");
+      showToast("Reason is required!", "error");
       return;
     }
     const res = await fetch("/api/returns", {
@@ -88,7 +88,7 @@ export default function OrdersPage() {
       body: JSON.stringify({ orderId: selectedOrder.id, reason: returnReason, type: returnType }),
     });
     if (res.ok) {
-      showToast(`${returnType} register ho gaya!`, "success");
+      showToast(`${returnType} registered!`, "success");
       setShowReturnModal(false);
       setReturnReason("");
       fetchOrders();
@@ -102,7 +102,7 @@ export default function OrdersPage() {
       body: JSON.stringify({ codVerified: true, status: "Confirmed" }),
     });
     if (res.ok) {
-      showToast("COD Verify ho gaya! WhatsApp confirmation bhej diya");
+      showToast("COD verified! WhatsApp confirmation sent");
       fetchOrders();
     }
   };
@@ -119,14 +119,14 @@ export default function OrdersPage() {
       <main className="relative z-10 pt-24 pb-10 px-4 max-w-7xl mx-auto">
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="package" size={24} className="text-gold" /> Omni Orders</h1>
-          <p className="text-sm font-body text-text/50">Website, Instagram, Offline — saare orders ek jagah</p>
+          <h1 className="text-3xl font-heading text-primary flex items-center gap-2"><CssIcon name="package" size={24} className="text-gold" /> Omnichannel Orders</h1>
+          <p className="text-sm font-body text-text/50">Website, Instagram, Offline — all orders in one place</p>
         </motion.div>
 
         {/* Filters */}
         <Card hover={false} className="mb-6">
           <div className="flex flex-wrap gap-3 items-center">
-            <SearchInput value={search} onChange={setSearch} placeholder="Order no, naam, phone..." className="flex-1 min-w-48" />
+            <SearchInput value={search} onChange={setSearch} placeholder="Order no, name, phone..." className="flex-1 min-w-48" />
             <div className="flex gap-2 flex-wrap">
               {channels.map((ch) => (
                 <motion.button key={ch} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
@@ -226,7 +226,7 @@ export default function OrdersPage() {
               </tbody>
             </table>
             {orders.length === 0 && (
-              <p className="text-center text-text/30 font-body py-12">Koi order nahi mila</p>
+              <p className="text-center text-text/30 font-body py-12">No orders found</p>
             )}
           </div>
         </Card>
@@ -279,7 +279,7 @@ export default function OrdersPage() {
 
             {selectedOrder.status === "Delivered" && (
               <Button fullWidth variant="secondary" onClick={() => setShowReturnModal(true)}>
-                <CssIcon name="refresh" size={14} /> Return / Exchange Initiate Karo
+                <CssIcon name="refresh" size={14} /> Initiate Return / Exchange
               </Button>
             )}
           </div>
@@ -307,7 +307,7 @@ export default function OrdersPage() {
               rows={3} placeholder="Size fit nahi hua / Color different tha / Damage aaya..." />
           </div>
           <Button fullWidth onClick={createReturn}>
-            <CssIcon name="check" size={14} /> {returnType} Register Karo
+            <CssIcon name="check" size={14} /> Register {returnType}
           </Button>
         </div>
       </Modal>
