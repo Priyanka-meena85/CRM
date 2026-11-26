@@ -19,18 +19,22 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    setLoading(false);
-
-    if (!res || res.error) {
-      setError(res?.error && res.error !== "CredentialsSignin" ? res.error : "Galat email ya password! Dobara try karo.");
-    } else {
-      window.location.href = "/";
+      if (!res || res.error) {
+        setError(res?.error && res.error !== "CredentialsSignin" ? res.error : "Galat email ya password! Dobara try karo.");
+      } else {
+        window.location.href = "/";
+      }
+    } catch {
+      setError("Server se connection error aaya. Dobara try karein.");
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -89,19 +89,5 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 12 * 60 * 60, // 12 hours
   },
-  cookies: {
-    sessionToken: {
-      name:
-        process.env.NEXTAUTH_URL?.startsWith("https://")
-          ? "__Secure-next-auth.session-token"
-          : "next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: Boolean(process.env.NEXTAUTH_URL?.startsWith("https://")),
-      },
-    },
-  },
   secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || "priya-boutique-crm-fallback-secret-change-in-env",
 };

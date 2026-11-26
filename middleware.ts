@@ -34,10 +34,12 @@ export async function middleware(req: NextRequest) {
   // Strict CORS for API routes
   if (pathname.startsWith("/api")) {
     const origin = req.headers.get("origin");
-    const host = req.headers.get("host");
+    const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
     if (origin && host) {
       try {
-        if (new URL(origin).host !== host) {
+        const originHost = new URL(origin).host;
+        const allowedHosts = host.split(",").map((h) => h.trim());
+        if (!allowedHosts.includes(originHost)) {
           return NextResponse.json({ error: "CORS blocked" }, { status: 403 });
         }
       } catch {
