@@ -12,15 +12,23 @@ function resolveDatabaseUrl(): string | undefined {
   if (process.env.VERCEL === "1") {
     const tmpDb = "/tmp/dev.db";
     if (!fs.existsSync(tmpDb)) {
-      const bundledDb = path.join(process.cwd(), "prisma", "dev.db");
-      if (fs.existsSync(bundledDb)) {
-        fs.copyFileSync(bundledDb, tmpDb);
+      const candidates = [
+        path.join(process.cwd(), "prisma", "dev.db"),
+        path.resolve("prisma/dev.db"),
+        path.join(__dirname, "../../prisma/dev.db"),
+        path.join(__dirname, "../../../prisma/dev.db"),
+      ];
+      for (const candidate of candidates) {
+        if (fs.existsSync(candidate)) {
+          fs.copyFileSync(candidate, tmpDb);
+          break;
+        }
       }
     }
     return `file:${tmpDb}`;
   }
 
-  return envUrl;
+  return envUrl || "file:./prisma/dev.db";
 }
 
 const resolvedUrl = resolveDatabaseUrl();

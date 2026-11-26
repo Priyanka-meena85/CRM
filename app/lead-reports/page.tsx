@@ -33,7 +33,10 @@ export default function LeadReportsPage() {
   useEffect(() => { if (status === "unauthenticated") router.push("/login"); }, [status, router]);
 
   useEffect(() => {
-    fetch("/api/leads/reports").then(r => r.json()).then(setData).catch(() => {});
+    fetch("/api/leads/reports")
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => setData(d && !d.error ? d : { totalLeads: 0, todayLeads: 0, todayFollowups: 0, overdueFollowups: 0, thisMonthLeads: 0, thisMonthPakki: 0, thisMonthRevenue: 0, conversionRate: 0, stageBreakdown: [], sourceBest: [], staffPerf: [], temperature: {} }))
+      .catch(() => setData({ totalLeads: 0, todayLeads: 0, todayFollowups: 0, overdueFollowups: 0, thisMonthLeads: 0, thisMonthPakki: 0, thisMonthRevenue: 0, conversionRate: 0, stageBreakdown: [], sourceBest: [], staffPerf: [], temperature: {} }));
   }, []);
 
   if (!data) return (

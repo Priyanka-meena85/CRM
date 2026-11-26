@@ -31,7 +31,10 @@ export default function AnalyticsPage() {
   }, [status, session, router]);
 
   useEffect(() => {
-    fetch("/api/analytics").then((r) => r.json()).then(setData).catch(() => {});
+    fetch("/api/analytics")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setData(d && !d.error ? d : { channelBreakdown: [], codVsPrepaid: { cod: 0, prepaid: 0 }, returnReasons: [], returnAnalytics: [], bestSellers: [], staffPerformance: [] }))
+      .catch(() => setData({ channelBreakdown: [], codVsPrepaid: { cod: 0, prepaid: 0 }, returnReasons: [], returnAnalytics: [], bestSellers: [], staffPerformance: [] }));
   }, []);
 
   if (!data || status === "loading") return (

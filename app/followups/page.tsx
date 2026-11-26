@@ -34,16 +34,23 @@ export default function FollowupsPage() {
 
   const fetchFollowups = async () => {
     const res = await fetch(`/api/followups?filter=${filter}`);
-    if (res.ok) setFollowups(await res.json());
+    if (res.ok) {
+      const d = await res.json();
+      setFollowups(Array.isArray(d) ? d : []);
+    }
   };
 
   const fetchCounts = async () => {
     const [t, o, u] = await Promise.all([
-      fetch("/api/followups?filter=today").then(r => r.json()),
-      fetch("/api/followups?filter=overdue").then(r => r.json()),
-      fetch("/api/followups?filter=upcoming").then(r => r.json()),
+      fetch("/api/followups?filter=today").then(r => (r.ok ? r.json() : [])).catch(() => []),
+      fetch("/api/followups?filter=overdue").then(r => (r.ok ? r.json() : [])).catch(() => []),
+      fetch("/api/followups?filter=upcoming").then(r => (r.ok ? r.json() : [])).catch(() => []),
     ]);
-    setCounts({ today: t.length || 0, overdue: o.length || 0, upcoming: u.length || 0 });
+    setCounts({
+      today: Array.isArray(t) ? t.length : 0,
+      overdue: Array.isArray(o) ? o.length : 0,
+      upcoming: Array.isArray(u) ? u.length : 0,
+    });
   };
 
   useEffect(() => { fetchFollowups(); }, [filter]);
