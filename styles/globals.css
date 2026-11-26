@@ -95,6 +95,13 @@ button:hover > span:first-child {
 }
 
 /* ===== RESPONSIVE ===== */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 @media (max-width: 768px) {
   .hide-mobile {
     display: none;

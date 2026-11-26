@@ -9,17 +9,17 @@ import { usePathname, useRouter } from "next/navigation";
 import CssIcon, { CssIconName } from "@/components/ui/CssIcon";
 
 const navItems: { label: string; href: string; icon: CssIconName; roles: string[] }[] = [
+  { label: "Dashboard", href: "/dashboard", icon: "dashboard", roles: ["OWNER"] },
   { label: "Shop", href: "/shop", icon: "bag", roles: ["OWNER", "STAFF"] },
   { label: "Orders", href: "/orders", icon: "package", roles: ["OWNER", "STAFF"] },
-  { label: "Inbox", href: "/inbox", icon: "chat", roles: ["OWNER", "STAFF"] },
-  { label: "Returns", href: "/returns", icon: "refresh", roles: ["OWNER", "STAFF"] },
   { label: "Leads", href: "/leads", icon: "user", roles: ["OWNER", "STAFF"] },
   { label: "Pipeline", href: "/pipeline", icon: "kanban", roles: ["OWNER", "STAFF"] },
-  { label: "Follow-ups", href: "/followups", icon: "calendar", roles: ["OWNER", "STAFF"] },
-  { label: "AI Bot", href: "/chatbot", icon: "bot", roles: ["OWNER", "STAFF"] },
-  { label: "Dashboard", href: "/dashboard", icon: "dashboard", roles: ["OWNER"] },
+  { label: "Followups", href: "/followups", icon: "calendar", roles: ["OWNER", "STAFF"] },
+  { label: "Inbox", href: "/inbox", icon: "chat", roles: ["OWNER", "STAFF"] },
+  { label: "Returns", href: "/returns", icon: "refresh", roles: ["OWNER", "STAFF"] },
   { label: "Analytics", href: "/analytics", icon: "chart", roles: ["OWNER"] },
-  { label: "Lead Reports", href: "/lead-reports", icon: "trend", roles: ["OWNER"] },
+  { label: "Reports", href: "/lead-reports", icon: "trend", roles: ["OWNER"] },
+  { label: "AI Bot", href: "/chatbot", icon: "bot", roles: ["OWNER", "STAFF"] },
   { label: "Team", href: "/settings", icon: "settings", roles: ["OWNER"] },
 ];
 
@@ -72,57 +72,57 @@ export default function Navbar() {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 200, damping: 25 }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[95vw]"
+      className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[97vw]"
     >
-      <div className="flex items-center gap-1 bg-white/75 backdrop-blur-xl border border-gold/20 rounded-full px-2 py-1.5 shadow-lg shadow-gold/10 overflow-x-auto max-w-[95vw]">
+      <div className="flex items-center gap-0.5 bg-white/90 backdrop-blur-xl border border-[#E6E2D8] rounded-full px-2 py-1 shadow-sm overflow-x-auto no-scrollbar max-w-[97vw]">
         {/* Logo */}
-        <Link href="/" className="px-3 py-1.5 font-heading text-primary text-sm font-bold whitespace-nowrap flex items-center gap-1.5">
+        <Link href="/" className="px-2.5 py-1.5 font-heading text-primary text-sm font-bold whitespace-nowrap flex-shrink-0 flex items-center gap-1.5">
           <CssIcon name="diamond" size={12} className="text-gold" />
           <span>Priya</span>
         </Link>
 
-        <div className="w-px h-5 bg-gold/20" />
+        <div className="w-px h-4 bg-[#E6E2D8] flex-shrink-0 mx-0.5" />
 
         {/* Nav items */}
         {visibleItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link key={item.href} href={item.href}>
+            <Link key={item.href} href={item.href} className="flex-shrink-0">
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.96 }}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-body font-medium transition-all duration-300 relative",
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-body font-medium whitespace-nowrap transition-all duration-200 relative",
                   isActive
-                    ? "bg-gradient-to-r from-maroon to-maroonLight text-white shadow-md shadow-maroon/20"
-                    : "text-text hover:bg-softPink"
+                    ? "bg-gradient-to-r from-maroon to-maroonLight text-white shadow-sm"
+                    : "text-text/80 hover:bg-softPink hover:text-primary"
                 )}
               >
-                <CssIcon name={item.icon} size={14} />
-                <span className="hidden sm:inline">{item.label}</span>
+                <CssIcon name={item.icon} size={13} />
+                <span className="hidden md:inline">{item.label}</span>
               </motion.div>
             </Link>
           );
         })}
 
-        <div className="w-px h-5 bg-gold/20" />
+        <div className="w-px h-4 bg-[#E6E2D8] flex-shrink-0 mx-0.5" />
 
         {/* Global Quick Search */}
         <motion.button
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setSearchOpen(true)}
           title="Quick Search (Ctrl+K)"
-          className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-softPink/80 hover:bg-gold/20 text-primary text-xs font-body transition-colors"
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-softPink hover:bg-gold/15 text-primary text-xs font-body whitespace-nowrap flex-shrink-0 transition-colors"
         >
-          <CssIcon name="search" size={13} />
-          <span className="hidden lg:inline text-[10px] opacity-60">Ctrl+K</span>
+          <CssIcon name="search" size={12} />
+          <span className="hidden xl:inline text-[10px] opacity-60">Ctrl+K</span>
         </motion.button>
 
         {/* User + logout */}
         {session?.user && (
-          <div className="flex items-center gap-1.5 px-2">
-            <span className="text-xs font-body text-text/60 hidden md:inline">
+          <div className="flex items-center gap-1.5 pl-1.5 pr-1 flex-shrink-0 whitespace-nowrap">
+            <span className="text-xs font-body text-text/60 hidden xl:inline">
               {session.user.name?.split(" ")[0]}
             </span>
             <motion.button
