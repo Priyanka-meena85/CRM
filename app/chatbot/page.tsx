@@ -63,21 +63,35 @@ export default function ChatbotPage() {
     if (status === "unauthenticated") router.push("/login");
   }, [status, router]);
 
-  const sendMessage = (textToSend?: string) => {
+  const sendMessage = async (textToSend?: string) => {
     const query = (textToSend ?? input).trim();
     if (!query) return;
 
     const now = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     const userMsg: ChatMsg = { id: Date.now(), sender: "user", text: query, time: now };
+    setMessages((prev) => [...prev, userMsg]);
+    if (!textToSend) setInput("");
+
+    let replyText = generateBotReply(query);
+    try {
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: query }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.reply) replyText = data.reply;
+      }
+    } catch {}
+
     const botMsg: ChatMsg = {
       id: Date.now() + 1,
       sender: "bot",
-      text: generateBotReply(query),
-      time: now,
+      text: replyText,
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
-
-    setMessages((prev) => [...prev, userMsg, botMsg]);
-    if (!textToSend) setInput("");
+    setMessages((prev) => [...prev, botMsg]);
   };
 
   return (

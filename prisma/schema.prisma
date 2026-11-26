@@ -237,7 +237,9 @@ model MarketingCampaign {
 model Staff {
   id                Int      @id @default(autoincrement())
   name              String
+  email             String?  @unique
   phone             String
+  passwordHash      String?
   role              String   @default("STAFF")
   // Owner / Support / Warehouse / Store Staff
   targetMonthly     Float    @default(0)

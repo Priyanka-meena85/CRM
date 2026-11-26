@@ -27,6 +27,8 @@ export async function POST(req: Request) {
     const created = await StaffService.create({
       name,
       phone,
+      email: body?.email ? sanitizeText(body.email) : undefined,
+      password: typeof body?.password === "string" ? body.password : undefined,
       role: sanitizeText(body?.role) || "STAFF",
       targetMonthly: body?.targetMonthly,
       commissionPercent: body?.commissionPercent,

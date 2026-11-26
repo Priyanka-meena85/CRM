@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -81,12 +82,21 @@ async function main() {
   }});
 
   // ── STAFF ──────────────────────────────────────────────────
+  const defaultPasswordHash = bcrypt.hashSync(process.env.DEMO_PASSWORD || "Priya@2026#CRM", 10);
+
+  await prisma.staff.create({ data: {
+    name: "Arjun (Owner)", email: "owner@floindia.com", phone: "9820000001",
+    passwordHash: defaultPasswordHash, role: "OWNER",
+    targetMonthly: 500000, commissionPercent: 0,
+  }});
   const raju = await prisma.staff.create({ data: {
-    name: "Raju", phone: "9988776655", role: "STAFF",
+    name: "Raju", email: "sales@floindia.com", phone: "9988776655",
+    passwordHash: defaultPasswordHash, role: "STAFF",
     targetMonthly: 150000, commissionPercent: 2,
   }});
   const pooja = await prisma.staff.create({ data: {
-    name: "Pooja", phone: "9988776656", role: "STAFF",
+    name: "Pooja", email: "pooja@floindia.com", phone: "9988776656",
+    passwordHash: defaultPasswordHash, role: "STAFF",
     targetMonthly: 120000, commissionPercent: 2,
   }});
 
