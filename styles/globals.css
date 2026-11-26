@@ -11,8 +11,8 @@ html {
 
 body {
   font-family: 'Outfit', sans-serif;
-  background-color: #FFFBEB;
-  color: #1C1917;
+  background-color: #F7F6F2;
+  color: #1F2421;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -25,14 +25,14 @@ h1, h2, h3, h4, h5, h6 {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFFBEB;
+  background: #F7F6F2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CA8A04;
+  background: #B08D57;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #881337;
+  background: #2F4838;
 }
 
 /* ===== VIP BADGE SHIMMER ===== */
@@ -45,11 +45,11 @@ h1, h2, h3, h4, h5, h6 {
   background-size: 200% 100%;
   background-image: linear-gradient(
     90deg,
-    #CA8A04 0%,
-    #F59E0B 25%,
-    #FDE68A 50%,
-    #F59E0B 75%,
-    #CA8A04 100%
+    #B08D57 0%,
+    #C7A773 25%,
+    #E6D6B8 50%,
+    #C7A773 75%,
+    #B08D57 100%
   );
   animation: shimmerSweep 2.5s ease-in-out infinite;
 }
@@ -90,7 +90,7 @@ button:hover > span:first-child {
 
 /* ===== SELECTION ===== */
 ::selection {
-  background-color: #881337;
+  background-color: #2F4838;
   color: white;
 }
 

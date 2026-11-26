@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import CssIcon from "@/components/ui/CssIcon";
 import { cn } from "@/lib/utils";
 
 interface BadgeProps {
@@ -29,7 +30,7 @@ export default function Badge({ children, variant = "info", className }: BadgePr
         className
       )}
     >
-      {variant === "vip" && <span className="text-sm">👑</span>}
+      {variant === "vip" && <CssIcon name="star" size={11} />}
       {children}
     </motion.span>
   );
