@@ -4,6 +4,11 @@ const nextConfig = {
   swcMinify: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
+  experimental: {
+    outputFileTracingIncludes: {
+      "/api/**/*": ["./prisma/dev.db"],
+    },
+  },
 };
 
 module.exports = nextConfig;

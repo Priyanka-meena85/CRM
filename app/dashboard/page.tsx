@@ -65,16 +65,20 @@ export default function DashboardPage() {
   }, [status, session, router]);
 
   useEffect(() => {
-    fetch("/api/dashboard/stats").then((r) => r.json()).then(setStats).catch(() => {});
-    fetch("/api/customers").then((r) => r.json()).then(setCustomers).catch(() => {});
-    fetch("/api/orders?status=Pending").then((r) => r.json()).then(setOrders).catch(() => {});
-    fetch("/api/stock").then((r) => r.json()).then(setStocks).catch(() => {});
-    fetch("/api/staff").then((r) => r.json()).then(setStaffList).catch(() => {});
-    fetch("/api/udhaar").then((r) => r.json()).then(setUdhaars).catch(() => {});
-    fetch("/api/measurements").then((r) => r.json()).then(setMeasurements).catch(() => {});
-    fetch("/api/marketing/send").then((r) => r.json()).then(setCampaigns).catch(() => {});
-    fetch("/api/approvals").then((r) => r.json()).then(setApprovals).catch(() => {});
-    fetch("/api/leads/reports").then((r) => r.json()).then(setLeadStats).catch(() => {});
+    const safeArr = (d: any) => (Array.isArray(d) ? d : []);
+    fetch("/api/dashboard/stats")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setStats(d && !d.error ? d : { todaySale: 0, monthSale: 0, totalCustomers: 0, totalUdhaar: 0, lowStockCount: 0, todayCustomerCount: 0, alerts: {} }))
+      .catch(() => setStats({ todaySale: 0, monthSale: 0, totalCustomers: 0, totalUdhaar: 0, lowStockCount: 0, todayCustomerCount: 0, alerts: {} }));
+    fetch("/api/customers").then((r) => (r.ok ? r.json() : [])).then((d) => setCustomers(safeArr(d))).catch(() => {});
+    fetch("/api/orders?status=Pending").then((r) => (r.ok ? r.json() : [])).then((d) => setOrders(safeArr(d))).catch(() => {});
+    fetch("/api/stock").then((r) => (r.ok ? r.json() : [])).then((d) => setStocks(safeArr(d))).catch(() => {});
+    fetch("/api/staff").then((r) => (r.ok ? r.json() : [])).then((d) => setStaffList(safeArr(d))).catch(() => {});
+    fetch("/api/udhaar").then((r) => (r.ok ? r.json() : [])).then((d) => setUdhaars(safeArr(d))).catch(() => {});
+    fetch("/api/measurements").then((r) => (r.ok ? r.json() : [])).then((d) => setMeasurements(safeArr(d))).catch(() => {});
+    fetch("/api/marketing/send").then((r) => (r.ok ? r.json() : [])).then((d) => setCampaigns(safeArr(d))).catch(() => {});
+    fetch("/api/approvals").then((r) => (r.ok ? r.json() : [])).then((d) => setApprovals(safeArr(d))).catch(() => {});
+    fetch("/api/leads/reports").then((r) => (r.ok ? r.json() : null)).then((d) => { if (d && !d.error) setLeadStats(d); }).catch(() => {});
   }, []);
 
   const filteredCustomers = customerSearch

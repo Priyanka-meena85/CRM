@@ -61,7 +61,7 @@ export default function LeadsPage() {
   useEffect(() => { fetchLeads(); }, [search, filterStage, filterSource, filterTemp]);
 
   useEffect(() => {
-    fetch("/api/staff").then(r => r.json()).then(setStaff).catch(() => {});
+    fetch("/api/staff").then(r => (r.ok ? r.json() : [])).then(d => setStaff(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const addLead = async () => {

@@ -57,7 +57,7 @@ export default function PipelinePage() {
 
   useEffect(() => {
     fetchLeads();
-    fetch("/api/staff").then(r => r.json()).then(setStaff).catch(() => {});
+    fetch("/api/staff").then(r => (r.ok ? r.json() : [])).then(d => setStaff(Array.isArray(d) ? d : [])).catch(() => {});
   }, []);
 
   const filteredLeads = leads.filter((l) => {

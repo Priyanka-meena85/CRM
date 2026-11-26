@@ -92,12 +92,12 @@ export default function ShopPage() {
   // Fetch data
   useEffect(() => {
     fetch("/api/customers")
-      .then((r) => r.json())
-      .then(setCustomers)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => setCustomers(Array.isArray(d) ? d : []))
       .catch(() => {});
     fetch("/api/products")
-      .then((r) => r.json())
-      .then(setProducts)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => setProducts(Array.isArray(d) ? d : []))
       .catch(() => {});
   }, []);
 
